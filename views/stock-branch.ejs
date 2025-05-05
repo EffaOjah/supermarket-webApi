@@ -144,7 +144,7 @@
 							</a>
 							<div class="clearfix"></div>
 
-							<div class="collapse in" id="collapseExample" aria-expanded="true" style="">
+							<div class="collapse in" id="collapseExample" aria-expanded="true">
 								<ul class="nav">
 									<li>
 										<a href="#profile">
@@ -167,21 +167,28 @@
 					</div>
 					<ul class="nav">
 						<li class="nav-item">
-							<a href="/admin/dashboard">
+							<a href="#">
 								<i class="la la-dashboard"></i>
-								<p>Dashboard</p>
+								<p>Overview</p>
 							</a>
 						</li>
 						<li class="nav-item active">
-							<a href="#">
+							<a href="/stock-branch/<%= branch[0].branch_id %>">
 								<i class="la la-table"></i>
-								<p>Upload Products</p>
+								<p>Stock Branch</p>
 							</a>
 						</li>
 						<li class="nav-item">
 							<a href="/admin/all-products">
 								<i class="la la-keyboard-o"></i>
-								<p>All Products</p>
+								<p>Branch Products</p>
+								<span class="badge badge-count"></span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="/admin/all-products">
+								<i class="la la-keyboard-o"></i>
+								<p>Sales</p>
 								<span class="badge badge-count"></span>
 							</a>
 						</li>

@@ -86,21 +86,6 @@ const getStoreBranchById = async (req, res) => {
     }
 };
 
-// Get branch products
-const getBranchProducts = async (req, res) => {
-    const branchId = req.params.branchId;
-
-    try {
-        const products = await AdminModel.getBranchProducts(branchId);
-        console.log(products);
-
-        return res.status(200).json({ products });
-    } catch (error) {
-        console.log('Error fetching branch products:', error);
-        return res.status(500).json({ message: 'Internal Server Error', error });
-    }
-};
-
 // Get all branch sales
 const getBranchSales = async (req, res) => {
     const branchId = req.params.branchId;
@@ -117,4 +102,4 @@ const getBranchSales = async (req, res) => {
 };
 
 
-module.exports = { getDashboard, getProductUpload, uploadProducts, getAllProducts, getStoreBranchById, getBranchProducts, getBranchSales };
+module.exports = { getDashboard, getProductUpload, uploadProducts, getAllProducts, getStoreBranchById, getBranchSales };

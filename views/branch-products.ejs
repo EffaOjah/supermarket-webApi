@@ -144,7 +144,7 @@
 							</a>
 							<div class="clearfix"></div>
 
-							<div class="collapse in" id="collapseExample" aria-expanded="true">
+							<div class="collapse in" id="collapseExample" aria-expanded="true" style="">
 								<ul class="nav">
 									<li>
 										<a href="#profile">
@@ -166,30 +166,23 @@
 						</div>
 					</div>
 					<ul class="nav">
+						<li class="nav-item">
+							<a href="/admin/dashboard">
+								<i class="la la-dashboard"></i>
+								<p>Dashboard</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="/admin/product-upload">
+								<i class="la la-table"></i>
+								<p>Upload Products</p>
+							</a>
+						</li>
 						<li class="nav-item active">
 							<a href="#">
-								<i class="la la-dashboard"></i>
-								<p>Overview</p>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="/stock-branch/<%= branch[0].branch_id %>">
-								<i class="la la-table"></i>
-								<p>Stock Branch</p>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="/branch/<%= branch[0].branch_id %>/products">
 								<i class="la la-keyboard-o"></i>
-								<p>Branch Products</p>
-								<span class="badge badge-count"></span>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="/admin/all-products">
-								<i class="la la-keyboard-o"></i>
-								<p>Sales</p>
-								<span class="badge badge-count"></span>
+								<p>All Products</p>
+								<span class="badge badge-count"><%= products.length %></span>
 							</a>
 						</li>
 						<li class="nav-item">
@@ -230,9 +223,43 @@
 			<div class="main-panel">
 				<div class="content">
 					<div class="container-fluid">
-						<h4 class="page-title">Branches > <span class="text-primary">Overview</span></h4>
+						<h4 class="page-title"><span class="text-primary">All Products</span></h4>
 						<div class="row justify-content-center">
-						
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">Products Details</div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Name</th>
+                                                    <th>Wholesale Price</th>
+                                                    <th>Retail Price</th>
+                                                    <th>Supplier</th>
+                                                    <th>Category</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% products.forEach((product, index) => { %>
+                                                    <tr>
+                                                        <th scope="row"><%= index + 1 %></th>
+                                                        <td><%= product.product_name %></td>
+                                                        <td><%= product.wholesale_price %></td>
+                                                        <td><%= product.retail_price %></td>
+                                                        <td><%= product.name %></td>
+                                                        <td><%= product.category %></td>
+                                                        <td><button class="btn-sm btn-primary" style="cursor: pointer;">Edit</button></td>
+                                                    </tr>
+                                                <% }) %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>							
 						</div>
 						
 					</div>
@@ -266,7 +293,6 @@
 			</div>
 		</div>
 	</div>
-	
 </body>
 <script src="/js/core/jquery.3.2.1.min.js"></script>
 <script src="/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>

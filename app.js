@@ -35,7 +35,7 @@ app.use(cookieParser());
 
 // Home route
 app.get('/', (req, res) => {
-    res.redirect('/admin/login');
+    res.redirect('/admin/signin');
 });
 
 

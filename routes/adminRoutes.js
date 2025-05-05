@@ -36,9 +36,6 @@ router.get('/admin/all-products', adminController.getAllProducts);
 // Get store branch using branch id (GET)
 router.get('/admin/branch/:branchId', adminController.getStoreBranchById);
 
-// Get branch products (GET)
-router.get('/admin/branch/:branchId/products', adminController.getBranchProducts);
-
 // Get all branch sales (GET)
 router.get('/admin/branch/:branchId/sales', adminController.getBranchSales);
 

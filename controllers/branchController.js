@@ -7,7 +7,7 @@ const BranchModel = require('../models/branchModel');
 const getBranchPage = async (req, res) => {
     try {
         // Get branch by ID
-        const branchId = req.params.id;
+        const branchId = req.params.branchId;
 
         const branch = await BranchModel.getBranchById(branchId);
         console.log('Branch:', branch);
@@ -23,7 +23,7 @@ const getBranchPage = async (req, res) => {
 const getStockBranchPage = async (req, res) => {
     try {
         // Get branch by ID
-        const branchId = req.params.id;
+        const branchId = req.params.branchId;
 
         const branch = await BranchModel.getBranchById(branchId);
         console.log('Branch:', branch);
@@ -41,7 +41,7 @@ const getStockBranchPage = async (req, res) => {
 // Stock branch (POST)
 const stockBranch = async (req, res) => {
     const { productId, quantity } = req.body;
-    const branchId = req.params.id;
+    const branchId = req.params.branchId;
 
     try {
         // Get the product details from the database using the productId
@@ -73,5 +73,19 @@ const stockBranch = async (req, res) => {
     }
 };
 
+// Get branch products
+const getBranchProducts = async (req, res) => {
+    const branchId = req.params.branchId;
 
-module.exports = { getBranchPage, getStockBranchPage, stockBranch };
+    try {
+        const products = await BranchModel.getBranchProducts(branchId);
+        console.log(products);
+
+        return res.render('branch-products', { products });
+    } catch (error) {
+        console.log('Error fetching branch products:', error);
+        return res.status(500).json({ message: 'Internal Server Error', error });
+    }
+};
+
+module.exports = { getBranchPage, getStockBranchPage, stockBranch, getBranchProducts };

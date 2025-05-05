@@ -70,11 +70,23 @@ const getExistingBranchProduct = async (branchId, productId) => {
     });
 };
 
+const getBranchProducts = async (branchId) => {
+    return new Promise((resolve, reject) => {
+        db.query('SELECT * FROM branch_stock INNER JOIN products ON branch_stock.product_id = products.product_id INNER JOIN suppliers ON products.supplier_id = suppliers.supplier_id WHERE branch_stock.branch_id = ?', [branchId], (err, result) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(result);
+        }); 
+    });
+};
+
 module.exports = {
     getBranchById,
     getProductsOnly,
     updateBranchStock,
     insertBranchStock,
     getProductById,
-    getExistingBranchProduct
+    getExistingBranchProduct,
+    getBranchProducts
 };

@@ -24,13 +24,13 @@ const verifyToken = (req, res, next) => {
 
     if (!token) {
         console.log('No token provided');
-        return res.redirect('/auth/signin');
+        return res.redirect('/admin/signin');
     }
 
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) {
             console.error('Token verification failed:', err);
-            return res.redirect('/auth/signin');
+            return res.redirect('/admin/signin');
         }
         req.user = decoded;
         next();

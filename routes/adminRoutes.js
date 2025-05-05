@@ -1,6 +1,9 @@
 // Require Auth route
 const adminController = require('../controllers/adminController');
 
+// Require JWT middleware
+const { verifyToken } = require('../middleware/jwt');
+
 const { Router } = require('express');
 const router = Router();
 
@@ -21,22 +24,23 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+
 // Admin dashboard route (GET)
-router.get('/admin/dashboard', adminController.getDashboard);
+router.get('/admin/dashboard', verifyToken, adminController.getDashboard);
 
 // Product upload route (GET)
-router.get('/admin/product-upload', adminController.getProductUpload);
+router.get('/admin/product-upload', verifyToken, adminController.getProductUpload);
 
 // Upload product route (POST)
-router.post('/admin/upload-product', adminController.uploadProducts);
+router.post('/admin/upload-product', verifyToken, adminController.uploadProducts);
 
 // Get all products route (GET)
-router.get('/admin/all-products', adminController.getAllProducts);
+router.get('/admin/all-products', verifyToken, adminController.getAllProducts);
 
 // Get store branch using branch id (GET)
-router.get('/admin/branch/:branchId', adminController.getStoreBranchById);
+router.get('/admin/branch/:branchId', verifyToken, adminController.getStoreBranchById);
 
 // Get all branch sales (GET)
-router.get('/admin/branch/:branchId/sales', adminController.getBranchSales);
+router.get('/admin/branch/:branchId/sales', verifyToken, adminController.getBranchSales);
 
 module.exports = router;

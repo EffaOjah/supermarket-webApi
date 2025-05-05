@@ -81,6 +81,17 @@ const getBranchProducts = async (branchId) => {
     });
 };
 
+const checkForStock = async (branchId, status) => {
+    return new Promise((resolve, reject) => {
+        db.query('SELECT stock_id FROM branch_stock WHERE branch_id = ? AND status = ?', [branchId, status], (err, result) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(result);
+        });
+    });
+}
+
 module.exports = {
     getBranchById,
     getProductsOnly,
@@ -88,5 +99,6 @@ module.exports = {
     insertBranchStock,
     getProductById,
     getExistingBranchProduct,
-    getBranchProducts
+    getBranchProducts,
+    checkForStock
 };

@@ -1,18 +1,21 @@
 // Require Auth route
 const branchController = require('../controllers/branchController');
 
+// Require JWT middleware
+const { verifyToken } = require('../middleware/jwt');
+
 const { Router } = require('express');
 const router = Router();
 
 // Branch page route (GET)
-router.get('/branch/:branchId', branchController.getBranchPage);
+router.get('/branch/:branchId', verifyToken, branchController.getBranchPage);
 
 // Stock branch page
 router.route('/stock-branch/:branchId')
-.get(branchController.getStockBranchPage)
-.post(branchController.stockBranch);
+.get(verifyToken, branchController.getStockBranchPage)
+.post(verifyToken, branchController.stockBranch);
 
 // Get branch products (GET)
-router.get('/branch/:branchId/products', branchController.getBranchProducts);
+router.get('/branch/:branchId/products', verifyToken, branchController.getBranchProducts);
 
 module.exports = router;

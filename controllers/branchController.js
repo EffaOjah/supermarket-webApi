@@ -12,7 +12,10 @@ const getBranchPage = async (req, res) => {
         const branch = await BranchModel.getBranchById(branchId);
         console.log('Branch:', branch);
 
-        res.render('branch-overview', { branch });
+        const products = await BranchModel.getBranchProducts(branchId);
+        console.log(products);
+
+        res.render('branch-overview', { branch, products });
     } catch (error) {
         console.log('An error occurred: ', error);
         return res.render('error-page');
@@ -31,7 +34,10 @@ const getStockBranchPage = async (req, res) => {
         const products = await BranchModel.getProductsOnly();
         console.log('Products:', products);
 
-        res.render('stock-branch', { branch, products });
+        const branchProducts = await BranchModel.getBranchProducts(branchId);
+        console.log(branchProducts);
+
+        res.render('stock-branch', { branch, products, branchProducts });
     } catch (error) {
         console.log('An error occurred: ', error);
         return res.render('error-page');
@@ -78,10 +84,13 @@ const getBranchProducts = async (req, res) => {
     const branchId = req.params.branchId;
 
     try {
+        const branch = await BranchModel.getBranchById(branchId);
+        console.log('Branch:', branch);
+
         const products = await BranchModel.getBranchProducts(branchId);
         console.log(products);
 
-        return res.render('branch-products', { products });
+        return res.render('branch-products', { branch, products });
     } catch (error) {
         console.log('Error fetching branch products:', error);
         return res.status(500).json({ message: 'Internal Server Error', error });

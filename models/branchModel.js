@@ -25,7 +25,7 @@ const getProductsOnly = async () => {
 // Update existing branch stock quantity
 const updateBranchStock = async (branchId, productId, quantity) => {
     return new Promise((resolve, reject) => {
-        db.query('UPDATE branch_stock SET quantity = ? WHERE branch_id = ? AND product_id = ?', [quantity, branchId, productId], (err, result) => {
+        db.query('UPDATE branch_stock SET quantity = quantity + ? WHERE branch_id = ? AND product_id = ?', [quantity, branchId, productId], (err, result) => {
             if (err) {
                 reject(err);
             }

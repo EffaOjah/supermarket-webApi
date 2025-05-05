@@ -167,22 +167,28 @@
 					</div>
 					<ul class="nav">
 						<li class="nav-item">
-							<a href="#">
+							<a href="/admin/dashboard">
 								<i class="la la-dashboard"></i>
-								<p>Overview</p>
+								<p>Dashboard</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="/branch/<%= branch[0].branch_id %>">
+								<i class="la la-dashboard"></i>
+								<p>Branch Overview</p>
 							</a>
 						</li>
 						<li class="nav-item active">
-							<a href="/stock-branch/<%= branch[0].branch_id %>">
+							<a href="#">
 								<i class="la la-table"></i>
 								<p>Stock Branch</p>
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="/admin/all-products">
+							<a href="/branch/<%= branch[0].branch_id %>/products">
 								<i class="la la-keyboard-o"></i>
 								<p>Branch Products</p>
-								<span class="badge badge-count"></span>
+								<span class="badge badge-count"><%= branchProducts.length %></span>
 							</a>
 						</li>
 						<li class="nav-item">

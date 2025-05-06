@@ -6,6 +6,7 @@ const db = require('./config/dbConfig');
 const authRoute = require('./routes/authRoute');
 const adminRoute = require('./routes/adminRoutes');
 const branchRoute = require('./routes/branchRoutes');
+const dataRoute = require('./routes/dataRoutes');
 
 db.connect((err) => {
     if (err) {
@@ -44,6 +45,7 @@ app.get('/', (req, res) => {
 app.use(authRoute);
 app.use(adminRoute);
 app.use(branchRoute);
+app.use(dataRoute);
 
 app.listen(PORT, () => {
     console.log(`Stores WEB API Server is running on PORT ${PORT}`);

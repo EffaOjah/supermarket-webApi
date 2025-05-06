@@ -1,4 +1,4 @@
-// Require Auth route
+// Require branch controller
 const branchController = require('../controllers/branchController');
 
 // Require JWT middleware

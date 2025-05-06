@@ -97,20 +97,4 @@ const getBranchProducts = async (req, res) => {
     }
 };
 
-// Logic to get pending products
-const handleSoftwareStocking = async (req, res) => {
-    const branchId = req.query.branchId;
-
-    // First check for any stocking that hasn't been delivered
-    const pendingStock = await BranchModel.checkForStock(branchId, 'pending');
-
-    if (pendingStock.length < 1) {
-        console.log('There are no pending stocks');
-        return res.status(200).json({ message: 'There are no pending' });
-    }
-
-    // If there's a pending stock, returning in the response object
-    res.status(200).json({ message: 'Pending stock available' });
-}
-
 module.exports = { getBranchPage, getStockBranchPage, stockBranch, getBranchProducts };

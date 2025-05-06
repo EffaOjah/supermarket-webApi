@@ -37,7 +37,7 @@ const updateBranchStock = async (branchId, productId, wholesaleQuantity, retailQ
 // Add new branch stock
 const insertBranchStock = async (branchId, productId, wholesaleQuantity, retailQuantity) => {
     return new Promise((resolve, reject) => {
-        db.query('INSERT INTO branch_stock (branch_id, product_id, stock_quantity_wholesale, stock_quantity_retail) VALUES(?, ?, ?)', [branchId, productId, wholesaleQuantity, retailQuantity], (err, result) => {
+        db.query('INSERT INTO branch_stock (branch_id, product_id, stock_quantity_wholesale, stock_quantity_retail) VALUES(?, ?, ?, ?)', [branchId, productId, wholesaleQuantity, retailQuantity], (err, result) => {
             if (err) {
                 reject(err);
             }

@@ -46,7 +46,7 @@ const getStockBranchPage = async (req, res) => {
 
 // Stock branch (POST)
 const stockBranch = async (req, res) => {
-    const { productId, quantity } = req.body;
+    const { productId, wholesaleQuantity, retailQuantity } = req.body;
     const branchId = req.params.branchId;
 
     try {
@@ -64,11 +64,11 @@ const stockBranch = async (req, res) => {
 
         if (existingStock.length > 0) {
             // Update the existing stock quantity
-            const updatedStock = await BranchModel.updateBranchStock(branchId, productId, quantity);
+            const updatedStock = await BranchModel.updateBranchStock(branchId, productId, wholesaleQuantity, retailQuantity);
             console.log(updatedStock);
         } else {
             // Insert new stock for the branch
-            const newStock = await BranchModel.insertBranchStock(branchId, productId, quantity);
+            const newStock = await BranchModel.insertBranchStock(branchId, productId, wholesaleQuantity, retailQuantity);
             console.log(newStock);
         }
 

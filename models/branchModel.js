@@ -23,9 +23,9 @@ const getProductsOnly = async () => {
 };
 
 // Update existing branch stock quantity
-const updateBranchStock = async (branchId, productId, quantity) => {
+const updateBranchStock = async (branchId, productId, wholesaleQuantity, retailQuantity) => {
     return new Promise((resolve, reject) => {
-        db.query('UPDATE branch_stock SET quantity = quantity + ? WHERE branch_id = ? AND product_id = ?', [quantity, branchId, productId], (err, result) => {
+        db.query('UPDATE branch_stock SET stock_quantity_wholesale = stock_quantity_wholesale + ?, stock_quantity_retail = stock_quantity_retail + ?, status = ? WHERE branch_id = ? AND product_id = ?', [wholesaleQuantity, retailQuantity, 'pending', branchId, productId], (err, result) => {
             if (err) {
                 reject(err);
             }
@@ -35,9 +35,9 @@ const updateBranchStock = async (branchId, productId, quantity) => {
 };
 
 // Add new branch stock
-const insertBranchStock = async (branchId, productId, quantity) => {
+const insertBranchStock = async (branchId, productId, wholesaleQuantity, retailQuantity) => {
     return new Promise((resolve, reject) => {
-        db.query('INSERT INTO branch_stock (branch_id, product_id, quantity) VALUES(?, ?, ?)', [branchId, productId, quantity], (err, result) => {
+        db.query('INSERT INTO branch_stock (branch_id, product_id, stock_quantity_wholesale, stock_quantity_retail) VALUES(?, ?, ?)', [branchId, productId, wholesaleQuantity, retailQuantity], (err, result) => {
             if (err) {
                 reject(err);
             }

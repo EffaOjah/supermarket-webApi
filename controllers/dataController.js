@@ -3,6 +3,21 @@
 // Data Model
 const DataModel = require('../models/dataModel');
 
+// Logic to get products
+const getProducts = async (req, res) => {
+    try {
+        const pendingProducts = await DataModel.getProducts('pending');
+        console.log(pendingProducts);
+
+        return res.status(200).json({ pendingProducts });
+    } catch (error) {
+        console.log('Error getting products: ', error);
+        return res.status(500).json({ message: 'Internal Server Error', error });   
+    }
+}
+
+// Logic to update the product that were delivered
+
 // Logic to get pending products
 const handleSoftwareStocking = async (req, res) => {
     try {
@@ -44,4 +59,27 @@ const handleSoftwareStocking = async (req, res) => {
     }
 }
 
-module.exports = { handleSoftwareStocking };
+// Logic to get sales from the branches
+const getSales = async (req, res) => {
+    try {
+        const branchId = req.query.branchId;
+
+        // First check if the branch exists
+        const branch = await DataModel.getBranchById(branchId);
+        console.log(branch);
+        
+        if (branch.length < 1) {
+            console.log('Branch does not exist');
+            return res.status(400).json({ message: 'Branch does not exist' });
+        }
+
+        console.log(req.body);
+        res.status(200).json({ body: req.body });
+        
+    } catch (error) {
+        console.log('Error getting  sales: ', error);
+        return res.status(500).json({ message: 'Internal Server Error', error });
+    }
+}
+
+module.exports = { getProducts, handleSoftwareStocking, getSales };

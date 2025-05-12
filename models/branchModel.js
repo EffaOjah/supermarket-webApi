@@ -81,6 +81,19 @@ const getBranchProducts = async (branchId) => {
     });
 };
 
+// Get all branch sales
+const getBranchSales = async (branchId) => {
+    return new Promise((resolve, reject) => {
+        db.query('SELECT * FROM branch_sales WHERE branch_id = ?', [branchId], (err, result) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(result);
+        }); 
+    });
+};
+
+
 module.exports = {
     getBranchById,
     getProductsOnly,
@@ -88,5 +101,6 @@ module.exports = {
     insertBranchStock,
     getProductById,
     getExistingBranchProduct,
-    getBranchProducts
+    getBranchProducts,
+    getBranchSales
 };

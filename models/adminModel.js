@@ -58,7 +58,7 @@ const getBranchProducts = async (branchId) => {
 // Get all branch sales
 const getBranchSales = async (branchId) => {
     return new Promise((resolve, reject) => {
-        db.query('SELECT * FROM sales WHERE branch_id = ?', [branchId], (err, result) => {
+        db.query('SELECT * FROM branch_sales WHERE branch_id = ?', [branchId], (err, result) => {
             if (err) {
                 reject(err);
             }

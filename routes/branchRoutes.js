@@ -18,4 +18,7 @@ router.route('/stock-branch/:branchId')
 // Get branch products (GET)
 router.get('/branch/:branchId/products', verifyToken, branchController.getBranchProducts);
 
+// Get branch sales (GET)
+router.get('/branch/:branchId/sales', verifyToken, branchController.getBranchSalesPage);
+
 module.exports = router;

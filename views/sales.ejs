@@ -144,7 +144,7 @@
 							</a>
 							<div class="clearfix"></div>
 
-							<div class="collapse in" id="collapseExample" aria-expanded="true">
+							<div class="collapse in" id="collapseExample" aria-expanded="true" style="">
 								<ul class="nav">
 									<li>
 										<a href="#profile">
@@ -178,8 +178,8 @@
 								<p>Branch Overview</p>
 							</a>
 						</li>
-						<li class="nav-item active">
-							<a href="#">
+						<li class="nav-item">
+							<a href="/stock-branch/<%= branch[0].branch_id %>">
 								<i class="la la-table"></i>
 								<p>Stock Branch</p>
 							</a>
@@ -191,8 +191,8 @@
 								<span class="badge badge-count"><%= branchProducts.length %></span>
 							</a>
 						</li>
-						<li class="nav-item">
-							<a href="/branch/<%= branch[0].branch_id %>/sales">
+						<li class="nav-item active">
+							<a href="#">
 								<i class="la la-keyboard-o"></i>
 								<p>Sales</p>
 								<span class="badge badge-count"></span>
@@ -204,104 +204,54 @@
 								<p>Log Out</p>
 							</a>
 						</li>
+						
 					</ul>
 				</div>
 			</div>
 			<div class="main-panel">
 				<div class="content">
 					<div class="container-fluid">
-						<h4 class="page-title">Branch > <span class="text-primary">Stock</span></h4>
+						<h4 class="page-title"><span class="text-primary">Branch Sales</span></h4>
 						<div class="row justify-content-center">
-                                <div class="col-md-6">
-                                    <div class="card">
-                                        <form action="/stock-branch/<%= branch[0].branch_id %>" method="POST">
-                                        <div class="card-header">
-                                            <div class="card-title">Select Product and the quantity</div>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="form-group">
-                                                <label for="products">Select Product</label>
-                                                <select class="form-control" id="products" name="productId" required>
-                                                    <option>Select Product</option>
-                                                    <% products.forEach(product => { %>
-                                                        <option value="<%= product.product_id %>"><%= product.product_name %></option>
-                                                    <% }) %>
-                                                </select>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="quantity">Wholesale Quantity</label>
-                                                <input type="number" class="form-control" id="quantity" name="wholesaleQuantity" placeholder="Enter wholsale quantity" value="1" required>
-                                            </div>
-
-											<div class="form-group">
-                                                <label for="quantity">Retail Quantity</label>
-                                                <input type="number" class="form-control" id="quantity" name="retailQuantity" placeholder="Enter retail quantity" value="1" required>
-                                            </div>
-
-                                                
-                                            </div>
-                                            <div class="card-action">
-                                                <button class="btn btn-success">Submit</button>
-                                                <input class="btn btn-danger" type="reset">
-                                            </div>
-                                        </form>
-                                        </div>
-                                    </div>							
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">All Sales</div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Customer</th>
+                                                    <th>Customer Phone No.</th>
+                                                    <th>Total amount</th>
+                                                    <th>Payment method</th>
+                                                    <th>Sales Date</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% branchSales.forEach((sale, index) => { %>
+                                                    <tr>
+                                                        <th scope="row"><%= index + 1 %></th>
+                                                        <td><%= sale.customer_name %></td>
+                                                        <td><%= sale.customer_phoneNo %></td>
+                                                        <td><%= sale.total_amount %></td>
+                                                        <td><%= sale.payment_method %></td>
+                                                        <td><%= sale.sale_date %></td>
+                                                        <td><button class="btn-sm btn-primary" style="cursor: pointer;">Edit</button></td>
+                                                    </tr>
+                                                <% }) %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>							
 						</div>
-						
 					</div>
 				</div>
-				<!-- <footer class="footer">
-					<div class="container-fluid">
-						<nav class="pull-left">
-							<ul class="nav">
-								<li class="nav-item">
-									<a class="nav-link" href="http://www.themekita.com">
-										ThemeKita
-									</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link" href="#">
-										Help
-									</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link" href="https://themewagon.com/license/#free-item">
-										Licenses
-									</a>
-								</li>
-							</ul>
-						</nav>
-						<div class="copyright ml-auto">
-							2018, made with <i class="la la-heart heart text-danger"></i> by <a href="http://www.themekita.com">ThemeKita</a>
-						</div>				
-					</div>
-				</footer> -->
-			</div>
-		</div>
-	</div>
-	<!-- Modal -->
-	<!-- <div class="modal fade" id="modalUpdate" tabindex="-1" role="dialog" aria-labelledby="modalUpdatePro" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered" role="document">
-			<div class="modal-content">
-				<div class="modal-header bg-primary">
-					<h6 class="modal-title"><i class="la la-frown-o"></i> Under Development</h6>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body text-center">									
-					<p>Currently the pro version of the <b>Ready Dashboard</b> Bootstrap is in progress development</p>
-					<p>
-						<b>We'll let you know when it's done</b></p>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				</div>
-			</div>
-		</div>
-	</div> -->
+				
 </body>
 <script src="/js/core/jquery.3.2.1.min.js"></script>
 <script src="/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>

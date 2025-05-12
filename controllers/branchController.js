@@ -22,7 +22,7 @@ const getBranchPage = async (req, res) => {
     }
 };
 
-// Get Stock branch page
+// Get stock branch page
 const getStockBranchPage = async (req, res) => {
     try {
         // Get branch by ID
@@ -43,6 +43,28 @@ const getStockBranchPage = async (req, res) => {
         return res.render('error-page');
     }
 };
+
+// Get branch sales page
+const getBranchSalesPage = async (req, res) => {
+    try {
+        // Get branch by ID
+        const branchId = req.params.branchId;
+
+        const branch = await BranchModel.getBranchById(branchId);
+        console.log('Branch:', branch);
+
+        const branchProducts = await BranchModel.getBranchProducts(branchId);
+        console.log(branchProducts);
+
+        const branchSales = await BranchModel.getBranchSales(branchId);
+        console.log(branchSales);
+
+        res.render('sales', { branch, branchProducts, branchSales });
+    } catch (error) {
+        console.log('An error occurred: ', error);
+        return res.render('error-page');
+    }
+}
 
 // Stock branch (POST)
 const stockBranch = async (req, res) => {
@@ -97,4 +119,4 @@ const getBranchProducts = async (req, res) => {
     }
 };
 
-module.exports = { getBranchPage, getStockBranchPage, stockBranch, getBranchProducts };
+module.exports = { getBranchPage, getStockBranchPage, getBranchSalesPage, stockBranch, getBranchProducts };

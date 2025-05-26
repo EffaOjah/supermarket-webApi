@@ -21,4 +21,6 @@ router.get('/branch/:branchId/products', verifyToken, branchController.getBranch
 // Get branch sales (GET)
 router.get('/branch/:branchId/sales', verifyToken, branchController.getBranchSalesPage);
 
+router.get('/storeApi/activate-software', branchController.handleBranchActivation)
+
 module.exports = router;

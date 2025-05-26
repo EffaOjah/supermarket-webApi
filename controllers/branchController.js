@@ -119,4 +119,26 @@ const getBranchProducts = async (req, res) => {
     }
 };
 
-module.exports = { getBranchPage, getStockBranchPage, getBranchSalesPage, stockBranch, getBranchProducts };
+
+const handleBranchActivation = async (req, res) => {
+    const activationKey = req.query.activation_key;
+
+    try {
+        const checkForBranch = await BranchModel.getBranchById(activationKey);
+
+        if (checkForBranch.length < 1) {
+            console.log('Invalid activation key');
+            return res.status(200).json({ error: 'Invalid activation key' });
+        }
+
+        res.status(200).json({ success: 'Correct Activation key' });
+    } catch (error) {
+        console.log('Error activating branch:', error);
+        return res.status(500).json({ message: 'Internal Server Error: ', error });
+    }
+}
+
+
+
+
+module.exports = { getBranchPage, getStockBranchPage, getBranchSalesPage, stockBranch, getBranchProducts, handleBranchActivation };

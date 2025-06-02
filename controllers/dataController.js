@@ -6,10 +6,34 @@ const DataModel = require('../models/dataModel');
 // Logic to get products
 const getProducts = async (req, res) => {
     try {
-        const pendingProducts = await DataModel.getProducts('pending');
-        console.log(pendingProducts);
+        const products = await DataModel.getAllProducts();
+        console.log(products);
 
-        return res.status(200).json({ pendingProducts });
+        if (products.length < 1) {
+            console.log('There are no products');
+            return res.status(200).json({ message: 'There are no products' });
+        }
+
+        return res.status(200).json({ products });
+    } catch (error) {
+        console.log('Error getting products: ', error);
+        return res.status(500).json({ message: 'Internal Server Error', error });   
+    }
+}
+
+// Logic to get products
+const getUpdatedProducts = async (req, res) => {
+    const lastSyncedDate = req.query.lastSynced;
+    try {
+        const products = await DataModel.getUpdatedProducts(lastSyncedDate);
+        console.log(products);
+
+        if (products.length < 1) {
+            console.log('There are no products');
+            return res.status(200).json({ message: 'There are no products' });
+        }
+
+        return res.status(200).json({ products });
     } catch (error) {
         console.log('Error getting products: ', error);
         return res.status(500).json({ message: 'Internal Server Error', error });   
@@ -91,4 +115,4 @@ const getSales = async (req, res) => {
 }
 
 
-module.exports = { getProducts, handleSoftwareStocking, getSales };
+module.exports = { getProducts, getUpdatedProducts, handleSoftwareStocking, getSales };

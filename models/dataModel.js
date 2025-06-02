@@ -23,6 +23,28 @@ const getProducts = async (status) => {
     });
 }
 
+const getAllProducts = async () => {
+    return new Promise((resolve, reject) => {
+        db.query('SELECT * FROM products p INNER JOIN suppliers s ON p.supplier_id = s.supplier_id', (err, result) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(result);
+        });
+    });
+}
+
+const getUpdatedProducts = async (lastSynced) => {
+    return new Promise((resolve, reject) => {
+        db.query('SELECT * FROM products p INNER JOIN suppliers s ON p.supplier_id = s.supplier_id WHERE p.date_modified > ?', [lastSynced], (err, result) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(result);
+        });
+    });
+}
+
 const checkForStock = async (branchId, status) => {
     return new Promise((resolve, reject) => {
         db.query('SELECT * FROM branch_stock INNER JOIN products ON branch_stock.product_id = products.product_id INNER JOIN suppliers ON products.supplier_id = suppliers.supplier_id WHERE branch_stock.branch_id = ? AND branch_stock.status = ?', [branchId, status], (err, result) => {
@@ -152,4 +174,4 @@ const handleSalesSyncing = async (branchId, sales, saleItems) => {
     });
 };
 
-module.exports = { getBranchById, getProducts, checkForStock, getBranchProducts, updateStockStatus, insertSale, insertSaleItems, handleSalesSyncing };
+module.exports = { getBranchById, getProducts, getAllProducts, getUpdatedProducts, checkForStock, getBranchProducts, updateStockStatus, insertSale, insertSaleItems, handleSalesSyncing };

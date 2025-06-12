@@ -2,12 +2,15 @@
 <html>
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<title>Ready Bootstrap Dashboard</title>
+	<title>MaryBill Conglomerate Ltd. - Branch sales</title>
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
 	<link rel="stylesheet" href="/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
 	<link rel="stylesheet" href="/css/ready.css">
 	<link rel="stylesheet" href="/css/demo.css">
+	<link rel="stylesheet" href="/css/sales.css">
+	
+	<link rel="icon" type="image/x-icon" href="/img/app_icon.ico">
 </head>
 <body>
 	<div class="wrapper">
@@ -15,7 +18,7 @@
 			<div class="logo-header">
 				<a href="index.html" class="logo">
 					MaryBill Conglomerate
-				</a>
+				</a>a
 				<button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
@@ -237,10 +240,10 @@
                                                         <th scope="row"><%= index + 1 %></th>
                                                         <td><%= sale.customer_name %></td>
                                                         <td><%= sale.customer_phoneNo %></td>
-                                                        <td><%= sale.total_amount %></td>
+                                                        <td>₦<%= sale.total_amount %></td>
                                                         <td><%= sale.payment_method %></td>
                                                         <td><%= sale.sale_date %></td>
-                                                        <td><button class="btn-sm btn-primary" style="cursor: pointer;">Edit</button></td>
+                                                        <td><button id="<%= sale.sale_id %>" class="btn-sm btn-primary  view-sale-details-btn" data-bs-toggle="modal" data-bs-target="#invoiceModal" style="cursor: pointer;">View invoice</button></td>
                                                     </tr>
                                                 <% }) %>
                                             </tbody>
@@ -252,7 +255,68 @@
 					</div>
 				</div>
 				
+				<!-- start modal invoice -->
+			<!-- Modal -->
+			<div class="modal fade bg-secondary" id="invoiceModal" tabindex="-1" aria-labelledby="invoiceModalLabel"
+				aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content modal-dialog-scrollable">
+						<div class="modal-header">
+							<h5 class="modal-title" id="invoiceModalLabel">Invoice</h5>
+							<!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+							<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div id="printableInvoice" class="invoice-box">
+								<!-- Header -->
+								<div class="row invoice-header align-items-center">
+									<div class="col-6">
+										<div class="d-block">
+                      <img src="/img/app-icon.jpg" alt="Invoice Icon" />
+                      <br>
+                      <span class="invoice-title ms-2">Invoice</span>
+                    </div>
+									</div>
+									<div class="col-6 text-end">
+										<strong>Mary Bill Conglomerate Ltd supermarket</strong><br>
+										Calabar Branch<br>
+										Nigeria
+									</div>
+								</div>
+
+								<!-- Bill To -->
+								<div class="row mb-3">
+									<div class="col-6">
+										<strong>BILL TO:</strong><br>
+										Mary Bill Conglomerate Ltd supermarket<br>
+										Calabar Branch<br>
+										Nigeria
+									</div>
+									<div class="col-6 text-end">
+										<strong>INVOICE NO:</strong> 000001<br>
+										<strong>DATE:</strong> 12/31/20<br>
+										<strong>DUE DATE:</strong> 12/31/20
+									</div>
+								</div>
+
+								<!-- Items Table -->
+								<div id="invoiceHolder" class="table-responsive mb-4">
+
+								</div>
+								<button id="printBtn" class="btn invoice-print-btn form-control">Print invoice</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- end modal invoice -->
+				
 </body>
+<script src="/js/salesJs.js"></script>
+
 <script src="/js/core/jquery.3.2.1.min.js"></script>
 <script src="/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
 <script src="/js/core/popper.min.js"></script>
@@ -267,4 +331,8 @@
 <script src="/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
 <script src="/js/ready.min.js"></script>
 <script src="/js/demo.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
+	crossorigin="anonymous"></script>
 </html>

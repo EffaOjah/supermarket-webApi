@@ -223,7 +223,15 @@
 			<div class="main-panel">
 				<div class="content">
 					<div class="container-fluid">
-						<h4 class="page-title"><span class="text-primary">All Products</span></h4>
+					    <div class="row m-5">
+					        <h4 class="col-md-8 page-title"><span class="text-primary">All Products</span></h4>
+					        
+					        <input type="text" id="productSearch" placeholder="Search by name, category, or supplier" class="col-md-4 form-control mb-3">
+					    </div>
+						
+						
+						
+
 						<div class="row justify-content-center">
                             <div class="card">
                                 <div class="card-header">
@@ -248,8 +256,8 @@
                                                     <tr>
                                                         <th scope="row"><%= index + 1 %></th>
                                                         <td><%= product.product_name %></td>
-                                                        <td><%= product.wholesale_price %></td>
-                                                        <td><%= product.retail_price %></td>
+                                                        <td>₦<%= product.wholesale_price %></td>
+                                                        <td>₦<%= product.retail_price %></td>
                                                         <td><%= product.name %></td>
                                                         <td><%= product.category %></td>
                                                         <td><button class="btn-sm btn-primary" style="cursor: pointer;">Edit</button></td>
@@ -623,6 +631,40 @@
 			</div>
 		</div>
 	</div> -->
+	
+	<script>
+  document.getElementById("productSearch").addEventListener("input", function () {
+    const searchValue = this.value.toLowerCase();
+    const table = document.querySelector(".table");
+    const tbody = table.querySelector("tbody");
+    const rows = tbody.querySelectorAll("tr");
+
+    let anyVisible = false;
+
+    rows.forEach(row => {
+      const name = row.cells[1].textContent.toLowerCase();
+      const wholesale = row.cells[2].textContent.toLowerCase();
+      const retail = row.cells[3].textContent.toLowerCase();
+      const supplier = row.cells[4].textContent.toLowerCase();
+      const category = row.cells[5].textContent.toLowerCase();
+
+      const match = name.includes(searchValue) || 
+                    supplier.includes(searchValue) || 
+                    category.includes(searchValue);
+
+      if (match) {
+        row.style.display = "";
+        anyVisible = true;
+      } else {
+        row.style.display = "none";
+      }
+    });
+
+    // Hide the table if no match is found
+    table.parentElement.parentElement.style.display = anyVisible ? "" : "none";
+  });
+</script>
+
 </body>
 <script src="/js/core/jquery.3.2.1.min.js"></script>
 <script src="/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>

@@ -138,7 +138,21 @@ const handleBranchActivation = async (req, res) => {
     }
 }
 
+const getSaleItems = async (req, res) => {
+    const saleId = req.params.saleId;
+
+    try {
+       const getBranchSaleDetails = await BranchModel.getBranchSaleDetails(saleId);
+       console.log('Sale Details: ', getBranchSaleDetails);
+
+       return res.status(200).json({ saleDetails: getBranchSaleDetails });
+    } catch (error) {
+        console.log('Error getting branch sale details:', error);
+        return res.status(500).json({ message: 'Internal Server Error: ', error });
+    }
+}
 
 
 
-module.exports = { getBranchPage, getStockBranchPage, getBranchSalesPage, stockBranch, getBranchProducts, handleBranchActivation };
+
+module.exports = { getBranchPage, getStockBranchPage, getBranchSalesPage, stockBranch, getBranchProducts, handleBranchActivation, getSaleItems };

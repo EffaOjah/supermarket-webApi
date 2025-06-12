@@ -74,4 +74,8 @@ const login = async (req, res) => {
 
 }
 
-module.exports = { signinGet, login };
+const logout = async (req, res) => {
+    res.cookie('mbAuthToken', '');
+    res.redirect('/admin/signin');
+}
+module.exports = { signinGet, login, logout };

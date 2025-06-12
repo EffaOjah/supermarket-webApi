@@ -18,6 +18,18 @@ db.connect((err) => {
 
 const app = express();
 
+const cors = require('cors');
+
+// Allow requests from your frontend's origin
+const corsOptions = {
+  origin: 'https://web.marybillconglomerate.com.ng',  // Your frontend's URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],         // Allow these HTTP methods
+  allowedHeaders: ['Content-Type', 'Authorization'],  // Add any headers you need
+};
+
+// Apply CORS middleware with options
+app.use(cors(corsOptions));
+
 const PORT = process.env.PORT || 3000;
 
 // Set view engine

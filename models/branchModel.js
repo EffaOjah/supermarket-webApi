@@ -93,6 +93,18 @@ const getBranchSales = async (branchId) => {
     });
 };
 
+// Get all branch sales
+const getBranchSaleDetails = async (saleId) => {
+    return new Promise((resolve, reject) => {
+        db.query('SELECT * FROM sale_items INNER JOIN branch_sales ON sale_items.sale_id = branch_sales.sale_id INNER JOIN products ON sale_items.product_id = products.product_id WHERE sale_items.sale_id = ?', [saleId], (err, result) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(result);
+        }); 
+    });
+};
+
 
 module.exports = {
     getBranchById,
@@ -102,5 +114,6 @@ module.exports = {
     getProductById,
     getExistingBranchProduct,
     getBranchProducts,
-    getBranchSales
+    getBranchSales,
+    getBranchSaleDetails
 };

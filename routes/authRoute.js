@@ -13,4 +13,7 @@ router.get('/admin/signin', authController.signinGet);
 // Login route (POST)
 router.post('/auth/login', authController.login);
 
+// Logout route (GET)
+router.get('/logout', authController.logout);
+
 module.exports = router;

@@ -22,7 +22,7 @@ const cors = require('cors');
 
 // Allow requests from your frontend's origin
 const corsOptions = {
-  origin: 'https://web.marybillconglomerate.com.ng',  // Your frontend's URL
+  origin: '*',  // Your frontend's URL
   methods: ['GET', 'POST', 'PUT', 'DELETE'],         // Allow these HTTP methods
   allowedHeaders: ['Content-Type', 'Authorization'],  // Add any headers you need
 };

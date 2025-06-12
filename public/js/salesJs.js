@@ -5,7 +5,7 @@ async function viewSaleInvoice(saleId) {
 
   invoiceHolder.innerHTML = "";
 
-  const response = await fetch(`https://web.marybillconglomerate.com.ng/sale-details/${saleId}`);
+  const response = await fetch(`/sale-details/${saleId}`);
   let saleDetails = await response.json();
 
   saleDetails = saleDetails.saleDetails;

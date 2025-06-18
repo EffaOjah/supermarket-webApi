@@ -1,28 +1,73 @@
+// File: routes/branchRoutes.js
+
 // Require branch controller
-const branchController = require('../controllers/branchController');
+const branchController = require("../controllers/branchController");
+
+// Branch Model
+const BranchModel = require("../models/branchModel");
 
 // Require JWT middleware
-const { verifyToken } = require('../middleware/jwt');
+const { verifyToken } = require("../middleware/jwt");
 
-const { Router } = require('express');
+/* Custom middleware to update the
+lastInspected column for the branches */
+const updateLastInspected = async (req, res, next) => {
+  const branchId = req.params.branchId;
+  console.log("Testing custom middleware: ", branchId);
+
+  if (!branchId) {
+    return next();
+  }
+
+  try {
+    const updateLastInspected = await BranchModel.updateLastInspected(branchId);
+    console.log(updateLastInspected);
+
+    return next();
+  } catch (error) {
+    console.info("Middleware error: ", error);
+    return res.render("error-page");
+  }
+};
+
+const { Router } = require("express");
 const router = Router();
 
 // Branch page route (GET)
-router.get('/branch/:branchId', verifyToken, branchController.getBranchPage);
+router.get(
+  "/branch/:branchId",
+  verifyToken,
+  updateLastInspected,
+  branchController.getBranchPage
+);
 
 // Stock branch page
-router.route('/stock-branch/:branchId')
-.get(verifyToken, branchController.getStockBranchPage)
-.post(verifyToken, branchController.stockBranch);
+router
+  .route("/stock-branch/:branchId")
+  .get(verifyToken, updateLastInspected, branchController.getStockBranchPage)
+  .post(verifyToken, branchController.stockBranch);
 
 // Get branch products (GET)
-router.get('/branch/:branchId/products', verifyToken, branchController.getBranchProducts);
+router.get(
+  "/branch/:branchId/products",
+  verifyToken,
+  updateLastInspected,
+  branchController.getBranchProducts
+);
 
 // Get branch sales (GET)
-router.get('/branch/:branchId/sales', verifyToken, branchController.getBranchSalesPage);
+router.get(
+  "/branch/:branchId/sales",
+  verifyToken,
+  updateLastInspected,
+  branchController.getBranchSalesPage
+);
 
-router.get('/storeApi/activate-software', branchController.handleBranchActivation);
+router.get(
+  "/storeApi/activate-software",
+  branchController.handleBranchActivation
+);
 
-router.get('/sale-details/:saleId', verifyToken, branchController.getSaleItems);
+router.get("/sale-details/:saleId", verifyToken, branchController.getSaleItems);
 
 module.exports = router;

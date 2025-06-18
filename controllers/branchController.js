@@ -1,158 +1,178 @@
 // File: controllers/branchController.js
 
 // Branch Model
-const BranchModel = require('../models/branchModel');
+const BranchModel = require("../models/branchModel");
 
-// Get branch page
 const getBranchPage = async (req, res) => {
-    try {
-        // Get branch by ID
-        const branchId = req.params.branchId;
+  try {
+    const branchId = req.params.branchId;
 
-        const branch = await BranchModel.getBranchById(branchId);
-        console.log('Branch:', branch);
+    // Get branch
+    const branch = await BranchModel.getBranchById(branchId);
 
-        const products = await BranchModel.getBranchProducts(branchId);
-        console.log(products);
-
-        res.render('branch-overview', { branch, products });
-    } catch (error) {
-        console.log('An error occurred: ', error);
-        return res.render('error-page');
+    if (branch.length < 1) {
+      console.warn("Branch not found:", branchId);
+      return res.render("error-page");
     }
+
+    const products = await BranchModel.getBranchProducts(branchId);
+
+    // Render page
+    res.render("branch-overview", { branch, products });
+  } catch (error) {
+    console.error("An error occurred:", error);
+    return res.render("error-page");
+  }
 };
 
 // Get stock branch page
 const getStockBranchPage = async (req, res) => {
-    try {
-        // Get branch by ID
-        const branchId = req.params.branchId;
+  try {
+    // Get branch by ID
+    const branchId = req.params.branchId;
 
-        const branch = await BranchModel.getBranchById(branchId);
-        console.log('Branch:', branch);
+    const branch = await BranchModel.getBranchById(branchId);
+    console.log("Branch:", branch);
 
-        const products = await BranchModel.getProductsOnly();
-        console.log('Products:', products);
+    const products = await BranchModel.getProductsOnly();
+    console.log("Products:", products);
 
-        const branchProducts = await BranchModel.getBranchProducts(branchId);
-        console.log(branchProducts);
+    const branchProducts = await BranchModel.getBranchProducts(branchId);
+    console.log(branchProducts);
 
-        res.render('stock-branch', { branch, products, branchProducts });
-    } catch (error) {
-        console.log('An error occurred: ', error);
-        return res.render('error-page');
-    }
+    res.render("stock-branch", { branch, products, branchProducts });
+  } catch (error) {
+    console.log("An error occurred: ", error);
+    return res.render("error-page");
+  }
 };
 
 // Get branch sales page
 const getBranchSalesPage = async (req, res) => {
-    try {
-        // Get branch by ID
-        const branchId = req.params.branchId;
+  try {
+    // Get branch by ID
+    const branchId = req.params.branchId;
 
-        const branch = await BranchModel.getBranchById(branchId);
-        console.log('Branch:', branch);
+    const branch = await BranchModel.getBranchById(branchId);
+    console.log("Branch:", branch);
 
-        const branchProducts = await BranchModel.getBranchProducts(branchId);
-        console.log(branchProducts);
+    const branchProducts = await BranchModel.getBranchProducts(branchId);
+    console.log(branchProducts);
 
-        const branchSales = await BranchModel.getBranchSales(branchId);
-        console.log(branchSales);
+    const branchSales = await BranchModel.getBranchSales(branchId);
+    console.log(branchSales);
 
-        res.render('sales', { branch, branchProducts, branchSales });
-    } catch (error) {
-        console.log('An error occurred: ', error);
-        return res.render('error-page');
-    }
-}
+    res.render("sales", { branch, branchProducts, branchSales });
+  } catch (error) {
+    console.log("An error occurred: ", error);
+    return res.render("error-page");
+  }
+};
 
 // Stock branch (POST)
 const stockBranch = async (req, res) => {
-    const { productId, wholesaleQuantity, retailQuantity } = req.body;
-    const branchId = req.params.branchId;
+  const { productId, wholesaleQuantity, retailQuantity } = req.body;
+  const branchId = req.params.branchId;
 
-    try {
-        // Get the product details from the database using the productId
-        const product = await BranchModel.getProductById(productId);
-        console.log(product);
+  try {
+    // Get the product details from the database using the productId
+    const product = await BranchModel.getProductById(productId);
+    console.log(product);
 
-        if (!product) {
-            console.log('Product not found');
-            return res.status(404).json({ message: 'Product not found' });
-        }
-
-        // Check if the product is already in stock for the branch
-        const existingStock = await BranchModel.getExistingBranchProduct(branchId, productId);
-
-        if (existingStock.length > 0) {
-            // Update the existing stock quantity
-            const updatedStock = await BranchModel.updateBranchStock(branchId, productId, wholesaleQuantity, retailQuantity);
-            console.log(updatedStock);
-        } else {
-            // Insert new stock for the branch
-            const newStock = await BranchModel.insertBranchStock(branchId, productId, wholesaleQuantity, retailQuantity);
-            console.log(newStock);
-        }
-
-        return res.status(200).json({ message: 'Stock updated successfully' });
-    } catch (error) {
-        console.log('Error fetching product:', error);
-        return res.status(500).json({ message: 'Internal Server Error', error });
+    if (!product) {
+      console.log("Product not found");
+      return res.status(404).json({ message: "Product not found" });
     }
+
+    // Check if the product is already in stock for the branch
+    const existingStock = await BranchModel.getExistingBranchProduct(
+      branchId,
+      productId
+    );
+
+    if (existingStock.length > 0) {
+      // Update the existing stock quantity
+      const updatedStock = await BranchModel.updateBranchStock(
+        branchId,
+        productId,
+        wholesaleQuantity,
+        retailQuantity
+      );
+      console.log(updatedStock);
+    } else {
+      // Insert new stock for the branch
+      const newStock = await BranchModel.insertBranchStock(
+        branchId,
+        productId,
+        wholesaleQuantity,
+        retailQuantity
+      );
+      console.log(newStock);
+    }
+
+    return res.status(200).json({ message: "Stock updated successfully" });
+  } catch (error) {
+    console.log("Error fetching product:", error);
+    return res.status(500).json({ message: "Internal Server Error", error });
+  }
 };
 
 // Get branch products
 const getBranchProducts = async (req, res) => {
-    const branchId = req.params.branchId;
+  const branchId = req.params.branchId;
 
-    try {
-        const branch = await BranchModel.getBranchById(branchId);
-        console.log('Branch:', branch);
+  try {
+    const branch = await BranchModel.getBranchById(branchId);
+    console.log("Branch:", branch);
 
-        const products = await BranchModel.getBranchProducts(branchId);
-        console.log(products);
+    const products = await BranchModel.getBranchProducts(branchId);
+    console.log(products);
 
-        return res.render('branch-products', { branch, products });
-    } catch (error) {
-        console.log('Error fetching branch products:', error);
-        return res.status(500).json({ message: 'Internal Server Error', error });
-    }
+    return res.render("branch-products", { branch, products });
+  } catch (error) {
+    console.log("Error fetching branch products:", error);
+    return res.status(500).json({ message: "Internal Server Error", error });
+  }
 };
 
-
 const handleBranchActivation = async (req, res) => {
-    const activationKey = req.query.activation_key;
+  const activationKey = req.query.activation_key;
 
-    try {
-        const checkForBranch = await BranchModel.getBranchById(activationKey);
+  try {
+    const checkForBranch = await BranchModel.getBranchById(activationKey);
 
-        if (checkForBranch.length < 1) {
-            console.log('Invalid activation key');
-            return res.status(200).json({ error: 'Invalid activation key' });
-        }
-
-        res.status(200).json({ success: 'Correct Activation key' });
-    } catch (error) {
-        console.log('Error activating branch:', error);
-        return res.status(500).json({ message: 'Internal Server Error: ', error });
+    if (checkForBranch.length < 1) {
+      console.log("Invalid activation key");
+      return res.status(200).json({ error: "Invalid activation key" });
     }
-}
+
+    res.status(200).json({ success: "Correct Activation key" });
+  } catch (error) {
+    console.log("Error activating branch:", error);
+    return res.status(500).json({ message: "Internal Server Error: ", error });
+  }
+};
 
 const getSaleItems = async (req, res) => {
-    const saleId = req.params.saleId;
+  const saleId = req.params.saleId;
 
-    try {
-       const getBranchSaleDetails = await BranchModel.getBranchSaleDetails(saleId);
-       console.log('Sale Details: ', getBranchSaleDetails);
+  try {
+    const getBranchSaleDetails = await BranchModel.getBranchSaleDetails(saleId);
+    console.log("Sale Details: ", getBranchSaleDetails);
 
-       return res.status(200).json({ saleDetails: getBranchSaleDetails });
-    } catch (error) {
-        console.log('Error getting branch sale details:', error);
-        return res.status(500).json({ message: 'Internal Server Error: ', error });
-    }
-}
+    return res.status(200).json({ saleDetails: getBranchSaleDetails });
+  } catch (error) {
+    console.log("Error getting branch sale details:", error);
+    return res.status(500).json({ message: "Internal Server Error: ", error });
+  }
+};
 
-
-
-
-module.exports = { getBranchPage, getStockBranchPage, getBranchSalesPage, stockBranch, getBranchProducts, handleBranchActivation, getSaleItems };
+module.exports = {
+  getBranchPage,
+  getStockBranchPage,
+  getBranchSalesPage,
+  stockBranch,
+  getBranchProducts,
+  handleBranchActivation,
+  getSaleItems,
+};

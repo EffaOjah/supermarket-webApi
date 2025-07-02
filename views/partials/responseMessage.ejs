@@ -1,0 +1,12 @@
+<!-- Response messages -->
+<% if (typeof success_msg !=='undefined' && success_msg.length> 0) { %>
+    <span id="message" class="d-none">
+        <%= success_msg %>
+    </span>
+    <span id="messageColor" class="d-none">green</span>
+    <% } else if (typeof error_msg !=='undefined' && error_msg.length> 0) { %>
+        <span id="message" class="d-none">
+            <%= error_msg %>
+        </span>
+        <span id="messageColor" class="d-none">red</span>
+        <% } %>

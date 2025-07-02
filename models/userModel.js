@@ -7,7 +7,7 @@ const findUserByEmail = async (email) => {
                 reject(err);
             }
             resolve(result);
-        }); 
+        });
     });
 };
 
@@ -18,7 +18,7 @@ const createUser = async (email, username, password) => {
                 reject(err);
             }
             resolve(result);
-        }); 
+        });
     });
 };
 

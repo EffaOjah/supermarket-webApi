@@ -8,7 +8,7 @@ const getBranchById = async (branchId) => {
                 reject(err);
             }
             resolve(result);
-        }); 
+        });
     });
 };
 
@@ -63,7 +63,7 @@ const getBranchProducts = async (branchId) => {
                 reject(err);
             }
             resolve(result);
-        }); 
+        });
     });
 };
 
@@ -108,7 +108,7 @@ const insertSaleItems = async (saleItems) => {
             saleItem.quantity,
             saleItem.unit_price,
             saleItem.sale_type,
-            saleItem.subtotal,            
+            saleItem.subtotal,
         ]);
 
         db.query('INSERT INTO sale_items (sale_id, product_id, quantity, unit_price, sale_type, sub_total) VALUES ?', [values], (err, result) => {

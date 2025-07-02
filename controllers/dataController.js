@@ -17,7 +17,7 @@ const getProducts = async (req, res) => {
         return res.status(200).json({ products });
     } catch (error) {
         console.log('Error getting products: ', error);
-        return res.status(500).json({ message: 'Internal Server Error', error });   
+        return res.status(500).json({ message: 'Internal Server Error', error });
     }
 }
 
@@ -33,10 +33,10 @@ const getUpdatedProducts = async (req, res) => {
             return res.status(200).json({ message: 'There are no products' });
         }
 
-        return res.status(200).json({ products });
+        return res.status(200).json({ products, length: products.length });
     } catch (error) {
         console.log('Error getting products: ', error);
-        return res.status(500).json({ message: 'Internal Server Error', error });   
+        return res.status(500).json({ message: 'Internal Server Error', error });
     }
 }
 
@@ -69,15 +69,15 @@ const handleSoftwareStocking = async (req, res) => {
         const productIDs = pendingStock.map(product => product.product_id)
         console.log(productIDs);
 
-        const placeholders = productIDs.map(() => '?').join(',');        
-                
+        const placeholders = productIDs.map(() => '?').join(',');
+
         // If there's a pending stock, returning in the response object
         res.status(200).json({ message: 'Pending stock available', pendingStock });
 
         // Update the status column on the branch stock table
         const updateStockStatus = await DataModel.updateStockStatus(placeholders, productIDs, 'delivered');
         console.log(updateStockStatus);
-    } catch (error) { 
+    } catch (error) {
         console.log('Error performing stocking:', error);
         return res.status(500).json({ message: 'Internal Server Error', error });
     }
@@ -102,7 +102,7 @@ const getSales = async (req, res) => {
         // Run the insertion process
         const handleSalesSyncing = await DataModel.handleSalesSyncing(branchId, data.sales, data.saleItems);
         console.log(handleSalesSyncing);
-        
+
 
 
         console.log(req.body);

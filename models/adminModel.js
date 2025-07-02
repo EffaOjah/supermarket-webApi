@@ -7,7 +7,7 @@ const uploadProduct = async (productName, wholsesalePrice, retailPrice, supplier
                 reject(err);
             }
             resolve(result);
-        }); 
+        });
     });
 };
 
@@ -18,7 +18,7 @@ const getProducts = async () => {
                 reject(err);
             }
             resolve(result);
-        }); 
+        });
     });
 };
 
@@ -29,7 +29,7 @@ const getBranches = async () => {
                 reject(err);
             }
             resolve(result);
-        }); 
+        });
     });
 };
 
@@ -40,7 +40,7 @@ const getStoreBranchById = async (branchId) => {
                 reject(err);
             }
             resolve(result);
-        }); 
+        });
     });
 };
 
@@ -51,7 +51,7 @@ const getBranchProducts = async (branchId) => {
                 reject(err);
             }
             resolve(result);
-        }); 
+        });
     });
 };
 
@@ -63,7 +63,7 @@ const getBranchSales = async (branchId) => {
                 reject(err);
             }
             resolve(result);
-        }); 
+        });
     });
 };
 
@@ -75,7 +75,7 @@ const getProductById = async (productId) => {
                 reject(err);
             }
             resolve(result);
-        }); 
+        });
     });
 };
 
@@ -87,7 +87,7 @@ const getExistingBranchProduct = async (branchId, productId) => {
                 reject(err);
             }
             resolve(result);
-        }); 
+        });
     });
 };
 
@@ -99,7 +99,7 @@ const updateBranchStock = async (branchId, productId, quantity) => {
                 reject(err);
             }
             resolve(result);
-        }); 
+        });
     });
 };
 
@@ -111,7 +111,7 @@ const insertBranchStock = async (branchId, productId, quantity) => {
                 reject(err);
             }
             resolve(result);
-        }); 
+        });
     });
 };
 
@@ -123,7 +123,7 @@ const getSuppliers = async () => {
                 reject(err);
             }
             resolve(result);
-        }); 
+        });
     });
 };
 

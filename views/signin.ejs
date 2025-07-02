@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MaryBill Conglomerate Ltd. - All Products</title>
-    <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-    <link rel="icon" type="image/x-icon" href="/img/app_icon.ico">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MaryBill Conglomerate Ltd. - All Products</title>
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="icon" type="image/x-icon" href="/img/app_icon.ico">
+
+  <link rel="stylesheet" href="/iziToast-master/dist/css/iziToast.min.css">
 </head>
+
 <body class="bg-light">
-    <!-- Login 13 - Bootstrap Brain Component -->
-<section class="bg-light py-3 py-md-5">
+  <!-- Login 13 - Bootstrap Brain Component -->
+  <section class="bg-light py-3 py-md-5">
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
@@ -18,7 +22,7 @@
               <div class="text-center mb-3">
                 <a href="#!">
                   <!-- <img src="./assets/img/bsb-logo.svg" alt="BootstrapBrain Logo" width="175" height="57"> -->
-                   <h2>MaryBill Conglomerate Stores</h2>
+                  <h2>MaryBill Conglomerate Stores</h2>
                 </a>
               </div>
               <h2 class="fs-6 fw-normal text-center text-secondary mb-4">Sign in to your account</h2>
@@ -26,13 +30,15 @@
                 <div class="row gy-2 overflow-hidden">
                   <div class="col-12">
                     <div class="form-floating mb-3">
-                      <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required>
+                      <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com"
+                        required>
                       <label for="email" class="form-label">Email</label>
                     </div>
                   </div>
                   <div class="col-12">
                     <div class="form-floating mb-3">
-                      <input type="password" class="form-control" name="password" id="password" value="" placeholder="Password" required>
+                      <input type="password" class="form-control" name="password" id="password" value=""
+                        placeholder="Password" required>
                       <label for="password" class="form-label">Password</label>
                     </div>
                   </div>
@@ -63,5 +69,11 @@
       </div>
     </div>
   </section>
+
+  <%- include('./partials/responseMessage') %>
 </body>
+
+<script src="/iziToast-master/dist/js/iziToast.min.js"></script>
+<script src="/js/toast.js"></script>
+
 </html>

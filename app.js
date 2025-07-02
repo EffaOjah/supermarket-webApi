@@ -1,6 +1,8 @@
 require('dotenv').config();
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const flash = require('connect-flash');
 
 const db = require('./config/dbConfig');
 const authRoute = require('./routes/authRoute');
@@ -22,9 +24,9 @@ const cors = require('cors');
 
 // Allow requests from your frontend's origin
 const corsOptions = {
-  origin: '*',  // Your frontend's URL
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],         // Allow these HTTP methods
-  allowedHeaders: ['Content-Type', 'Authorization'],  // Add any headers you need
+    origin: '*',  // Your frontend's URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],         // Allow these HTTP methods
+    allowedHeaders: ['Content-Type', 'Authorization'],  // Add any headers you need
 };
 
 // Apply CORS middleware with options
@@ -42,6 +44,19 @@ app.use(express.static('public'));
 app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
+app.use(session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: true
+}));
+app.use(flash());
+
+// Custom middleware to pass flash messages to views
+app.use((req, res, next) => {
+    res.locals.success_msg = req.flash('success_msg');
+    res.locals.error_msg = req.flash('error_msg');
+    next();
+});
 
 // Set app to use cookie parser
 app.use(cookieParser());

@@ -6,6 +6,7 @@ async function viewSaleInvoice(saleId) {
   invoiceHolder.innerHTML = "";
 
   const response = await fetch(`/sale-details/${saleId}`);
+
   let saleDetails = await response.json();
 
   saleDetails = saleDetails.saleDetails;
@@ -25,8 +26,8 @@ async function viewSaleInvoice(saleId) {
                       </thead>
                       <tbody>
                         ${saleDetails
-                          .map(
-                            (sale) => `
+      .map(
+        (sale) => `
                           <tr>
                           <td>${sale.product_name}</td>
                           <td>${sale.sale_type}</td>
@@ -36,8 +37,8 @@ async function viewSaleInvoice(saleId) {
                           </tr>
         
                           `
-                          )
-                          .join("")}
+      )
+      .join("")}
                       </tbody>
           </table>
           <p class="fs-6 text-end">Total: ₦${saleDetails[0].total_amount}</p>`;
@@ -47,9 +48,9 @@ async function viewSaleInvoice(saleId) {
 
 for (let i = 0; i < viewSaleDetailsBtn.length; i++) {
   viewSaleDetailsBtn[i].addEventListener("click", (e) => {
-  viewSaleInvoice(e.target.id);
-});
-  
+    viewSaleInvoice(e.target.id);
+  });
+
 }
 
 

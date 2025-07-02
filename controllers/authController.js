@@ -36,7 +36,8 @@ const login = async (req, res) => {
     // Check if all details were provided
     if (!email || !password) {
         console.log('Incomplete login details');
-        res.status(400).json({ message: 'Please provide all details' });
+        req.flash('error_msg', 'Incomplete login details');
+        return res.redirect('/admin/signin');
     }
 
     try {
@@ -45,8 +46,9 @@ const login = async (req, res) => {
         console.log(checkUser);
 
         if (checkUser.length === 0) {
-            console.log('Email not found');            
-            return res.status(400).json({ message: 'Email not found' });
+            console.log('Email not found');
+            req.flash('error_msg', 'Email not found');
+            return res.redirect('/admin/signin');
         }
 
         let user = checkUser[0];
@@ -55,7 +57,8 @@ const login = async (req, res) => {
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
             console.log('Invalid password');
-            return res.status(400).json({ message: 'Invalid password' });
+            req.flash('error_msg', 'Invalid password');
+            return res.redirect('/admin/signin');
         }
 
         // If login is successful, create a JWT token
@@ -65,17 +68,21 @@ const login = async (req, res) => {
         // Set the token in a cookie
         res.cookie('mbAuthToken', token);
 
+        req.flash('success_msg', 'Login successful');
         // Redirect to the dashboard
         res.redirect('/admin/dashboard');
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ message: 'Internal Server Error', error });
+        req.flash('error_msg', 'An error occurred');
+        return res.redirect('/admin/signin');
     }
 
 }
 
 const logout = async (req, res) => {
     res.cookie('mbAuthToken', '');
+
+    req.flash('success_msg', 'Logout successful');
     res.redirect('/admin/signin');
 }
 module.exports = { signinGet, login, logout };

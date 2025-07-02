@@ -33,7 +33,6 @@ const getProductUpload = async (req, res) => {
     console.log("Suppliers:", suppliers);
 
     const products = await AdminModel.getProducts();
-    console.log(products);
 
     res.render("upload-products", { suppliers, products });
   } catch (error) {
@@ -61,9 +60,11 @@ const uploadProducts = async (req, res) => {
     );
     console.log(addProduct);
 
+    req.flash('success_msg', 'Product upload successful');
     return res.redirect("/admin/product-upload");
   } catch (error) {
     console.log("Error uploading product:", error);
+    req.flash('error_msg', 'Product upload failed');
     return res.redirect("/admin/product-upload");
   }
 };
@@ -72,7 +73,6 @@ const uploadProducts = async (req, res) => {
 const getAllProducts = async (req, res) => {
   try {
     const products = await AdminModel.getProducts();
-    console.log(products);
 
     return res.render("all-products", { products });
   } catch (error) {

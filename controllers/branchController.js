@@ -81,7 +81,8 @@ const stockBranch = async (req, res) => {
 
     if (!product) {
       console.log("Product not found");
-      return res.status(404).json({ message: "Product not found" });
+      req.flash('error_msg', 'Product not found');
+      return res.redirect(`/stock-branch/${branchId}`);
     }
 
     // Check if the product is already in stock for the branch
@@ -110,10 +111,13 @@ const stockBranch = async (req, res) => {
       console.log(newStock);
     }
 
-    return res.status(200).json({ message: "Stock updated successfully" });
+    req.flash('success_msg', 'Stock update successful');
+    return res.redirect(`/stock-branch/${branchId}`);
   } catch (error) {
-    console.log("Error fetching product:", error);
-    return res.status(500).json({ message: "Internal Server Error", error });
+    console.log("Stock update failed: ", error);
+
+    req.flash('error_msg', 'Stock update failed');
+    return res.redirect(`/stock-branch/${branchId}`);
   }
 };
 
@@ -146,7 +150,7 @@ const handleBranchActivation = async (req, res) => {
       return res.status(200).json({ error: "Invalid activation key" });
     }
 
-    res.status(200).json({ success: "Correct Activation key" });
+    res.status(200).json({ success: "Correct Activation key", checkForBranch });
   } catch (error) {
     console.log("Error activating branch:", error);
     return res.status(500).json({ message: "Internal Server Error: ", error });

@@ -17,7 +17,7 @@
   "devDependencies": {
     "nodemon": "^3.1.10"
   },
-  "name": "MARYBILL CONGLOMERATE WEB API",
+  "name": "MARYBILL_CONGLOMERATE_WEB_API",
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {

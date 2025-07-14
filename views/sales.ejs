@@ -263,9 +263,10 @@
 														<%= sale.customer_name %>
 													</td>
 													<td>
-														<%= sale.customer_phoneNo %>
+														<%= sale.customer_phoneNo ? sale.customer_phoneNo : 'N/A' %>
 													</td>
-													<td>₦<%= sale.total_amount %>
+													<td>
+														₦<%= sale.total_amount %>
 													</td>
 													<td>
 														<%= sale.payment_method %>

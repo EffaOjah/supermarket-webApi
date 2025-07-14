@@ -233,45 +233,98 @@
 					</h4>
 					<div class="row justify-content-center">
 						<div class="col-md-6">
-							<div class="card">
-								<form action="/stock-branch/<%= branch[0].branch_id %>" method="POST">
-									<div class="card-header">
-										<div class="card-title">Select Product and the quantity</div>
+							<div class="card"
+								style="background-color: #f2f3f8 !important; box-shadow: none; border: none;">
+								<!-- Nav tabs -->
+								<ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
+									<li class="nav-item" role="presentation">
+										<button class="tab-btn nav-link text-primary active" id="home-tab"
+											data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab"
+											aria-controls="home" aria-selected="true"
+											style="padding: 30px; padding-left: 50px; padding-right: 50px;">Wholesale</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button class="tab-btn nav-link text-primary" id="profile-tab"
+											data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab"
+											aria-controls="profile" aria-selected="false"
+											style="padding: 30px; padding-left: 50px; padding-right: 50px;">Retail</button>
+									</li>
+								</ul>
+
+								<!-- Tab panes -->
+								<div class="tab-content bg-white" id="myTabContent">
+									<!-- Wholesale Tab -->
+									<div class="tab-pane fade show active" id="home" role="tabpanel"
+										aria-labelledby="home-tab">
+
+										<form action="/stock-branch-wholesale/<%= branch[0].branch_id %>" method="POST">
+											<div class="card-header">
+												<div class="card-title">Select Product and the quantity</div>
+											</div>
+											<div class="card-body">
+												<div class=" form-group">
+													<label for="products">Select Product</label>
+													<select class="form-control" id="products" name="productId"
+														required>
+														<option value="">Select Product</option>
+														<% products.forEach(product=> { %>
+															<option value="<%= product.product_id %>">
+																<%= product.product_name %>
+															</option>
+															<% }) %>
+													</select>
+												</div>
+
+												<div class="form-group">
+													<label for="quantity">Wholesale Quantity</label>
+													<input type="number" class="form-control" id="quantity"
+														name="wholesaleQuantity" placeholder="Enter wholsale quantity"
+														value="1" required>
+												</div>
+											</div>
+											<div class="card-action">
+												<button class="btn btn-success">Submit</button>
+												<input class="btn btn-danger" type="reset">
+											</div>
+										</form>
 									</div>
-									<div class="card-body">
-										<div class="form-group">
-											<label for="products">Select Product</label>
-											<select class="form-control" id="products" name="productId" required>
-												<option>Select Product</option>
-												<% products.forEach(product=> { %>
-													<option value="<%= product.product_id %>">
-														<%= product.product_name %>
-													</option>
-													<% }) %>
-											</select>
-										</div>
 
-										<div class="form-group">
-											<label for="quantity">Wholesale Quantity</label>
-											<input type="number" class="form-control" id="quantity"
-												name="wholesaleQuantity" placeholder="Enter wholsale quantity" value="1"
-												required>
-										</div>
+									<!-- Retail Tab -->
+									<div class="tab-pane fade" id="profile" role="tabpanel"
+										aria-labelledby="profile-tab">
 
-										<div class="form-group">
-											<label for="quantity">Retail Quantity</label>
-											<input type="number" class="form-control" id="quantity"
-												name="retailQuantity" placeholder="Enter retail quantity" value="1"
-												required>
-										</div>
+										<form action="/stock-branch-retail/<%= branch[0].branch_id %>" method="POST">
+											<div class="card-header">
+												<div class="card-title">Select Product and the quantity</div>
+											</div>
+											<div class="card-body">
+												<div class="form-group">
+													<label for="products">Select Product</label>
+													<select class="form-control" id="products" name="productId"
+														required>
+														<option value="">Select Product</option>
+														<% products.forEach(product=> { %>
+															<option value="<%= product.product_id %>">
+																<%= product.product_name %>
+															</option>
+															<% }) %>
+													</select>
+												</div>
 
-
+												<div class="form-group">
+													<label for="quantity">Retail Quantity</label>
+													<input type="number" class="form-control" id="quantity"
+														name="retailQuantity" placeholder="Enter retail quantity"
+														value="1" required>
+												</div>
+											</div>
+											<div class="card-action">
+												<button class="btn btn-success">Submit</button>
+												<input class="btn btn-danger" type="reset">
+											</div>
+										</form>
 									</div>
-									<div class="card-action">
-										<button class="btn btn-success">Submit</button>
-										<input class="btn btn-danger" type="reset">
-									</div>
-								</form>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -282,12 +335,37 @@
 	</div>
 	</div>
 
+	<!-- Modal -->
+	<div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header justify-content-center">
+					<h5 class="modal-title text-center fw-bold text-primary" id="exampleModalLabel">Price for product
+						not set</h5>
+					<!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button> -->
+				</div>
+				<div class="modal-body text-center">
+					<p id="modalBodyMessage"></p>
+					<p>Click the button below to set price of the product</p>
+				</div>
+				<div class="modal-footer justify-content-center">
+					<a type="button" id="productEditLink" class="btn btn-primary text-white">Set price &rightarrow;</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
 	<%- include('./partials/responseMessage') %>
 </body>
 <script src="/js/core/jquery.3.2.1.min.js"></script>
 <script src="/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
 <script src="/js/core/popper.min.js"></script>
 <script src="/js/core/bootstrap.min.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
 <script src="/js/plugin/chartist/chartist.min.js"></script>
 <script src="/js/plugin/chartist/plugin/chartist-plugin-tooltip.min.js"></script>
 <!-- <script src="/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script> -->
@@ -301,5 +379,36 @@
 <script src="/js/demo.js"></script>
 
 <script src="/js/toast.js"></script>
+
+<script>
+	function getCookie(name) {
+		const cookies = document.cookie.split('; ');
+		for (const cookie of cookies) {
+			const [cookieName, cookieValue] = cookie.split('=');
+			if (cookieName === name) {
+				return decodeURIComponent(cookieValue);
+			}
+		}
+		return null; // cookie not found
+	}
+
+	document.addEventListener('DOMContentLoaded', () => {
+		var message = document.getElementById('message').innerHTML;
+		message = message.trim();
+
+
+		// Check error message to show modal
+		if (message.includes('price has not been set for this product')) {
+			document.getElementById('modalBodyMessage').innerHTML = message;
+			document.getElementById('productEditLink').setAttribute('href', `/product/${getCookie('productId')}/update`);
+
+			$('#messageModal').modal('show');
+		}
+	})
+
+
+
+
+</script>
 
 </html>

@@ -35,10 +35,8 @@ const getStockBranchPage = async (req, res) => {
     console.log("Branch:", branch);
 
     const products = await BranchModel.getProductsOnly();
-    console.log("Products:", products);
 
     const branchProducts = await BranchModel.getBranchProducts(branchId);
-    console.log(branchProducts);
 
     res.render("stock-branch", { branch, products, branchProducts });
   } catch (error) {
@@ -57,10 +55,8 @@ const getBranchSalesPage = async (req, res) => {
     console.log("Branch:", branch);
 
     const branchProducts = await BranchModel.getBranchProducts(branchId);
-    console.log(branchProducts);
 
     const branchSales = await BranchModel.getBranchSales(branchId);
-    console.log(branchSales);
 
     res.render("sales", { branch, branchProducts, branchSales });
   } catch (error) {
@@ -69,12 +65,27 @@ const getBranchSalesPage = async (req, res) => {
   }
 };
 
-// Stock branch (POST)
-const stockBranch = async (req, res) => {
-  const { productId, wholesaleQuantity, retailQuantity } = req.body;
+// Stock branch - wholesale (POST)
+const stockBranchWholesale = async (req, res) => {
+  const { productId, wholesaleQuantity } = req.body;
   const branchId = req.params.branchId;
 
+  // Check if all details were provided
+  if (!productId || !wholesaleQuantity) {
+    console.log('Please provide all details');
+    req.flash('error_msg', 'Please provide all details');
+    return res.redirect(`/stock-branch/${branchId}`);
+  }
+
   try {
+    // Check if branch exists
+    const branch = await BranchModel.getBranchById(branchId);
+    if (branch.length < 1) {
+      console.log('Branch does not exist');
+      req.flash('error_msg', 'Branch not found');
+      return res.redirect(`/stock-branch/${branchId}`);
+    }
+
     // Get the product details from the database using the productId
     const product = await BranchModel.getProductById(productId);
     console.log(product);
@@ -82,6 +93,19 @@ const stockBranch = async (req, res) => {
     if (!product) {
       console.log("Product not found");
       req.flash('error_msg', 'Product not found');
+      return res.redirect(`/stock-branch/${branchId}`);
+    }
+
+    // Check if the wholesale price has been set
+    if (!product[0].wholesale_cost_price || !product[0].wholesale_selling_price) {
+      console.log('Wholesale price has not been set for this product');
+      req.flash('error_msg', 'Wholesale price has not been set for this product');
+
+      // Set cookie to hold productID
+      res.cookie('productId', product[0].product_id, {
+        maxAge: 1800000 // 30 minutes in milliseconds
+      });
+
       return res.redirect(`/stock-branch/${branchId}`);
     }
 
@@ -93,20 +117,96 @@ const stockBranch = async (req, res) => {
 
     if (existingStock.length > 0) {
       // Update the existing stock quantity
-      const updatedStock = await BranchModel.updateBranchStock(
+      const updatedStock = await BranchModel.updateBranchStockWholesale(
         branchId,
         productId,
         wholesaleQuantity,
-        retailQuantity
       );
       console.log(updatedStock);
     } else {
       // Insert new stock for the branch
-      const newStock = await BranchModel.insertBranchStock(
+      const newStock = await BranchModel.insertBranchStockWholesale(
         branchId,
         productId,
         wholesaleQuantity,
-        retailQuantity
+      );
+      console.log(newStock);
+    }
+
+    req.flash('success_msg', 'Stock update successful');
+    return res.redirect(`/stock-branch/${branchId}`);
+  } catch (error) {
+    console.log("Stock update failed: ", error);
+
+    req.flash('error_msg', 'Stock update failed');
+    return res.redirect(`/stock-branch/${branchId}`);
+  }
+};
+
+// Stock branch - retail (POST)
+const stockBranchRetail = async (req, res) => {
+  const { productId, retailQuantity } = req.body;
+  const branchId = req.params.branchId;
+
+  // Check if all details were provided
+  if (!productId || !retailQuantity) {
+    console.log('Please provide all details');
+    req.flash('error_msg', 'Please provide all details');
+    return res.redirect(`/stock-branch/${branchId}`);
+  }
+
+  try {
+    // Check if branch exists
+    const branch = await BranchModel.getBranchById(branchId);
+    if (branch.length < 1) {
+      console.log('Branch does not exist');
+      req.flash('error_msg', 'Branch not found');
+      return res.redirect(`/stock-branch/${branchId}`);
+    }
+
+    // Get the product details from the database using the productId
+    const product = await BranchModel.getProductById(productId);
+    console.log(product);
+
+    if (!product) {
+      console.log("Product not found");
+      req.flash('error_msg', 'Product not found');
+      return res.redirect(`/stock-branch/${branchId}`);
+    }
+
+    // Check if the retail price has been set
+    if (!product[0].retail_cost_price || !product[0].retail_selling_price) {
+      console.log('Retail price has not been set for this product');
+      req.flash('error_msg', 'Retail price has not been set for this product');
+
+      // Set cookie to hold productID
+      res.cookie('productId', product[0].product_id, {
+        maxAge: 1800000 // 30 minutes in milliseconds
+      });
+
+      return res.redirect(`/stock-branch/${branchId}`);
+    }
+
+    // Check if the product is already in stock for the branch
+    const existingStock = await BranchModel.getExistingBranchProduct(
+      branchId,
+      productId
+    );
+
+    if (existingStock.length > 0) {
+      // Update the existing stock quantity
+      const updatedStock = await BranchModel.updateBranchStockRetail(
+        branchId,
+        productId,
+        retailQuantity,
+      );
+      console.log(updatedStock);
+    } else {
+      // Insert new stock for the branch
+      const newStock = await BranchModel.insertBranchStockRetail(
+        branchId,
+        productId,
+        retailQuantity,
       );
       console.log(newStock);
     }
@@ -175,7 +275,8 @@ module.exports = {
   getBranchPage,
   getStockBranchPage,
   getBranchSalesPage,
-  stockBranch,
+  stockBranchWholesale,
+  stockBranchRetail,
   getBranchProducts,
   handleBranchActivation,
   getSaleItems,

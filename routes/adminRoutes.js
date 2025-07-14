@@ -34,6 +34,12 @@ router.get('/admin/product-upload', verifyToken, adminController.getProductUploa
 // Upload product route (POST)
 router.post('/admin/upload-product', verifyToken, adminController.uploadProducts);
 
+// Product update route (GET)
+router.get('/product/:productId/update', verifyToken, adminController.getProductUpdate);
+
+// Update product route (POST)
+router.post('/admin/update-product', verifyToken, adminController.updateProduct);
+
 // Get all products route (GET)
 router.get('/admin/all-products', verifyToken, adminController.getAllProducts);
 

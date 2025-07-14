@@ -3,6 +3,14 @@
 // Admin Model
 const AdminModel = require("../models/adminModel");
 
+function validatePrice(req, res, price, label, redirectUrl) {
+  if (price && price < 1) {
+    console.log(`Invalid ${label} price`);
+    req.flash('error_msg', `Invalid ${label} price`);
+    return res.redirect(redirectUrl);
+  }
+}
+
 // Get dashboard page
 const getDashboard = async (req, res) => {
   try {
@@ -46,15 +54,41 @@ const uploadProducts = async (req, res) => {
   // console.log('File details:', req.file);
   console.log("Form fields:", req.body);
 
-  const { productName, wholesalePrice, retailPrice, category, supplierId } =
+  const { productName, wholesaleCostPrice, wholesaleSellingPrice, retailCostPrice, retailSellingPrice, category, supplierId } =
     req.body;
 
+  console.log('req.body: ', req.body);
+
+  // Check if the necessary details were provided
+  if (!productName || !category || !supplierId) {
+    console.log('Please provide all details');
+
+    req.flash('error_msg', 'Please provide all details');
+    return res.redirect("/admin/product-upload");
+  }
+
+  // Make sure the prices ain't less than 1
+  const redirect = validatePrice(req, res, wholesaleCostPrice, 'wholesale cost', '/admin/product-upload') || validatePrice(req, res, wholesaleSellingPrice, 'wholesale selling', '/admin/product-upload') || validatePrice(req, res, retailCostPrice, 'retail cost', '/admin/product-upload') || validatePrice(req, res, retailSellingPrice, 'retail sellling', '/admin/product-upload');
+  if (redirect) return redirect;
+
   try {
+    // Check if there's a product with the same name
+    const checkProduct = await AdminModel.getProductByName(productName);
+
+    if (checkProduct.length > 0) {
+      console.log('This product already exists');
+
+      req.flash('error_msg', 'This product already exists');
+      return res.redirect("/admin/product-upload");
+    }
+
     // Insert into the database
     const addProduct = await AdminModel.uploadProduct(
       productName,
-      Number(wholesalePrice),
-      Number(retailPrice),
+      Number(wholesaleCostPrice),
+      Number(wholesaleSellingPrice),
+      Number(retailCostPrice),
+      Number(retailSellingPrice),
       supplierId,
       category
     );
@@ -66,6 +100,72 @@ const uploadProducts = async (req, res) => {
     console.log("Error uploading product:", error);
     req.flash('error_msg', 'Product upload failed');
     return res.redirect("/admin/product-upload");
+  }
+};
+
+// Get product update page
+const getProductUpdate = async (req, res) => {
+  try {
+    const { productId } = req.params;
+
+    // Get all suppliers
+    const suppliers = await AdminModel.getSuppliers();
+    console.log("Suppliers:", suppliers);
+
+    const products = await AdminModel.getProducts();
+
+    // Get the product
+    const product = await AdminModel.getProductById(productId);
+    console.log('Product: ', product);
+
+    res.render("edit-product", { suppliers, products, product: product[0] });
+  } catch (error) {
+    console.log("An error occurred: ", error);
+    return res.render("error-page");
+  }
+};
+
+// Update product
+const updateProduct = async (req, res) => {
+  // console.log('File details:', req.file);
+
+  const { productId, productName, wholesaleCostPrice, wholesaleSellingPrice, retailCostPrice, retailSellingPrice, category, supplierId } =
+    req.body;
+
+  console.log('req.body: ', req.body);
+
+  // Check if the necessary details were provided
+  if (!productId || !productName || !wholesaleCostPrice || !wholesaleSellingPrice || !retailCostPrice || !retailSellingPrice || !category || !supplierId) {
+    console.log('Please provide all details');
+
+    req.flash('error_msg', 'Please provide all details');
+    return res.redirect(`/product/${productId}/update`);
+  }
+
+  // Make sure the prices ain't less than 1
+  const redirect = validatePrice(req, res, wholesaleCostPrice, 'wholesale cost', `/product/${productId}/update`) || validatePrice(req, res, wholesaleSellingPrice, 'wholesale selling', `/product/${productId}/update`) || validatePrice(req, res, retailCostPrice, 'retail cost', `/product/${productId}/update`) || validatePrice(req, res, retailSellingPrice, 'retail sellling', `/product/${productId}/update`);
+  if (redirect) return redirect;
+
+  try {
+    // Update the product in the database
+    const editProduct = await AdminModel.updateProduct(
+      productName,
+      Number(wholesaleCostPrice),
+      Number(wholesaleSellingPrice),
+      Number(retailCostPrice),
+      Number(retailSellingPrice),
+      Number(supplierId),
+      category,
+      productId
+    );
+    console.log(editProduct);
+
+    req.flash('success_msg', 'Product update successful');
+    return res.redirect(`/product/${productId}/update`);
+  } catch (error) {
+    console.log("Error uploading product:", error);
+    req.flash('error_msg', 'Product update failed');
+    return res.redirect(`/product/${productId}/update`);
   }
 };
 
@@ -115,6 +215,8 @@ module.exports = {
   getDashboard,
   getProductUpload,
   uploadProducts,
+  getProductUpdate,
+  updateProduct,
   getAllProducts,
   getStoreBranchById,
   getBranchSales,

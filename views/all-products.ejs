@@ -237,8 +237,10 @@
 											<tr>
 												<th>#</th>
 												<th>Name</th>
-												<th>Wholesale Price</th>
-												<th>Retail Price</th>
+												<th>Wholesale Cost Price</th>
+												<th>Wholesale Selling Price</th>
+												<th>Retail Cost Price</th>
+												<th>Retail Retail Price</th>
 												<th>Supplier</th>
 												<th>Category</th>
 												<th>Action</th>
@@ -253,9 +255,19 @@
 													<td>
 														<%= product.product_name %>
 													</td>
-													<td>₦<%= product.wholesale_price %>
+													<td>
+														<%= product.wholesale_cost_price ?
+															`₦${product.wholesale_cost_price}` : 'N/A' %>
+													<td>
+														<%= product.wholesale_selling_price ?
+															`₦${product.wholesale_selling_price}` : 'N/A' %>
 													</td>
-													<td>₦<%= product.retail_price %>
+													<td>
+														<%= product.retail_cost_price ? `₦${product.retail_cost_price}`
+															: 'N/A' %>
+													<td>
+														<%= product.retail_selling_price ?
+															`₦${product.retail_selling_price}` : 'N/A' %>
 													</td>
 													<td>
 														<%= product.name %>
@@ -263,8 +275,9 @@
 													<td>
 														<%= product.category %>
 													</td>
-													<td><button class="btn-sm btn-primary"
-															style="cursor: pointer;">Edit</button></td>
+													<td><a href="/product/<%= product.product_id %>/update"
+															class="btn-sm btn-primary" style="cursor: pointer;">Edit</a>
+													</td>
 												</tr>
 												<% }) %>
 										</tbody>

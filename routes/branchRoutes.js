@@ -42,10 +42,13 @@ router.get(
 );
 
 // Stock branch page
-router
-  .route("/stock-branch/:branchId")
-  .get(verifyToken, updateLastInspected, branchController.getStockBranchPage)
-  .post(verifyToken, branchController.stockBranch);
+router.get("/stock-branch/:branchId", verifyToken, updateLastInspected, branchController.getStockBranchPage);
+
+// Stock branch wholesale (POST)
+router.post('/stock-branch-wholesale/:branchId', verifyToken, branchController.stockBranchWholesale);
+
+// Stock branch retail (POST)
+router.post('/stock-branch-retail/:branchId', verifyToken, branchController.stockBranchRetail);
 
 // Get branch products (GET)
 router.get(

@@ -1,8 +1,19 @@
 const db = require('../config/dbConfig');
 
-const uploadProduct = async (productName, wholsesalePrice, retailPrice, supplierId, category) => {
+const uploadProduct = async (productName, wholsesaleCostPrice, wholsesaleSellingPrice, retailCostPrice, retailSellingPrice, supplierId, category) => {
     return new Promise((resolve, reject) => {
-        db.query('INSERT INTO products (product_name, wholesale_price, retail_price, supplier_id, category) VALUES(?, ?, ?, ?, ?)', [productName, wholsesalePrice, retailPrice, supplierId, category], (err, result) => {
+        db.query('INSERT INTO products (product_name, wholesale_cost_price, wholesale_selling_price, retail_cost_price, retail_selling_price, supplier_id, category) VALUES(?, ?, ?, ?, ?, ?, ?)', [productName, wholsesaleCostPrice, wholsesaleSellingPrice, retailCostPrice, retailSellingPrice, supplierId, category], (err, result) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(result);
+        });
+    });
+};
+
+const updateProduct = async (productName, wholsesaleCostPrice, wholsesaleSellingPrice, retailCostPrice, retailSellingPrice, supplierId, category, productId) => {
+    return new Promise((resolve, reject) => {
+        db.query('UPDATE products SET product_name = ?, wholesale_cost_price = ?, wholesale_selling_price = ?, retail_cost_price = ?, retail_selling_price = ?, supplier_id = ?, category = ? WHERE product_id = ?', [productName, wholsesaleCostPrice, wholsesaleSellingPrice, retailCostPrice, retailSellingPrice, supplierId, category, productId], (err, result) => {
             if (err) {
                 reject(err);
             }
@@ -14,6 +25,17 @@ const uploadProduct = async (productName, wholsesalePrice, retailPrice, supplier
 const getProducts = async () => {
     return new Promise((resolve, reject) => {
         db.query('SELECT * FROM products INNER JOIN suppliers ON products.supplier_id = suppliers.supplier_id', (err, result) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(result);
+        });
+    });
+};
+
+const getProductByName = async (productName) => {
+    return new Promise((resolve, reject) => {
+        db.query('SELECT * FROM products WHERE product_name = ?', [productName], (err, result) => {
             if (err) {
                 reject(err);
             }
@@ -70,7 +92,7 @@ const getBranchSales = async (branchId) => {
 // Get product by id
 const getProductById = async (productId) => {
     return new Promise((resolve, reject) => {
-        db.query('SELECT * FROM products WHERE product_id = ?', [productId], (err, result) => {
+        db.query('SELECT * FROM products P INNER JOIN suppliers S ON P.supplier_id = S.supplier_id WHERE product_id = ?', [productId], (err, result) => {
             if (err) {
                 reject(err);
             }
@@ -127,4 +149,4 @@ const getSuppliers = async () => {
     });
 };
 
-module.exports = { uploadProduct, getProducts, getBranches, getStoreBranchById, getBranchProducts, getBranchSales, getProductById, getExistingBranchProduct, updateBranchStock, insertBranchStock, getSuppliers };
+module.exports = { uploadProduct, updateProduct, getProducts, getProductByName, getBranches, getStoreBranchById, getBranchProducts, getBranchSales, getProductById, getExistingBranchProduct, updateBranchStock, insertBranchStock, getSuppliers };

@@ -232,7 +232,9 @@
 			<div class="content">
 				<div class="container-fluid">
 					<h4 class="page-title">
-						<%= branch[0].branch_name %> > <span class="text-primary">Branch Sales</span>
+						<span id="bName">
+							<%= branch[0].branch_name %>
+						</span> > <span class="text-primary">Branch Sales</span>
 					</h4>
 					<div class="row justify-content-center">
 						<div class="card">
@@ -314,8 +316,7 @@
 										</div>
 									</div>
 									<div class="col-6 text-end">
-										<strong>Mary Bill Conglomerate Ltd supermarket</strong><br>
-										Calabar Branch<br>
+										<strong id="branch">Mary Bill Conglomerate</strong><br>
 										Nigeria
 									</div>
 								</div>
@@ -324,14 +325,14 @@
 								<div class="row mb-3">
 									<div class="col-6">
 										<strong>BILL TO:</strong><br>
-										Mary Bill Conglomerate Ltd supermarket<br>
-										Calabar Branch<br>
-										Nigeria
+										<p><strong>Customer: </strong><span id="customer">Walk in customer</span> <br>
+											<strong>Payment
+												method:
+											</strong><span id="paymentMethod">Cash</span>
+										</p>
 									</div>
 									<div class="col-6 text-end">
-										<strong>INVOICE NO:</strong> 000001<br>
-										<strong>DATE:</strong> 12/31/20<br>
-										<strong>DUE DATE:</strong> 12/31/20
+										<strong>DATE:</strong> <span id="saleDate"></span><br>
 									</div>
 								</div>
 
@@ -339,6 +340,7 @@
 								<div id="invoiceHolder" class="table-responsive mb-4">
 
 								</div>
+
 								<button id="printBtn" class="btn invoice-print-btn form-control">Print invoice</button>
 							</div>
 						</div>

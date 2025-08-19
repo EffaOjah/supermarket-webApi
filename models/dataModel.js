@@ -150,13 +150,14 @@ const handleSalesSyncing = async (branchId, sales, saleItems) => {
                     saleItem.product_id,
                     saleItem.quantity,
                     saleItem.unit_price,
+                    saleItem.discount,
                     saleItem.sale_type,
                     saleItem.subtotal
                 ]);
 
                 const insertItemsSql = `
                     INSERT INTO sale_items 
-                    (sale_item_id, sale_id, product_id, quantity, unit_price, sale_type, sub_total) 
+                    (sale_item_id, sale_id, product_id, quantity, unit_price, discount, sale_type, sub_total) 
                     VALUES ?
                 `;
 

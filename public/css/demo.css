@@ -102,3 +102,22 @@
 .tab-btn {
 	cursor: pointer;
 }
+
+select, input {
+      padding: 8px;
+      font-size: 14px;
+      width: 100%;
+      height: 40px;
+      box-sizing: border-box;
+    }
+
+    label {
+      font-weight: bold;
+    }   
+    .custom-range, .cdr {
+      display: none;
+      gap: 0px;
+    }
+    .custom-range input {
+      flex: 1;
+    }

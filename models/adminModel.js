@@ -149,4 +149,29 @@ const getSuppliers = async () => {
     });
 };
 
-module.exports = { uploadProduct, updateProduct, getProducts, getProductByName, getBranches, getStoreBranchById, getBranchProducts, getBranchSales, getProductById, getExistingBranchProduct, updateBranchStock, insertBranchStock, getSuppliers };
+// Get the analysis
+const getTheAnalysis = async (type, date, branchId) => {
+    return new Promise((resolve, reject) => {
+        db.query('SELECT SUM(sub_total) AS total FROM sale_items SI INNER JOIN branch_sales S ON SI.sale_id = S.sale_id WHERE SI.sale_type = ? AND S.sale_date = ? AND S.branch_id = ?', [type, date, branchId], (err, result) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(result);
+        });
+    });
+}
+
+// Get the analysis from date range
+const getSalesAnalysisFromRange = async (branchId, type, startDate, endDate) => {
+    return new Promise((resolve, reject) => {
+        db.query('SELECT SUM(sub_total) AS total FROM sale_items SI INNER JOIN branch_sales S ON SI.sale_id = S.sale_id WHERE S.branch_id = ? AND SI.sale_type = ? AND S.sale_date BETWEEN ? AND ?', [branchId, type, startDate, endDate], (err, result) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(result);
+        });
+    });
+}
+
+
+module.exports = { uploadProduct, updateProduct, getProducts, getProductByName, getBranches, getStoreBranchById, getBranchProducts, getBranchSales, getProductById, getExistingBranchProduct, updateBranchStock, insertBranchStock, getSuppliers, getTheAnalysis, getSalesAnalysisFromRange };

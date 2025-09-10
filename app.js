@@ -3,6 +3,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const flash = require('connect-flash');
+const path = require('path');
 
 const db = require('./config/dbConfig');
 const authRoute = require('./routes/authRoute');
@@ -21,6 +22,10 @@ db.connect((err) => {
 const app = express();
 
 const cors = require('cors');
+
+// Serve update files
+const updatesFolder = path.join(__dirname, 'public');
+app.use('/updates', express.static(updatesFolder));
 
 // Allow requests from your frontend's origin
 const corsOptions = {
@@ -45,7 +50,7 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
-    secret: process.env.SECRET,
+    secret: process.env.JWT_SECRET,
     resave: false,
     saveUninitialized: true
 }));

@@ -211,6 +211,61 @@ const getBranchSales = async (req, res) => {
   }
 };
 
+// Get today's sales analysis
+const getTodaySalesAnalysis = async (req, res) => {
+  try {
+    const { date, branchId } = req.query;
+    console.log(branchId);
+
+
+    let branch = await AdminModel.getStoreBranchById(branchId);
+    console.log(branch);
+
+    if (branch.length < 1) {
+      console.log('Invalid branch ID');
+      return res.status(404).json({ error: 'Invalid branch ID' })
+    }
+
+    branch = branch[0].branch_id;;
+
+    const getWholesaleAnalysis = await AdminModel.getTheAnalysis('Wholesale', date, branch);
+
+    const getRetailAnalysis = await AdminModel.getTheAnalysis('Retail', date, branch);
+
+    return res.status(200).json({ wholesaleAnalysis: getWholesaleAnalysis, retailAnalysis: getRetailAnalysis });
+  } catch (error) {
+    console.log("Error fetching sales analysis:", error);
+    return res.status(500).json({ message: "Internal Server Error", error });
+  }
+}
+
+// Get sales analysis from date range
+const getSalesAnalysisFromDateRange = async (req, res) => {
+  try {
+    const { branchId, startDate, endDate } = req.query;
+    console.log(branchId);
+
+    let branch = await AdminModel.getStoreBranchById(branchId);
+    console.log(branch);
+
+    if (branch.length < 1) {
+      console.log('Invalid branch ID');
+      return res.status(404).json({ error: 'Invalid branch ID' })
+    }
+
+    branch = branch[0].branch_id;;
+
+    const getWholesaleAnalysis = await AdminModel.getSalesAnalysisFromRange(branch, 'Wholesale', startDate, endDate);
+
+    const getRetailAnalysis = await AdminModel.getSalesAnalysisFromRange(branch, 'Retail', startDate, endDate);
+
+    return res.status(200).json({ wholesaleAnalysis: getWholesaleAnalysis, retailAnalysis: getRetailAnalysis });
+  } catch (error) {
+    console.log("Error fetching sales analysis:", error);
+    return res.status(500).json({ message: "Internal Server Error", error });
+  }
+}
+
 module.exports = {
   getDashboard,
   getProductUpload,
@@ -220,4 +275,6 @@ module.exports = {
   getAllProducts,
   getStoreBranchById,
   getBranchSales,
+  getTodaySalesAnalysis,
+  getSalesAnalysisFromDateRange
 };

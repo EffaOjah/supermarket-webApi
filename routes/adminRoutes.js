@@ -49,4 +49,10 @@ router.get('/admin/branch/:branchId', verifyToken, adminController.getStoreBranc
 // Get all branch sales (GET)
 router.get('/admin/branch/:branchId/sales', verifyToken, adminController.getBranchSales);
 
+// Get the sale record for the day
+router.get('/admin/fetch-today-records', verifyToken, adminController.getTodaySalesAnalysis);
+
+// Get the sale record from date range
+router.get('/admin/fetch-records-from-range', verifyToken, adminController.getSalesAnalysisFromDateRange);
+
 module.exports = router;

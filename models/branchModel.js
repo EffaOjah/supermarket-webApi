@@ -201,6 +201,42 @@ const updateLastInspected = (branchId) => {
   });
 };
 
+// Check the number of products with low stock
+const checkLowProducts = (branchId) => {
+  return new Promise((resolve, reject) => {
+    db.query('SELECT COUNT(*) AS low_stock_count FROM branch_stock INNER JOIN products ON branch_stock.product_id = products.product_id WHERE branch_stock.branch_id = ? AND (branch_stock.stock_quantity_wholesale < branch_stock.reorder_level OR branch_stock.stock_quantity_retail < branch_stock.reorder_level)', [branchId], (err, result) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(result);
+    });
+  });
+};
+
+// Check the wholesale stock level of the products
+const checkWholesaleStockLevel = (branchId) => {
+  return new Promise((resolve, reject) => {
+    db.query('SELECT stock_id, product_name, stock_quantity_wholesale, reorder_level FROM branch_stock INNER JOIN products ON branch_stock.product_id = products.product_id WHERE branch_stock.stock_quantity_wholesale < branch_stock.reorder_level AND branch_stock.branch_id = ?', [branchId], (err, result) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(result);
+    });
+  });
+};
+
+// Check the retail stock level of the products
+const checkRetailStockLevel = (branchId) => {
+  return new Promise((resolve, reject) => {
+    db.query('SELECT stock_id, product_name, stock_quantity_retail, reorder_level FROM branch_stock INNER JOIN products ON branch_stock.product_id = products.product_id WHERE branch_stock.stock_quantity_retail < branch_stock.reorder_level AND branch_stock.branch_id = ?', [branchId], (err, result) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(result);
+    });
+  });
+};
+
 module.exports = {
   getBranchById,
   getProductsOnly,
@@ -214,4 +250,7 @@ module.exports = {
   getBranchSales,
   getBranchSaleDetails,
   updateLastInspected,
+  checkLowProducts,
+  checkWholesaleStockLevel,
+  checkRetailStockLevel
 };

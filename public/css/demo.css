@@ -103,7 +103,7 @@
 	cursor: pointer;
 }
 
-select, input {
+.date-range-container select, .date-range-container input {
       padding: 8px;
       font-size: 14px;
       width: 100%;

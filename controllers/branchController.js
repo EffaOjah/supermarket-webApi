@@ -77,6 +77,13 @@ const stockBranchWholesale = async (req, res) => {
     return res.redirect(`/stock-branch/${branchId}`);
   }
 
+  // Check if the quantity is less than 1
+  if (wholesaleQuantity < 1) {
+    console.log('Quantity is less than 1');
+    req.flash('error_msg', 'Quantity is less than 1');
+    return res.redirect(`/stock-branch/${branchId}`);
+  }
+
   try {
     // Check if branch exists
     const branch = await BranchModel.getBranchById(branchId);
@@ -271,6 +278,104 @@ const getSaleItems = async (req, res) => {
   }
 };
 
+// Check low stock level count
+const checkLowStockLevel = async (req, res) => {
+  const branchId = req.params.branchId;
+
+  try {
+    // Check if branch exists
+    const branch = await BranchModel.getBranchById(branchId);
+    console.log("Branch: ", branch);
+
+    if (branch.length < 1) {
+      console.log('Invalid branch ID');
+      return res.status(404).json({ error: 'Invalid branch ID' });
+    }
+
+    const getProductsCount = await BranchModel.checkLowProducts(branchId);
+    console.log("Products with low stock level: ", getProductsCount);
+
+    return res.status(200).json({ products: getProductsCount });
+  } catch (error) {
+    console.log("Error getting low stock products count: ", error);
+    return res.status(500).json({ message: "Internal Server Error: ", error });
+  }
+};
+
+// Check wholesale stock level of products
+const checkWholesaleStockLevel = async (req, res) => {
+  const branchId = req.params.branchId;
+
+  try {
+    // Check if branch exists
+    const branch = await BranchModel.getBranchById(branchId);
+    console.log("Branch: ", branch);
+
+    if (branch.length < 1) {
+      console.log('Invalid branch ID');
+      return res.status(404).json({ error: 'Invalid branch ID' });
+    }
+
+    const getProducts = await BranchModel.checkWholesaleStockLevel(branchId);
+    console.log("Products with low stock level: ", getProducts);
+
+    return res.status(200).json({ length: getProducts.length, products: getProducts });
+  } catch (error) {
+    console.log("Error getting low stock products: ", error);
+    return res.status(500).json({ message: "Internal Server Error: ", error });
+  }
+};
+
+// Check retail stock level of products
+const checkRetailStockLevel = async (req, res) => {
+  const branchId = req.params.branchId;
+
+  try {
+    // Check if branch exists
+    const branch = await BranchModel.getBranchById(branchId);
+    console.log("Branch: ", branch);
+
+    if (branch.length < 1) {
+      console.log('Invalid branch ID');
+      return res.status(404).json({ error: 'Invalid branch ID' });
+    }
+
+    const getProducts = await BranchModel.checkRetailStockLevel(branchId);
+    console.log("Products with low stock level: ", getProducts);
+
+    return res.status(200).json({ length: getProducts.length, products: getProducts });
+  } catch (error) {
+    console.log("Error getting low stock products: ", error);
+    return res.status(500).json({ message: "Internal Server Error: ", error });
+  }
+};
+
+// Get branch notifications page
+const getBranchNotificationsPage = async (req, res) => {
+  try {
+    // Get branch by ID
+    const branchId = req.params.branchId;
+    const branch = await BranchModel.getBranchById(branchId);
+    console.log("Branch:", branch);
+
+    // Get the products
+    const products = await BranchModel.getBranchProducts(branchId);
+
+    // Get the low stock wholesale products
+    const lowStockWholesaleProducts = await BranchModel.checkWholesaleStockLevel(branchId);
+    console.log("Products with low wholsale stock level: ", lowStockWholesaleProducts);
+
+    // Get the low stock retail products
+    const lowStockRetailProducts = await BranchModel.checkRetailStockLevel(branchId);
+    console.log("Products with low retail stock level: ", lowStockRetailProducts);
+
+    res.render("notifications", { branch, products, lowStockWholesaleProducts, lowStockRetailProducts });
+  } catch (error) {
+    console.log("An error occurred: ", error);
+    return res.render("error-page");
+  }
+};
+
 module.exports = {
   getBranchPage,
   getStockBranchPage,
@@ -280,4 +385,8 @@ module.exports = {
   getBranchProducts,
   handleBranchActivation,
   getSaleItems,
+  checkLowStockLevel,
+  checkWholesaleStockLevel,
+  checkRetailStockLevel,
+  getBranchNotificationsPage
 };

@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="/css/bootstrap.min.css">
 	<link rel="stylesheet"
 		href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+	<script src="https://kit.fontawesome.com/a207e207d8.js" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="/css/ready.css">
 	<link rel="stylesheet" href="/css/demo.css">
 	<link rel="icon" type="image/x-icon" href="/img/app_icon.ico">
@@ -44,22 +45,22 @@
 					</form>
 					<ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
 						<li class="nav-item dropdown hidden-caret">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+								aria-haspopup="true" aria-expanded="false">
 								<i class="la la-envelope"></i>
 							</a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+							<!-- <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<a class="dropdown-item" href="#">Action</a>
 								<a class="dropdown-item" href="#">Another action</a>
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="#">Something else here</a>
-							</div>
+							</div> -->
 						</li>
-						<li class="nav-item dropdown hidden-caret">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<!-- <li class="nav-item dropdown hidden-caret">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+								aria-haspopup="true" aria-expanded="false">
 								<i class="la la-bell"></i>
-								<span class="notification">3</span>
+								<span class="notification"></span>
 							</a>
 							<ul class="dropdown-menu notif-box" aria-labelledby="navbarDropdown">
 								<li>
@@ -113,11 +114,11 @@
 											notifications</strong> <i class="la la-angle-right"></i> </a>
 								</li>
 							</ul>
-						</li>
+						</li> -->
 						<li class="nav-item dropdown">
-							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"
-								aria-expanded="false"> <img src="/img/profile-icon.png" alt="user-img" width="36"
-									class="img-circle"><span>Steven</span></span> </a>
+							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img
+									src="/img/profile-icon.png" alt="user-img" width="36" class="img-circle"><span>Steven</span></span>
+							</a>
 							<ul class="dropdown-menu dropdown-user">
 								<li>
 									<div class="user-box">
@@ -183,20 +184,20 @@
 				</div>
 				<ul class="nav">
 					<li class="nav-item active">
-						<a href="#">
-							<i class="la la-dashboard"></i>
+						<a href="/admin/dashboard">
+							<i class="fa-solid fa-gauge"></i>
 							<p>Dashboard</p>
 						</a>
 					</li>
 					<li class="nav-item">
 						<a href="/admin/product-upload">
-							<i class="la la-table"></i>
+							<i class="fa-solid fa-upload"></i>
 							<p>Upload Product</p>
 						</a>
 					</li>
 					<li class="nav-item">
 						<a href="/admin/all-products">
-							<i class="la la-keyboard-o"></i>
+							<i class="fa-solid fa-tarp"></i>
 							<p>All Products</p>
 							<span class="badge badge-count">
 								<%= products.length %>
@@ -205,7 +206,7 @@
 					</li>
 					<li class="nav-item">
 						<a href="/logout">
-							<i class="la la-th"></i>
+							<i class="fas fa-sign-out-alt"></i>
 							<p>Log Out</p>
 						</a>
 					</li>
@@ -221,9 +222,8 @@
 							<h1>No Branches Available</h1>
 							<% } else { %>
 								<% branches.forEach(branch=> { %>
-									<a href="/branch/<%= branch.branch_id %>/products" class="col-md-3 title=" view">
-										<div class="card card-stats card-primary"
-											style="box-sizing: border-box; height: 150px;">
+									<a href="/branch/<%= branch.branch_id %>" class="col-md-3 title=" view">
+										<div class="card card-stats card-primary" style="box-sizing: border-box; height: 150px;">
 											<div class="card-body ">
 												<div class="row">
 													<div class="col-5">

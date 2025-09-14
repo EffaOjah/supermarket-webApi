@@ -9,6 +9,8 @@
 	<link rel="stylesheet" href="/css/bootstrap.min.css">
 	<link rel="stylesheet"
 		href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+	<script src="https://kit.fontawesome.com/a207e207d8.js" crossorigin="anonymous"></script>
+
 	<link rel="stylesheet" href="/css/ready.css">
 	<link rel="stylesheet" href="/css/demo.css">
 	<link rel="icon" type="image/x-icon" href="/img/app_icon.ico">
@@ -17,6 +19,10 @@
 </head>
 
 <body>
+	<span class="d-none" id="branchId">
+		<%= branch[0].branch_id %>
+	</span>
+
 	<div class="wrapper">
 		<div class="main-header">
 			<div class="logo-header">
@@ -27,7 +33,7 @@
 					data-target="collapse" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
-				<button class="topbar-toggler more"><i class="la la-ellipsis-v"></i></button>
+				<button class="topbar-toggler more"><i class="la la-ellipsis-v"></i><span class="n-indicator"></span></button>
 			</div>
 			<nav class="navbar navbar-header navbar-expand-lg">
 				<div class="container-fluid">
@@ -43,9 +49,9 @@
 						</div>
 					</form>
 					<ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
-						<li class="nav-item dropdown hidden-caret">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<!-- <li class="nav-item dropdown hidden-caret">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+								aria-haspopup="true" aria-expanded="false">
 								<i class="la la-envelope"></i>
 							</a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -54,70 +60,32 @@
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="#">Something else here</a>
 							</div>
-						</li>
+						</li> -->
 						<li class="nav-item dropdown hidden-caret">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+								aria-haspopup="true" aria-expanded="false">
 								<i class="la la-bell"></i>
-								<span class="notification">3</span>
+								<span class="notification notification-count">0</span>
 							</a>
 							<ul class="dropdown-menu notif-box" aria-labelledby="navbarDropdown">
 								<li>
-									<div class="dropdown-title">You have 4 new notification</div>
+									<div class="dropdown-title notification-title">You have 0 new notification</div>
 								</li>
 								<li>
 									<div class="notif-center">
-										<a href="#">
-											<div class="notif-icon notif-primary"> <i class="la la-user-plus"></i>
-											</div>
-											<div class="notif-content">
-												<span class="block">
-													New user registered
-												</span>
-												<span class="time">5 minutes ago</span>
-											</div>
-										</a>
-										<a href="#">
-											<div class="notif-icon notif-success"> <i class="la la-comment"></i> </div>
-											<div class="notif-content">
-												<span class="block">
-													Rahmad commented on Admin
-												</span>
-												<span class="time">12 minutes ago</span>
-											</div>
-										</a>
-										<a href="#">
-											<div class="notif-img">
-												<img src="/img/profile2.jpg" alt="Img Profile">
-											</div>
-											<div class="notif-content">
-												<span class="block">
-													Reza send messages to you
-												</span>
-												<span class="time">12 minutes ago</span>
-											</div>
-										</a>
-										<a href="#">
-											<div class="notif-icon notif-danger"> <i class="la la-heart"></i> </div>
-											<div class="notif-content">
-												<span class="block">
-													Farrah liked Admin
-												</span>
-												<span class="time">17 minutes ago</span>
-											</div>
-										</a>
+										<!-- Notification contents goes here -->
 									</div>
 								</li>
 								<li>
-									<a class="see-all" href="javascript:void(0);"> <strong>See all
+									<a class="see-all" href="/branch/<%= branch[0].branch_id %>/notifications"> <strong>See all
 											notifications</strong> <i class="la la-angle-right"></i> </a>
 								</li>
 							</ul>
 						</li>
 						<li class="nav-item dropdown">
-							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"
-								aria-expanded="false"> <img src="/img/profile-icon.png" alt="user-img" width="36"
-									class="img-circle"><span>Steven</span></span> </a>
+							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img
+									src="/img/profile-icon.png" alt="user-img" width="36" class="img-circle"><span>Steven</span></span>
+							</a>
 							<ul class="dropdown-menu dropdown-user">
 								<li>
 									<div class="user-box">
@@ -184,44 +152,52 @@
 				<ul class="nav">
 					<li class="nav-item">
 						<a href="/admin/dashboard">
-							<i class="la la-dashboard"></i>
+							<i class="fa-solid fa-gauge"></i>
 							<p>Dashboard</p>
 						</a>
 					</li>
 					<li class="nav-item">
 						<a href="/branch/<%= branch[0].branch_id %>">
-							<i class="la la-dashboard"></i>
+							<i class="fas fa-chart-pie"></i>
 							<p>Branch Overview</p>
 						</a>
 					</li>
 					<li class="nav-item active">
-						<a href="#">
-							<i class="la la-table"></i>
+						<a href="/stock-branch/<%= branch[0].branch_id %>">
+							<i class="fa-solid fa-arrow-trend-up"></i>
 							<p>Stock Branch</p>
 						</a>
 					</li>
 					<li class="nav-item">
 						<a href="/branch/<%= branch[0].branch_id %>/products">
-							<i class="la la-keyboard-o"></i>
+							<i class="fa-solid fa-tarp"></i>
 							<p>Branch Products</p>
 							<span class="badge badge-count">
-								<%= branchProducts.length %>
+								<%= products.length %>
 							</span>
 						</a>
 					</li>
 					<li class="nav-item">
 						<a href="/branch/<%= branch[0].branch_id %>/sales">
-							<i class="la la-keyboard-o"></i>
+							<i class="fa-solid fa-cart-shopping"></i>
 							<p>Sales</p>
 							<span class="badge badge-count"></span>
 						</a>
 					</li>
 					<li class="nav-item">
+						<a href="/branch/<%= branch[0].branch_id %>/notifications">
+							<i class="far fa-bell"></i>
+							<p>Notifications</p>
+							<span class="badge badge-count"></span>
+						</a>
+					</li>
+					<li class="nav-item">
 						<a href="/logout">
-							<i class="la la-th"></i>
+							<i class="fas fa-sign-out-alt"></i>
 							<p>Log Out</p>
 						</a>
 					</li>
+
 				</ul>
 			</div>
 		</div>
@@ -233,20 +209,17 @@
 					</h4>
 					<div class="row justify-content-center">
 						<div class="col-md-6">
-							<div class="card"
-								style="background-color: #f2f3f8 !important; box-shadow: none; border: none;">
+							<div class="card" style="background-color: #f2f3f8 !important; box-shadow: none; border: none;">
 								<!-- Nav tabs -->
 								<ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
 									<li class="nav-item" role="presentation">
-										<button class="tab-btn nav-link text-primary active" id="home-tab"
-											data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab"
-											aria-controls="home" aria-selected="true"
+										<button class="tab-btn nav-link text-primary active" id="home-tab" data-bs-toggle="tab"
+											data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true"
 											style="padding: 30px; padding-left: 50px; padding-right: 50px;">Wholesale</button>
 									</li>
 									<li class="nav-item" role="presentation">
-										<button class="tab-btn nav-link text-primary" id="profile-tab"
-											data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab"
-											aria-controls="profile" aria-selected="false"
+										<button class="tab-btn nav-link text-primary" id="profile-tab" data-bs-toggle="tab"
+											data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false"
 											style="padding: 30px; padding-left: 50px; padding-right: 50px;">Retail</button>
 									</li>
 								</ul>
@@ -254,8 +227,7 @@
 								<!-- Tab panes -->
 								<div class="tab-content bg-white" id="myTabContent">
 									<!-- Wholesale Tab -->
-									<div class="tab-pane fade show active" id="home" role="tabpanel"
-										aria-labelledby="home-tab">
+									<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
 										<form action="/stock-branch-wholesale/<%= branch[0].branch_id %>" method="POST">
 											<div class="card-header">
@@ -264,8 +236,7 @@
 											<div class="card-body">
 												<div class=" form-group">
 													<label for="products">Select Product</label>
-													<select class="form-control" id="products" name="productId"
-														required>
+													<select class="form-control" id="products" name="productId" required>
 														<option value="">Select Product</option>
 														<% products.forEach(product=> { %>
 															<option value="<%= product.product_id %>">
@@ -277,9 +248,8 @@
 
 												<div class="form-group">
 													<label for="quantity">Wholesale Quantity</label>
-													<input type="number" class="form-control" id="quantity"
-														name="wholesaleQuantity" placeholder="Enter wholsale quantity"
-														value="1" required>
+													<input type="number" class="form-control" id="quantity" name="wholesaleQuantity"
+														placeholder="Enter wholsale quantity" value="1" required>
 												</div>
 											</div>
 											<div class="card-action">
@@ -290,8 +260,7 @@
 									</div>
 
 									<!-- Retail Tab -->
-									<div class="tab-pane fade" id="profile" role="tabpanel"
-										aria-labelledby="profile-tab">
+									<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 
 										<form action="/stock-branch-retail/<%= branch[0].branch_id %>" method="POST">
 											<div class="card-header">
@@ -300,8 +269,7 @@
 											<div class="card-body">
 												<div class="form-group">
 													<label for="products">Select Product</label>
-													<select class="form-control" id="products" name="productId"
-														required>
+													<select class="form-control" id="products" name="productId" required>
 														<option value="">Select Product</option>
 														<% products.forEach(product=> { %>
 															<option value="<%= product.product_id %>">
@@ -313,9 +281,8 @@
 
 												<div class="form-group">
 													<label for="quantity">Retail Quantity</label>
-													<input type="number" class="form-control" id="quantity"
-														name="retailQuantity" placeholder="Enter retail quantity"
-														value="1" required>
+													<input type="number" class="form-control" id="quantity" name="retailQuantity"
+														placeholder="Enter retail quantity" value="1" required>
 												</div>
 											</div>
 											<div class="card-action">
@@ -377,6 +344,8 @@
 <script src="/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
 <script src="/js/ready.min.js"></script>
 <script src="/js/demo.js"></script>
+
+<script src="/js/getNotifications.js"></script>
 
 <script src="/js/toast.js"></script>
 

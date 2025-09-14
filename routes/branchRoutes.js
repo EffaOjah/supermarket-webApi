@@ -73,4 +73,16 @@ router.get(
 
 router.get("/sale-details/:saleId", verifyToken, branchController.getSaleItems);
 
+// Get the low stock count
+router.get('/low-stock-count/:branchId', verifyToken, branchController.checkLowStockLevel)
+
+// Get products with low wholesale stock level
+router.get('/get-low-wholesale-stock/:branchId', verifyToken, branchController.checkWholesaleStockLevel);
+
+// Get products with low retail stock level
+router.get('/get-low-retail-stock/:branchId', verifyToken, branchController.checkRetailStockLevel);
+
+// Get branch notifications page
+router.get('/branch/:branchId/notifications', verifyToken, branchController.getBranchNotificationsPage);
+
 module.exports = router;

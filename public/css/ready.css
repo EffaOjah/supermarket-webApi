@@ -5706,6 +5706,21 @@ body {
   right: 12px;
 }
 
+.notify {
+  position: absolute;
+  background-color: #ff646d;
+  text-align: center;
+  border-radius: 10px;
+  min-width: 17px;
+  height: 17px;
+  font-size: 11px;
+  color: #ffffff;
+  font-weight: bold;
+  line-height: 17px;
+  top: 11px;
+  right: -2px;
+}
+
 .navbar-header {
   padding: 0px 15px;
 }

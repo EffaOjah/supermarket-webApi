@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="/css/bootstrap.min.css">
 	<link rel="stylesheet"
 		href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+	<script src="https://kit.fontawesome.com/a207e207d8.js" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="/css/ready.css">
 	<link rel="stylesheet" href="/css/demo.css">
 	<link rel="icon" type="image/x-icon" href="/img/app_icon.ico">
@@ -44,20 +45,20 @@
 					</form>
 					<ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
 						<li class="nav-item dropdown hidden-caret">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+								aria-haspopup="true" aria-expanded="false">
 								<i class="la la-envelope"></i>
 							</a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+							<!-- <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<a class="dropdown-item" href="#">Action</a>
 								<a class="dropdown-item" href="#">Another action</a>
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="#">Something else here</a>
-							</div>
+							</div> -->
 						</li>
-						<li class="nav-item dropdown hidden-caret">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<!-- <li class="nav-item dropdown hidden-caret">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+								aria-haspopup="true" aria-expanded="false">
 								<i class="la la-bell"></i>
 								<span class="notification">3</span>
 							</a>
@@ -113,11 +114,11 @@
 											notifications</strong> <i class="la la-angle-right"></i> </a>
 								</li>
 							</ul>
-						</li>
+						</li> -->
 						<li class="nav-item dropdown">
-							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"
-								aria-expanded="false"> <img src="/img/profile-icon.png" alt="user-img" width="36"
-									class="img-circle"><span>Steven</span></span> </a>
+							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img
+									src="/img/profile-icon.png" alt="user-img" width="36" class="img-circle"><span>Steven</span></span>
+							</a>
 							<ul class="dropdown-menu dropdown-user">
 								<li>
 									<div class="user-box">
@@ -184,19 +185,19 @@
 				<ul class="nav">
 					<li class="nav-item">
 						<a href="/admin/dashboard">
-							<i class="la la-dashboard"></i>
+							<i class="fa-solid fa-gauge"></i>
 							<p>Dashboard</p>
 						</a>
 					</li>
 					<li class="nav-item active">
-						<a href="#">
-							<i class="la la-table"></i>
-							<p>Upload Products</p>
+						<a href="/admin/product-upload">
+							<i class="fa-solid fa-upload"></i>
+							<p>Upload Product</p>
 						</a>
 					</li>
 					<li class="nav-item">
 						<a href="/admin/all-products">
-							<i class="la la-keyboard-o"></i>
+							<i class="fa-solid fa-tarp"></i>
 							<p>All Products</p>
 							<span class="badge badge-count">
 								<%= products.length %>
@@ -205,7 +206,7 @@
 					</li>
 					<li class="nav-item">
 						<a href="/logout">
-							<i class="la la-th"></i>
+							<i class="fas fa-sign-out-alt"></i>
 							<p>Log Out</p>
 						</a>
 					</li>
@@ -233,32 +234,32 @@
 										<!-- Wholesale cost price -->
 										<div class="form-group">
 											<label for="wholesaleCostPrice">Wholesale Cost Price</label>
-											<input type="number" class="form-control" id="wholesaleCostPrice"
-												name="wholesaleCostPrice" placeholder="0.00">
+											<input type="number" class="form-control" id="wholesaleCostPrice" name="wholesaleCostPrice"
+												placeholder="0.00">
 										</div>
 										<!-- Wholesale selling price -->
 										<div class="form-group">
 											<label for="wholesaleSellingPrice">Wholesale Selling Price</label>
-											<input type="number" class="form-control" id="wholesaleSellingPrice"
-												name="wholesaleSellingPrice" placeholder="0.00">
+											<input type="number" class="form-control" id="wholesaleSellingPrice" name="wholesaleSellingPrice"
+												placeholder="0.00">
 										</div>
 										<!-- Retail cost price -->
 										<div class="form-group">
 											<label for="retailCostPrice">Retail Cost Price</label>
-											<input type="number" class="form-control" id="retailCostPrice"
-												name="retailCostPrice" placeholder="0.00">
+											<input type="number" class="form-control" id="retailCostPrice" name="retailCostPrice"
+												placeholder="0.00">
 										</div>
 										<!-- Retail selling price -->
 										<div class="form-group">
 											<label for="retailSellingPrice">Retail Selling Price</label>
-											<input type="number" class="form-control" id="retailSellingPrice"
-												name="retailSellingPrice" placeholder="0.00">
+											<input type="number" class="form-control" id="retailSellingPrice" name="retailSellingPrice"
+												placeholder="0.00">
 										</div>
 										<!-- Product category -->
 										<div class="form-group">
 											<label for="category">Category</label>
-											<input type="text" class="form-control" id="category" name="category"
-												placeholder="Enter Category" required>
+											<input type="text" class="form-control" id="category" name="category" placeholder="Enter Category"
+												required>
 										</div>
 										<!-- Product supplier -->
 										<div class="form-group">

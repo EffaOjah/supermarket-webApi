@@ -85,4 +85,10 @@ router.get('/get-low-retail-stock/:branchId', verifyToken, branchController.chec
 // Get branch notifications page
 router.get('/branch/:branchId/notifications', verifyToken, branchController.getBranchNotificationsPage);
 
+// Get stock transfer page
+router.get('/branch/:branchId/transfer-stock', verifyToken, branchController.getStockTransferPage);
+
+// Post route to transfer branch stock
+router.post('/branch/transfer-stock', verifyToken, branchController.transferBranchStock);
+
 module.exports = router;

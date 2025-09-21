@@ -237,6 +237,161 @@ const checkRetailStockLevel = (branchId) => {
   });
 };
 
+// Get product by product_id and type from branch stock
+const getProductByIdAndType = async (productId, type, branchId) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      `SELECT branch_id, product_id, ${type} AS product_quantity FROM branch_stock WHERE product_id = ? AND branch_id = ?`,
+      [productId, branchId],
+      (err, result) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(result.length < 1 ? null : result[0]);
+      }
+    );
+  });
+};
+
+// Handle insert and subtract
+const insertAndSubtract = async (branchId, branchName, targetBranchId, targetBranchName, productId, type, transferQuantity) => {
+  return new Promise((resolve, reject) => {
+    db.beginTransaction();
+
+    // Add new branch stock from transfer
+    db.query(
+      `INSERT INTO branch_stock (branch_id, product_id, ${type}) VALUES(?, ?, ?)`,
+      [targetBranchId, productId, transferQuantity],
+      (err) => {
+        if (err) {
+          db.rollback();
+          return reject(err);
+        }
+      }
+    );
+
+    // Subtract branch stock quantity from transfer
+    db.query(
+      `UPDATE branch_stock SET ${type} = ${type} - ?, status = ? WHERE branch_id = ? AND product_id = ?`,
+      [transferQuantity, "pending", branchId, productId],
+      (err) => {
+        if (err) {
+          db.rollback();
+          return reject(err);
+        }
+      }
+    );
+
+    // Insert into stock transfer history table
+    let theType = type == 'stock_quantity_wholesale' ? 'wholesale' : 'retail';
+    db.query(
+      "INSERT INTO stock_transfer_history (branch_name, branch_id, target_branch_id, target_branch_name, product_id, type, quantity) VALUES(?, ?, ?, ?, ?, ?, ?)", [branchName, branchId, targetBranchId, targetBranchName, productId, theType, transferQuantity], (err, result) => {
+        if (err) {
+          db.rollback();
+          return reject(err);
+        }
+        db.commit();
+        return resolve('Successfully inserted and subtracted!');
+      }
+    );
+  });
+};
+
+// Update existing branch stock quantity from transfer
+const updateAndSubtract = async (branchId, branchName, targetBranchId, targetBranchName, productId, type, transferQuantity) => {
+  return new Promise((resolve, reject) => {
+    db.beginTransaction();
+
+    // Update branch stock quantity from transfer
+    db.query(
+      `UPDATE branch_stock SET ${type} = ${type} + ?, status = ? WHERE branch_id = ? AND product_id = ?`,
+      [transferQuantity, "pending", targetBranchId, productId],
+      (err) => {
+        if (err) {
+          db.rollback();
+          return reject(err);
+        }
+      }
+    );
+
+    // Subtract branch stock quantity from transfer
+    db.query(
+      `UPDATE branch_stock SET ${type} = ${type} - ?, status = ? WHERE branch_id = ? AND product_id = ?`,
+      [transferQuantity, "pending", branchId, productId],
+      (err) => {
+        if (err) {
+          db.rollback();
+          return reject(err);
+        }
+      }
+    );
+
+    // Insert into stock transfer history table
+    let theType = type == 'stock_quantity_wholesale' ? 'wholesale' : 'retail';
+    db.query(
+      "INSERT INTO stock_transfer_history (branch_name, branch_id, target_branch_id, target_branch_name, product_id, type, quantity) VALUES(?, ?, ?, ?, ?, ?, ?)", [branchName, branchId, targetBranchId, targetBranchName, productId, theType, transferQuantity], (err, result) => {
+        if (err) {
+          db.rollback();
+          return reject(err);
+        }
+        db.commit();
+        return resolve('Successfully updated and subtracted!');
+      }
+    );
+  });
+};
+
+// Get all branches
+const getAllBranches = async () => {
+  return new Promise((resolve, reject) => {
+    db.query("SELECT * FROM store_branches", (err, result) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(result);
+    });
+  });
+};
+
+// Get stock transfer history
+const getStockTransferHistory = async (branchId) => {
+  return new Promise((resolve, reject) => {
+    db.query("SELECT * FROM stock_transfer_history INNER JOIN products ON stock_transfer_history.product_id = products.product_id WHERE stock_transfer_history.branch_id = ?", [branchId], (err, result) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(result);
+    });
+  });
+}
+
+// Get stock received history
+const getStockReceivedHistory = async (branchId) => {
+  return new Promise((resolve, reject) => {
+    db.query("SELECT * FROM stock_transfer_history INNER JOIN products ON stock_transfer_history.product_id = products.product_id WHERE stock_transfer_history.target_branch_id = ?", [branchId], (err, result) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(result);
+    });
+  });
+}
+
+// Function to insert into stock transfer history table
+// const insertIntoStockTransferHistory = async (branchId, targetBranchId, productId, type, quantity) => {
+//   return new Promise((resolve, reject) => {
+//     db.query(
+//       "INSERT INTO stock_transfer_history (branch_id, target_branch_id, product_id, type, quantity) VALUES(?, ?, ?, ?, ?)", [branchId, targetBranchId, productId, type, quantity], (err, result) => {
+//         if (err) {
+//           reject(err);
+//         }
+//         resolve(result);
+//       }
+//     );
+//   });
+// };
+
+
 module.exports = {
   getBranchById,
   getProductsOnly,
@@ -252,5 +407,11 @@ module.exports = {
   updateLastInspected,
   checkLowProducts,
   checkWholesaleStockLevel,
-  checkRetailStockLevel
+  checkRetailStockLevel,
+  getProductByIdAndType,
+  insertAndSubtract,
+  updateAndSubtract,
+  getAllBranches,
+  getStockTransferHistory,
+  getStockReceivedHistory
 };

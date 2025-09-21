@@ -1,5 +1,7 @@
 // File: controllers/branchController.js
 
+const db = require("../config/dbConfig");
+
 // Branch Model
 const BranchModel = require("../models/branchModel");
 
@@ -369,12 +371,127 @@ const getBranchNotificationsPage = async (req, res) => {
     const lowStockRetailProducts = await BranchModel.checkRetailStockLevel(branchId);
     console.log("Products with low retail stock level: ", lowStockRetailProducts);
 
-    res.render("notifications", { branch, products, lowStockWholesaleProducts, lowStockRetailProducts });
+    // Get the stock transfer history
+    const stockTransferHistory = await BranchModel.getStockTransferHistory(branchId);
+
+    // Get the stock received history
+    const stockReceivedHistory = await BranchModel.getStockReceivedHistory(branchId);
+
+    res.render("notifications", { branch, products, lowStockWholesaleProducts, lowStockRetailProducts, stockTransferHistory, stockReceivedHistory });
   } catch (error) {
     console.log("An error occurred: ", error);
     return res.render("error-page");
   }
 };
+
+// Get transfer stock page
+const getStockTransferPage = async (req, res) => {
+  try {
+    // Get branch by ID
+    const branchId = req.params.branchId;
+    const branch = await BranchModel.getBranchById(branchId);
+    console.log("Branch:", branch);
+
+    // Get all branches
+    const allBranches = await BranchModel.getAllBranches();
+
+    // Get the products
+    const products = await BranchModel.getBranchProducts(branchId);
+
+    res.render("stock-transfer", { branch, allBranches, products });
+  } catch (error) {
+    console.log("An error occurred: ", error);
+    return res.render("error-page");
+  }
+};
+
+// Transfer Branch Stock
+const transferBranchStock = async (req, res) => {
+  try {
+    const { branchId, productId, transferQuantity, type, targetBranchId } = req.body;
+    const convertedTransferQuantity = Math.floor(transferQuantity);
+
+    // Make sure all details were provided
+    if (!branchId || !productId || !transferQuantity || !type || !targetBranchId) {
+      console.log('Please provide all details');
+      req.flash('error_msg', 'Please provide all details!')
+      return res.redirect(`/branch/${branchId}/transfer-stock`);
+    }
+
+    // Check if branch exists
+    const branch = await BranchModel.getBranchById(branchId);
+    if (branch.length < 1) {
+      console.log('Invalid branch ID');
+      req.flash('error_msg', 'Branch not found!')
+      return res.redirect(`/branch/${branchId}/transfer-stock`);
+      // return res.status(404).json({ error: 'Branch not found!' });
+    }
+
+    // Get product details
+    const productDetails = await BranchModel.getProductByIdAndType(productId, type, branchId);
+    if (!productDetails) {
+      console.log('Product not found');
+      req.flash('error_msg', 'Product not found!');
+      return res.redirect(`/branch/${branchId}/transfer-stock`);
+      // return res.status(404).json({ error: 'Product not found!' });
+    }
+
+    // Now check if the product's quantity is sufficient
+    if (productDetails.product_quantity < 1) {
+      console.log('Insufficient product');
+      req.flash('error_msg', 'Insufficient stock quantity!');
+      return res.redirect(`/branch/${branchId}/transfer-stock`);
+      // return res.status(422).json({ error: 'Insufficient stock quantity' });
+    }
+
+    if (convertedTransferQuantity > productDetails.product_quantity) {
+      console.log('Cannot transfer more than the available quantity');
+      req.flash('error_msg', 'Cannot transfer more than the available quantity!');
+      return res.redirect(`/branch/${branchId}/transfer-stock`);
+      // return res.status(422).json({ error: 'Cannot transfer more than the available quantity!' });
+    }
+
+    if (branchId == targetBranchId) {
+      console.log('Branch can not transfer to itself');
+      req.flash('error_msg', 'Branch can not transfer to itself!');
+      return res.redirect(`/branch/${branchId}/transfer-stock`);
+      // return res.status(400).json({ error: 'Branch can not transfer to itself!' });
+    }
+
+    // Validate target branch
+    const targetBranch = await BranchModel.getBranchById(targetBranchId);
+    if (targetBranch.length < 1) {
+      console.log('Invalid target branch ID');
+      req.flash('error_msg', 'Target Branch not found!');
+      return res.redirect(`/branch/${branchId}/transfer-stock`);
+      // return res.status(404).json({ error: 'Target Branch not found!' });
+    }
+
+    // Check if product already exists in target branch
+    const checkProduct = await BranchModel.getExistingBranchProduct(targetBranchId, productId);
+
+    if (checkProduct.length < 1) {
+      // Insert new stock in target
+      await BranchModel.insertAndSubtract(branchId, branch[0].branch_name, targetBranchId, targetBranch[0].branch_name, productId, type, convertedTransferQuantity);
+      console.log('Inserted and subtracted');
+    } else {
+      // Update existing stock in target and subtract from source branch
+      await BranchModel.updateAndSubtract(branchId, branch[0].branch_name, targetBranchId, targetBranch[0].branch_name, productId, type, convertedTransferQuantity);
+      console.log('Updated and subtracted');
+    }
+
+    req.flash('success_msg', 'Stock Transfer successful!')
+    return res.redirect(`/branch/${branchId}/transfer-stock`);
+    // return res.status(200).json({ message: 'Transfer successful!' });
+
+  } catch (error) {
+    console.error(error);
+    req.flash('error_msg', 'Error transferring stock!')
+    return res.redirect(`/branch/${branchId}/transfer-stock`);
+    // return res.status(500).json({ error: 'Error transferring stock!' });
+  }
+};
+
 
 module.exports = {
   getBranchPage,
@@ -388,5 +505,7 @@ module.exports = {
   checkLowStockLevel,
   checkWholesaleStockLevel,
   checkRetailStockLevel,
-  getBranchNotificationsPage
+  getBranchNotificationsPage,
+  getStockTransferPage,
+  transferBranchStock
 };

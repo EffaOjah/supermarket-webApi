@@ -173,7 +173,7 @@
 							<i class="fa-solid fa-tarp"></i>
 							<p>Branch Products</p>
 							<span class="badge badge-count">
-								<%= products.length %>
+								<%= branchProducts.length %>
 							</span>
 						</a>
 					</li>
@@ -188,6 +188,13 @@
 						<a href="/branch/<%= branch[0].branch_id %>/notifications">
 							<i class="far fa-bell"></i>
 							<p>Notifications</p>
+							<span class="badge badge-count"></span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="/branch/<%= branch[0].branch_id %>/transfer-stock">
+							<i class="fa-solid fa-share"></i>
+							<p>Transfer Stock</p>
 							<span class="badge badge-count"></span>
 						</a>
 					</li>

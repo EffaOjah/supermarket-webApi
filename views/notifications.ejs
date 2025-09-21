@@ -67,6 +67,39 @@
         font-size: 0.85rem;
       }
     }
+
+    .pill-section li {
+      margin-left: 3px;
+    }
+
+    @media (max-width: 676px) {
+      .pill-section {
+        font-size: 10px;
+      }
+
+      /* .tabs-section {
+        font-size: 10px;
+        display: flex !important;
+      }
+
+      .tabs-section button {
+        margin: 1px !important;
+      } */
+    }
+
+    @media (max-width: 676px) {
+      .tabs-section {
+        font-size: 15px;
+      }
+
+      .tabs-section button {
+        padding: 20px !important;
+      }
+
+      .empty {
+        font-size: 15px;
+      }
+    }
   </style>
 </head>
 
@@ -244,12 +277,18 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="/branch/<%= branch[0].branch_id %>/transfer-stock">
+              <i class="fa-solid fa-share"></i>
+              <p>Transfer Stock</p>
+              <span class="badge badge-count"></span>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="/logout">
               <i class="fas fa-sign-out-alt"></i>
               <p>Log Out</p>
             </a>
           </li>
-
         </ul>
       </div>
     </div>
@@ -257,36 +296,34 @@
     <div class="main-panel">
       <div class="content">
         <div class="container py-4">
+          <h4 class="fw-bold text-primary mb-2">Notifications</h4>
           <!-- Header -->
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4 class="fw-bold text-primary">Notifications</h4>
+          <div class="d-flex justify-content-between align-items-center mt-3 mb-4">
+            <div>
+              <ul class="nav nav-pills pill-section">
+                <li class="nav-item">
+                  <a class="nav-link active" data-bs-toggle="pill" href="#lowStock">low stock</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-bs-toggle="pill" href="#transferHistory">stock transfer history</a>
+                </li>
+              </ul>
+            </div>
+
             <button class="btn bg-white btn-sm refresh-btn" onclick="window.location.reload()">
               <i class="fas fa-redo"></i> Refresh
             </button>
           </div>
 
-          <% if (lowStockWholesaleProducts.length < 1 && lowStockRetailProducts.length < 1) { %>
-            <div class="d-flex justify-content-center mb-3">
-              <h3>No notifications</h3>
-            </div>
-            <% } else { %>
-              <% lowStockWholesaleProducts.forEach(product=> { %>
-                <div class="notifications-card d-flex justify-content-between align-items-start mb-3">
-                  <div>
-                    <div class="notif-title">
-                      Low stock alert!
-                    </div>
-                    <div class="notif-text">
-                      <span class="fw-bold fst-italic">
-                        <%= product.product_name %>
-                      </span> wholesale stock level is low
-                    </div>
-                  </div>
-                  <!-- <div class="notif-time">3 months ago</div> -->
-                  <a href="/stock-branch/<%= branch[0].branch_id %>" class="btn btn-info stock-btn">Stock</a>
+          <!-- Tab panes -->
+          <div class="tab-content">
+            <div class="tab-pane container active" id="lowStock">
+              <% if (lowStockWholesaleProducts.length < 1 && lowStockRetailProducts.length < 1) { %>
+                <div class="d-flex justify-content-center mb-3">
+                  <h3 class="empty">No notifications</h3>
                 </div>
-                <% }) %>
-                  <% lowStockRetailProducts.forEach(product=> { %>
+                <% } else { %>
+                  <% lowStockWholesaleProducts.forEach(product=> { %>
                     <div class="notifications-card d-flex justify-content-between align-items-start mb-3">
                       <div>
                         <div class="notif-title">
@@ -295,28 +332,150 @@
                         <div class="notif-text">
                           <span class="fw-bold fst-italic">
                             <%= product.product_name %>
-                          </span> retail stock level is low
+                          </span> wholesale stock level is low
                         </div>
                       </div>
                       <!-- <div class="notif-time">3 months ago</div> -->
                       <a href="/stock-branch/<%= branch[0].branch_id %>" class="btn btn-info stock-btn">Stock</a>
                     </div>
                     <% }) %>
-                      <% } %>
-
-                        <!-- Pagination -->
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                          <small>Showing <%= lowStockWholesaleProducts.length + lowStockRetailProducts.length %> of <%=
-                                lowStockWholesaleProducts.length + lowStockRetailProducts.length %>
-                                notifications</small>
-                          <nav>
-                            <ul class="pagination pagination-sm mb-0">
-                              <li class="page-item disabled"><a class="page-link" href="#">‹</a></li>
-                              <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                              <li class="page-item disabled"><a class="page-link" href="#">›</a></li>
-                            </ul>
-                          </nav>
+                      <% lowStockRetailProducts.forEach(product=> { %>
+                        <div class="notifications-card d-flex justify-content-between align-items-start mb-3">
+                          <div>
+                            <div class="notif-title">
+                              Low stock alert!
+                            </div>
+                            <div class="notif-text">
+                              <span class="fw-bold fst-italic">
+                                <%= product.product_name %>
+                              </span> retail stock level is low
+                            </div>
+                          </div>
+                          <!-- <div class="notif-time">3 months ago</div> -->
+                          <a href="/stock-branch/<%= branch[0].branch_id %>" class="btn btn-info stock-btn">Stock</a>
                         </div>
+                        <% }) %>
+                          <% } %>
+
+                            <!-- Pagination for low stock -->
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                              <small>Showing <%= lowStockWholesaleProducts.length + lowStockRetailProducts.length %> of
+                                  <%= lowStockWholesaleProducts.length + lowStockRetailProducts.length %>
+                                    notifications</small>
+                              <nav>
+                                <ul class="pagination pagination-sm mb-0">
+                                  <li class="page-item disabled"><a class="page-link" href="#">‹</a></li>
+                                  <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                  <li class="page-item disabled"><a class="page-link" href="#">›</a></li>
+                                </ul>
+                              </nav>
+                            </div>
+            </div>
+            <div class="tab-pane container fade" id="transferHistory">
+              <ul class="nav nav-tabs tabs-section justify-content-center" id="myTab">
+                <li class="nav-item">
+                  <a class="nav-link active p-3" data-bs-toggle="tab" href="#transferred-tab">Transferred</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link p-3" data-bs-toggle="tab" href="#received-tab">Received</a>
+                </li>
+              </ul>
+
+              <!-- Tab panes -->
+              <div class="tab-content" id="myTabContent">
+                <!-- Transferred Tab -->
+                <div class="tab-pane fade show active" id="transferred-tab" role="tabpanel"
+                  aria-labelledby="transferred-tab">
+
+                  <% if (stockTransferHistory.length < 1) { %>
+                    <div class="d-flex justify-content-center mb-3">
+                      <h5 class="mt-3 empty">No products Transferred</h5>
+                    </div>
+                    <% } else { %>
+                      <% stockTransferHistory.forEach(history=> { %>
+                        <div class="notifications-card d-flex justify-content-between align-items-start mb-3">
+                          <div>
+                            <div class="notif-title">
+                              Stock transfer!
+                            </div>
+                            <div class="notif-text"> Transferred
+                              <span class="text-primary">
+                                <%= history.quantity %>
+                              </span>
+                              <%= history.type %> quantity of
+                                <span class="fw-bold fst-italic">
+                                  <%= history.product_name %>
+                                </span> to <span class="fw-bold fst-italic">
+                                  <%= history.target_branch_name %>
+                                </span>
+                            </div>
+                          </div>
+
+                        </div>
+                        <% }) %>
+
+                          <!-- Pagination -->
+                          <div class="d-flex justify-content-between align-items-center mt-3">
+                            <small>Showing <%= stockTransferHistory.length %> of <%= stockTransferHistory.length %>
+                                  notifications</small>
+                            <nav>
+                              <ul class="pagination pagination-sm mb-0">
+                                <li class="page-item disabled"><a class="page-link" href="#">‹</a></li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item disabled"><a class="page-link" href="#">›</a></li>
+                              </ul>
+                            </nav>
+                          </div>
+                          <% } %>
+                </div>
+
+                <!-- Retail Tab -->
+                <div class="tab-pane fade" id="received-tab" role="tabpanel" aria-labelledby="received-tab">
+
+                  <% if (stockReceivedHistory.length < 1) { %>
+                    <div class="d-flex justify-content-center mb-3">
+                      <h5 class="mt-3 empty">No products received</h5>
+                    </div>
+                    <% } else { %>
+                      <% stockReceivedHistory.forEach(history=> { %>
+                        <div class="notifications-card d-flex justify-content-between align-items-start mb-3">
+                          <div>
+                            <div class="notif-title">
+                              Stock received!
+                            </div>
+                            <div class="notif-text"> Received
+                              <span class="text-primary">
+                                <%= history.quantity %>
+                              </span>
+                              <%= history.type %> quantity of
+                                <span class="fw-bold fst-italic">
+                                  <%= history.product_name %>
+                                </span> from <span class="fw-bold fst-italic">
+                                  <%= history.branch_name %>
+                                </span>
+                            </div>
+                          </div>
+
+                        </div>
+                        <% }) %>
+
+                          <!-- Pagination -->
+                          <div class="d-flex justify-content-between align-items-center mt-3">
+                            <small>Showing <%= stockReceivedHistory.length %> of <%= stockReceivedHistory.length %>
+                                  notifications</small>
+                            <nav>
+                              <ul class="pagination pagination-sm mb-0">
+                                <li class="page-item disabled"><a class="page-link" href="#">‹</a></li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item disabled"><a class="page-link" href="#">›</a></li>
+                              </ul>
+                            </nav>
+                          </div>
+                          <% } %>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -344,5 +503,8 @@
 <script src="/js/getNotifications.js"></script>
 
 <script src="/js/toast.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="/js/bootstrap.bundle.min.js"></script>
 
 </html>

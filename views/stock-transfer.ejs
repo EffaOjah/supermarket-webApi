@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>MaryBill Conglomerate Ltd. - Stock Transfer</title>
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+    name='viewport' />
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+  <script src="https://kit.fontawesome.com/a207e207d8.js" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="/css/ready.css">
+  <link rel="stylesheet" href="/css/demo.css">
+  <link rel="icon" type="image/x-icon" href="/img/app_icon.ico">
+
+  <link rel="stylesheet" href="/iziToast-master/dist/css/iziToast.min.css">
+</head>
+
+<body>
+  <span class="d-none" id="branchId">
+    <%= branch[0].branch_id %>
+  </span>
+
+  <div class="wrapper">
+    <div class="main-header">
+      <div class="logo-header">
+        <a href="/admin/dashboard" class="logo">
+          MaryBill Conglomerate
+        </a>
+        <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse"
+          data-target="collapse" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <button class="topbar-toggler more"><i class="la la-ellipsis-v"></i><span class="n-indicator"></span></button>
+      </div>
+      <nav class="navbar navbar-header navbar-expand-lg">
+        <div class="container-fluid">
+
+          <form class="navbar-left navbar-form nav-search mr-md-3" action="">
+            <div class="input-group">
+              <input type="text" placeholder="Search ..." class="form-control">
+              <div class="input-group-append">
+                <span class="input-group-text">
+                  <i class="la la-search search-icon"></i>
+                </span>
+              </div>
+            </div>
+          </form>
+          <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+            <!-- <li class="nav-item dropdown hidden-caret">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+								aria-haspopup="true" aria-expanded="false">
+								<i class="la la-envelope"></i>
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" href="#">Action</a>
+								<a class="dropdown-item" href="#">Another action</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="#">Something else here</a>
+							</div>
+						</li> -->
+            <li class="nav-item dropdown hidden-caret">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="la la-bell"></i>
+                <span class="notification notification-count">0</span>
+              </a>
+              <ul class="dropdown-menu notif-box" aria-labelledby="navbarDropdown">
+                <li>
+                  <div class="dropdown-title notification-title">You have 0 new notification</div>
+                </li>
+                <li>
+                  <div class="notif-center">
+                    <!-- Notification contents goes here -->
+                  </div>
+                </li>
+                <li>
+                  <a class="see-all" href="/branch/<%= branch[0].branch_id %>/notifications"> <strong>See all
+                      notifications</strong> <i class="la la-angle-right"></i> </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img
+                  src="/img/profile-icon.png" alt="user-img" width="36" class="img-circle"><span>Steven</span></span>
+              </a>
+              <ul class="dropdown-menu dropdown-user">
+                <li>
+                  <div class="user-box">
+                    <div class="u-img"><img src="/img/profile-icon.png" alt="user"></div>
+                    <div class="u-text">
+                      <h4>Steven</h4>
+                      <p class="text-muted">hello@themekita.com</p><a href="#"
+                        class="btn btn-rounded btn-danger btn-sm">View Profile</a>
+                    </div>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#"><i class="ti-user"></i> My Profile</a>
+                <a class="dropdown-item" href="#"></i> My Balance</a>
+                <a class="dropdown-item" href="#"><i class="ti-email"></i> Inbox</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#"><i class="ti-settings"></i> Account Setting</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#"><i class="fa fa-power-off"></i> Logout</a>
+              </ul>
+              <!-- /.dropdown-user -->
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="sidebar">
+      <div class="scrollbar-inner sidebar-wrapper">
+        <div class="user">
+          <div class="photo">
+            <img src="/img/profile-icon.png">
+          </div>
+          <div class="info">
+            <a class="" data-toggle="collapse" href="#collapseExample" aria-expanded="true">
+              <span>
+                Steven
+                <span class="user-level">Administrator</span>
+                <span class="caret"></span>
+              </span>
+            </a>
+            <div class="clearfix"></div>
+
+            <div class="collapse in" id="collapseExample" aria-expanded="true">
+              <ul class="nav">
+                <li>
+                  <a href="#profile">
+                    <span class="link-collapse">My Profile</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#edit">
+                    <span class="link-collapse">Edit Profile</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#settings">
+                    <span class="link-collapse">Settings</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <ul class="nav">
+          <li class="nav-item">
+            <a href="/admin/dashboard">
+              <i class="fa-solid fa-gauge"></i>
+              <p>Dashboard</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/branch/<%= branch[0].branch_id %>">
+              <i class="fas fa-chart-pie"></i>
+              <p>Branch Overview</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/stock-branch/<%= branch[0].branch_id %>">
+              <i class="fa-solid fa-arrow-trend-up"></i>
+              <p>Stock Branch</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/branch/<%= branch[0].branch_id %>/products">
+              <i class="fa-solid fa-tarp"></i>
+              <p>Branch Products</p>
+              <span class="badge badge-count">
+                <%= products.length %>
+              </span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/branch/<%= branch[0].branch_id %>/sales">
+              <i class="fa-solid fa-cart-shopping"></i>
+              <p>Sales</p>
+              <span class="badge badge-count"></span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/branch/<%= branch[0].branch_id %>/notifications">
+              <i class="far fa-bell"></i>
+              <p>Notifications</p>
+              <span class="badge badge-count"></span>
+            </a>
+          </li>
+          <li class="nav-item active">
+            <a href="/branch/<%= branch[0].branch_id %>/transfer-stock">
+              <i class="fa-solid fa-share"></i>
+              <p>Transfer Stock</p>
+              <span class="badge badge-count"></span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/logout">
+              <i class="fas fa-sign-out-alt"></i>
+              <p>Log Out</p>
+            </a>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+    <div class="main-panel">
+      <div class="content">
+        <div class="container-fluid">
+          <h4 class="page-title">
+            <%= branch[0].branch_name %> > <span class="text-primary">Stock Transfer</span>
+          </h4>
+          <div class="row justify-content-center">
+            <div class="col-md-6 bg-white rounded mt-3">
+              <div class="card" style="box-shadow: none; border: none;">
+                <form action="/branch/transfer-stock" method="POST">
+                  <div class="card-header">
+                    <div class="card-title">Transfer Stock from <%= branch[0].branch_name %>
+                    </div>
+                  </div>
+                  <input type="hidden" name="branchId" value="<%= branch[0].branch_id %>">
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label for="products">Select Product</label>
+                      <select class="form-control" id="products" name="productId" required>
+                        <option value="">Select Product</option>
+                        <% products.forEach(product=> { %>
+                          <option value="<%= product.product_id %>">
+                            <%= product.product_name %>
+                          </option>
+                          <% }) %>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <label for="products">Select Type(wholesale/retail)</label>
+                          <select class="form-control" id="products" name="type" required>
+                            <option value="">Select Type</option>
+                            <option value="stock_quantity_wholesale">Wholesale</option>
+                            <option value="stock_quantity_retail">Retail</option>
+                          </select>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="quantity">Quantity</label>
+                          <input type="number" class="form-control" id="quantity" name="transferQuantity"
+                            placeholder="Transfer quantity" min="1" required>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="products">Select Target Branch</label>
+                      <select class="form-control" id="products" name="targetBranchId" required>
+                        <option value="">Select Branch</option>
+                        <% allBranches.forEach(branch=> { %>
+                          <option value="<%= branch.branch_id %>">
+                            <%= branch.branch_name %>
+                          </option>
+                          <% }) %>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="card-action">
+                    <button class="btn btn-success">Submit</button>
+                    <input class="btn btn-danger" type="reset">
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header justify-content-center">
+          <h5 class="modal-title text-center fw-bold text-primary" id="exampleModalLabel">Price for product
+            not set</h5>
+          <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button> -->
+        </div>
+        <div class="modal-body text-center">
+          <p id="modalBodyMessage"></p>
+          <p>Click the button below to set price of the product</p>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <a type="button" id="productEditLink" class="btn btn-primary text-white">Set price &rightarrow;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <%- include('./partials/responseMessage') %>
+</body>
+<script src="/js/core/jquery.3.2.1.min.js"></script>
+<script src="/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+<script src="/js/core/popper.min.js"></script>
+<script src="/js/core/bootstrap.min.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/plugin/chartist/chartist.min.js"></script>
+<script src="/js/plugin/chartist/plugin/chartist-plugin-tooltip.min.js"></script>
+<!-- <script src="/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script> -->
+<script src="/iziToast-master/dist/js/iziToast.min.js"></script>
+<script src="/js/plugin/bootstrap-toggle/bootstrap-toggle.min.js"></script>
+<script src="/js/plugin/jquery-mapael/jquery.mapael.min.js"></script>
+<script src="/js/plugin/jquery-mapael/maps/world_countries.min.js"></script>
+<script src="/js/plugin/chart-circle/circles.min.js"></script>
+<script src="/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+<script src="/js/ready.min.js"></script>
+<script src="/js/demo.js"></script>
+
+<script src="/js/getNotifications.js"></script>
+
+<script src="/js/toast.js"></script>
+
+<script>
+  function getCookie(name) {
+    const cookies = document.cookie.split('; ');
+    for (const cookie of cookies) {
+      const [cookieName, cookieValue] = cookie.split('=');
+      if (cookieName === name) {
+        return decodeURIComponent(cookieValue);
+      }
+    }
+    return null; // cookie not found
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    var message = document.getElementById('message').innerHTML;
+    message = message.trim();
+
+
+    // Check error message to show modal
+    if (message.includes('price has not been set for this product')) {
+      document.getElementById('modalBodyMessage').innerHTML = message;
+      document.getElementById('productEditLink').setAttribute('href', `/product/${getCookie('productId')}/update`);
+
+      $('#messageModal').modal('show');
+    }
+  })
+
+
+
+
+</script>
+
+</html>

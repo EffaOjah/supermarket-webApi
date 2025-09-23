@@ -212,102 +212,145 @@
 					<h4 class="page-title">
 						<%= branch[0].branch_name %> > <span class="text-primary">Overview</span>
 					</h4>
-					<div class="row justify-content-center">
-						<!-- Sale & Revenue Start -->
-						<div class="container-fluid pt-4 px-4">
-							<h5 class="mb-4">Sales Analysis</h5>
 
-							<div class="row g-4">
-								<div class="col-sm-6 col-xl-6 mb-3">
-									<div class="bg-primary rounded d-flex align-items-center justify-content-between p-4">
-										<i class="fa fa-chart-line fa-3x text-primary"></i>
-										<div class="ms-3">
-											<p class="mb-2 text-white">Total <span class="text-white">Retail</span> Sales Today</p>
-											<h6 class="mb-0 text-white">₦ <span id="retailAmountToday">0,00</span></h6>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-6 col-xl-6">
-									<div class="bg-primary rounded d-flex align-items-center justify-content-between p-4">
-										<i class="fa fa-chart-line fa-3x text-primary"></i>
-										<div class="ms-3">
-											<p class="mb-2 text-white">Total <span class="text-white">Wholesale</span> Sales Today</p>
-											<h6 class="mb-0 text-white">₦ <span id="wholesaleAmountToday">0,00</span></h6>
-										</div>
-									</div>
-								</div>
-
-								<hr>
-
+					<% if (overview.length < 1) { %>
+						<div class="row justify-content-center p-2 text-white">
+							<div class="col-md-3 p-5 bg-primary mx-3 mb-3 text-center rounded">
+								<h6>Total cost of goods</h6>
+								<h6>₦<span>0</span></h6>
+							</div>
+							<div class="col-md-3 p-5 bg-primary mx-3 mb-3 text-center rounded">
+								<h6>Total revenue</h6>
+								<h6>₦<span>0</span></h6>
+							</div>
+							<div class="col-md-3 p-5 bg-primary mx-3 mb-3 text-center rounded">
+								<h6>Profit & Loss</h6>
+								<h6>₦<span id="profit_or_loss" class="fw-bolder">0</span></h6>
 							</div>
 						</div>
-
-						<br><br>
-						<!-- Date Range Revenue -->
-						<div class="mt-5">
-							<h6 class="mb-4">Select Date Range for Sales Analysis</h6>
-							<div class="date-range-container bg-primary d-flex mt-3">
-								<div>
-									<label class="text-white" for="dateRange">Select Date Range:</label>
-									<select id="dateRange">
-										<option value="">-- Select Range --</option>
-										<option value="yesterday">Yesterday</option>
-										<option value="last7">Last 7 Days</option>
-										<option value="last30">Last 30 Days</option>
-										<option value="thisMonth">This Month</option>
-										<option value="lastMonth">Last Month</option>
-										<option value="thisYear">This Year</option>
-										<option value="lastYear">Last Year</option>
-										<option value="custom">Custom Range</option>
-									</select>
+						<% } else { %>
+							<div class="row justify-content-center p-2 text-white">
+								<div class="col-md-3 p-5 bg-primary mx-3 mb-3 text-center rounded">
+									<h6>Total cost of goods</h6>
+									<h6>₦<span>
+											<%= !overview[0].total_cost ? 0 : overview[0].total_cost %>
+										</span></h6>
 								</div>
-
-								<!-- Custom date pickers -->
-								<div>
-									<label for="customRange" class="cdr text-white">Custom Date Range:</label>
-									<div class="custom-range" id="customRange">
-										<input type="date" id="customStart">
-										<input type="date" id="customEnd">
-									</div>
+								<div class="col-md-3 p-5 bg-primary mx-3 mb-3 text-center rounded">
+									<h6>Total revenue</h6>
+									<h6>₦<span>
+											<%= overview[0].total_revenue || 0 %>
+										</span></h6>
 								</div>
-
-								<div>
-									<label class="text-white" for="dateInput">Date Range:</label>
-									<input type="text" id="dateInput" placeholder="YYYY-MM-DD - YYYY-MM-DD" readonly />
+								<div class="col-md-3 p-5 bg-primary mx-3 mb-3 text-center rounded">
+									<h6>Profit & Loss</h6>
+									<h6>₦<span id="profit_or_loss" class="fw-bolder">
+											<%= overview[0].profit_or_loss || 0 %>
+										</span></h6>
 								</div>
 							</div>
-						</div>
+							<% } %>
 
 
-						<br><br><br>
 
-						<!-- Analysis gotten from daterange -->
-						<div class="container-fluid pt-4 px-4">
-							<div class="row g-4 d-none" id="dateRangeAnalysis">
-								<div class="col-sm-6 col-xl-6 mb-3">
-									<div class="bg-primary rounded d-flex align-items-center justify-content-between p-4">
-										<i class="fa fa-chart-line fa-3x text-primary"></i>
-										<div class="ms-3">
-											<p class="mb-2 text-white">Total Retail Sales</p>
-											<h6 class="mb-0 text-white">₦ <span id="retailAmountFromRange">0,00</span></h6>
+								<div class="row justify-content-center gap-3">
+
+
+									<!-- Sale & Revenue Start -->
+									<div class="container-fluid pt-4 px-4">
+										<h5 class="mb-4">Sales Analysis</h5>
+
+										<div class="row g-4">
+											<div class="col-sm-6 col-xl-6 mb-3">
+												<div class="bg-primary rounded d-flex align-items-center justify-content-between p-4">
+													<i class="fa fa-chart-line fa-3x text-primary"></i>
+													<div class="ms-3">
+														<p class="mb-2 text-white">Total <span class="text-white">Retail</span> Sales Today</p>
+														<h6 class="mb-0 text-white">₦ <span id="retailAmountToday">0,00</span></h6>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-6 col-xl-6">
+												<div class="bg-primary rounded d-flex align-items-center justify-content-between p-4">
+													<i class="fa fa-chart-line fa-3x text-primary"></i>
+													<div class="ms-3">
+														<p class="mb-2 text-white">Total <span class="text-white">Wholesale</span> Sales Today</p>
+														<h6 class="mb-0 text-white">₦ <span id="wholesaleAmountToday">0,00</span></h6>
+													</div>
+												</div>
+											</div>
+
+											<hr>
+
 										</div>
 									</div>
-								</div>
-								<div class="col-sm-6 col-xl-6">
-									<div class="bg-primary rounded d-flex align-items-center justify-content-between p-4">
-										<i class="fa fa-chart-line fa-3x text-primary"></i>
-										<div class="ms-3">
-											<p class="mb-2 text-white">Total Wholesale Sales</p>
-											<h6 class="mb-0 text-white">₦ <span id="wholesaleAmountFromRange">0,00</span></h6>
+
+									<br><br>
+									<!-- Date Range Revenue -->
+									<div class="mt-5">
+										<h6 class="mb-4">Select Date Range for Sales Analysis</h6>
+										<div class="date-range-container bg-primary d-flex mt-3">
+											<div>
+												<label class="text-white" for="dateRange">Select Date Range:</label>
+												<select id="dateRange">
+													<option value="">-- Select Range --</option>
+													<option value="yesterday">Yesterday</option>
+													<option value="last7">Last 7 Days</option>
+													<option value="last30">Last 30 Days</option>
+													<option value="thisMonth">This Month</option>
+													<option value="lastMonth">Last Month</option>
+													<option value="thisYear">This Year</option>
+													<option value="lastYear">Last Year</option>
+													<option value="custom">Custom Range</option>
+												</select>
+											</div>
+
+											<!-- Custom date pickers -->
+											<div>
+												<label for="customRange" class="cdr text-white">Custom Date Range:</label>
+												<div class="custom-range" id="customRange">
+													<input type="date" id="customStart">
+													<input type="date" id="customEnd">
+												</div>
+											</div>
+
+											<div>
+												<label class="text-white" for="dateInput">Date Range:</label>
+												<input type="text" id="dateInput" placeholder="YYYY-MM-DD - YYYY-MM-DD" readonly />
+											</div>
 										</div>
 									</div>
-								</div>
-							</div>
-						</div>
-						<!-- End of Analysis -->
 
-						<!-- stopped -->
-					</div>
+
+									<br><br><br>
+
+									<!-- Analysis gotten from daterange -->
+									<div class="container-fluid pt-4 px-4">
+										<div class="row g-4 d-none" id="dateRangeAnalysis">
+											<div class="col-sm-6 col-xl-6 mb-3">
+												<div class="bg-primary rounded d-flex align-items-center justify-content-between p-4">
+													<i class="fa fa-chart-line fa-3x text-primary"></i>
+													<div class="ms-3">
+														<p class="mb-2 text-white">Total Retail Sales</p>
+														<h6 class="mb-0 text-white">₦ <span id="retailAmountFromRange">0,00</span></h6>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-6 col-xl-6">
+												<div class="bg-primary rounded d-flex align-items-center justify-content-between p-4">
+													<i class="fa fa-chart-line fa-3x text-primary"></i>
+													<div class="ms-3">
+														<p class="mb-2 text-white">Total Wholesale Sales</p>
+														<h6 class="mb-0 text-white">₦ <span id="wholesaleAmountFromRange">0,00</span></h6>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- End of Analysis -->
+
+									<!-- stopped -->
+								</div>
 
 				</div>
 			</div>
@@ -338,5 +381,13 @@
 <!-- <script src="/js/toast.js"></script> -->
 
 <script src="/js/getNotifications.js"></script>
+
+<script>
+	const profitOrLoss = document.getElementById('profit_or_loss');
+
+	if (profitOrLoss.innerHTML < 0) {
+		profitOrLoss.parentElement.style.color = 'red'
+	}
+</script>
 
 </html>

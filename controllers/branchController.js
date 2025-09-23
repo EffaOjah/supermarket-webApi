@@ -17,10 +17,16 @@ const getBranchPage = async (req, res) => {
       return res.render("error-page");
     }
 
+    // Get branch products
     const products = await BranchModel.getBranchProducts(branchId);
+    console.log("Branch Products:", products);
+
+    // Get branch overview
+    const overview = await BranchModel.getBranchOverview(branchId);
+    console.log("Branch Overview:", overview);
 
     // Render page
-    res.render("branch-overview", { branch, products });
+    res.render("branch-overview", { branch, products, overview });
   } catch (error) {
     console.error("An error occurred:", error);
     return res.render("error-page");

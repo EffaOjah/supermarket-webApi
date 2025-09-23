@@ -377,6 +377,47 @@ const getStockReceivedHistory = async (branchId) => {
   });
 }
 
+// Get branch overview
+const getBranchOverview = async (branchId) => {
+  return new Promise((resolve, reject) => {
+    db.query(`SELECT 
+    bs.branch_id,
+    SUM(si.sub_total) AS total_revenue,
+    SUM(
+        CASE 
+            WHEN si.sale_type = 'wholesale' 
+                THEN si.quantity * COALESCE(p.wholesale_cost_price, 0)
+            WHEN si.sale_type = 'retail' 
+                THEN si.quantity * COALESCE(p.retail_cost_price, 0)
+            ELSE 0
+        END
+    ) AS total_cost,
+    (
+      SUM(si.sub_total) -
+      SUM(
+        CASE 
+            WHEN si.sale_type = 'wholesale' 
+                THEN si.quantity * COALESCE(p.wholesale_cost_price, 0)
+            WHEN si.sale_type = 'retail' 
+                THEN si.quantity * COALESCE(p.retail_cost_price, 0)
+            ELSE 0
+        END
+      )
+    ) AS profit_or_loss
+      FROM branch_sales bs
+      JOIN sale_items si ON bs.sale_id = si.sale_id
+      JOIN products p ON si.product_id = p.product_id
+      WHERE bs.branch_id = ?
+      GROUP BY bs.branch_id;`,
+      [branchId], (err, result) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(result);
+      });
+  });
+};
+
 // Function to insert into stock transfer history table
 // const insertIntoStockTransferHistory = async (branchId, targetBranchId, productId, type, quantity) => {
 //   return new Promise((resolve, reject) => {
@@ -413,5 +454,6 @@ module.exports = {
   updateAndSubtract,
   getAllBranches,
   getStockTransferHistory,
-  getStockReceivedHistory
+  getStockReceivedHistory,
+  getBranchOverview
 };

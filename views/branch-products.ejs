@@ -217,6 +217,9 @@
 						<div class="card">
 							<div class="card-header">
 								<div class="card-title">Products Details</div>
+								<button class="btn btn-primary btn-sm" id="exportPdfBtn" style="float: right;">
+									<i class="fas fa-file-pdf"></i> Export to PDF
+								</button>
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
@@ -311,5 +314,60 @@
 <script src="/js/getNotifications.js"></script>
 
 <script src="/js/toast.js"></script>
+
+	<!-- jsPDF library for PDF generation -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+	<script>
+		document.getElementById('exportPdfBtn').addEventListener('click', function() {
+			const { jsPDF } = window.jspdf;
+			const doc = new jsPDF('l', 'mm', 'a4'); // landscape orientation
+
+			// Get branch name
+			const branchName = '<%= branch[0].branch_name %>';
+			
+			// Add title
+			doc.setFontSize(18);
+			doc.text('MaryBill Conglomerate Ltd.', 14, 15);
+			doc.setFontSize(14);
+			doc.text(`${branchName} - Products Report`, 14, 22);
+			doc.setFontSize(10);
+			doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 28);
+
+			// Prepare table data
+			const tableData = [];
+			<% products.forEach((product, index) => { %>
+				tableData.push([
+					'<%= index + 1 %>',
+					'<%= product.product_name %>',
+					'<%= product.wholesale_cost_price ? `NGN ${product.wholesale_cost_price}` : "N/A" %>',
+					'<%= product.wholesale_selling_price ? `NGN ${product.wholesale_selling_price}` : "N/A" %>',
+					'<%= product.retail_cost_price ? `NGN ${product.retail_cost_price}` : "N/A" %>',
+					'<%= product.retail_selling_price ? `NGN ${product.retail_selling_price}` : "N/A" %>',
+					'<%= product.name %>',
+					'<%= product.category %>',
+					'<%= product.stock_quantity_wholesale %>',
+					'<%= product.stock_quantity_retail %>',
+					'<%= product.status %>'
+				]);
+			<% }); %>
+
+			// Add table
+			doc.autoTable({
+				head: [['#', 'Name', 'W. Cost', 'W. Selling', 'R. Cost', 'R. Selling', 'Supplier', 'Category', 'W. Qty', 'R. Qty', 'Status']],
+				body: tableData,
+				startY: 32,
+				styles: { fontSize: 8, cellPadding: 2 },
+				headStyles: { fillColor: [52, 73, 94], textColor: 255, fontStyle: 'bold' },
+				alternateRowStyles: { fillColor: [245, 245, 245] },
+				margin: { top: 32, left: 14, right: 14 }
+			});
+
+			// Save the PDF
+			const fileName = `${branchName.replace(/\s+/g, '_')}_Products_${new Date().toISOString().split('T')[0]}.pdf`;
+			doc.save(fileName);
+		});
+	</script>
 
 </html>

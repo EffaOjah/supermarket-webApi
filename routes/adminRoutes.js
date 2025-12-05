@@ -1,4 +1,4 @@
-// Require Auth route
+// Require Admin controller
 const adminController = require('../controllers/adminController');
 
 // Require JWT middleware

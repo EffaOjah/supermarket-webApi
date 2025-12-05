@@ -222,6 +222,9 @@
                         <div class="card">
                             <div class="card-header">
                                 <div class="card-title">All Sales</div>
+                                <button class="btn btn-primary btn-sm" id="exportPdfBtn" style="float: right;">
+                                    <i class="fas fa-file-pdf"></i> Export to PDF
+                                </button>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -356,5 +359,66 @@
 
 <script src="/js/toast.js"></script>
 <script src="/js/getNotifications.js"></script>
+
+	<!-- jsPDF library for PDF generation -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+	<script>
+		document.getElementById('exportPdfBtn').addEventListener('click', function() {
+			const { jsPDF } = window.jspdf;
+			const doc = new jsPDF('p', 'mm', 'a4'); // portrait orientation
+
+			// Get branch name
+			const branchName = '<%= branch[0].branch_name %>';
+			
+			// Add title
+			doc.setFontSize(18);
+			doc.text('MaryBill Conglomerate Ltd.', 14, 15);
+			doc.setFontSize(14);
+			doc.text(`${branchName} - Sales Report`, 14, 22);
+			doc.setFontSize(10);
+			doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 28);
+
+			// Calculate total sales
+			let totalSales = 0;
+			<% branchSales.forEach((sale) => { %>
+				totalSales += parseFloat('<%= sale.total_amount %>');
+			<% }); %>
+
+			// Add summary
+			doc.setFontSize(10);
+			doc.text(`Total Sales: NGN ${totalSales.toLocaleString()}`, 14, 34);
+			doc.text(`Number of Transactions: <%= branchSales.length %>`, 14, 40);
+
+			// Prepare table data
+			const tableData = [];
+			<% branchSales.forEach((sale, index) => { %>
+				tableData.push([
+					'<%= index + 1 %>',
+					'<%= sale.customer_name %>',
+					'<%= sale.customer_phoneNo ? sale.customer_phoneNo : "N/A" %>',
+					'NGN <%= sale.total_amount %>',
+					'<%= sale.payment_method %>',
+					'<%= sale.sale_date %>'
+				]);
+			<% }); %>
+
+			// Add table
+			doc.autoTable({
+				head: [['#', 'Customer', 'Phone', 'Total Amount', 'Payment Method', 'Sale Date']],
+				body: tableData,
+				startY: 45,
+				styles: { fontSize: 9, cellPadding: 3 },
+				headStyles: { fillColor: [52, 73, 94], textColor: 255, fontStyle: 'bold' },
+				alternateRowStyles: { fillColor: [245, 245, 245] },
+				margin: { top: 45, left: 14, right: 14 }
+			});
+
+			// Save the PDF
+			const fileName = `${branchName.replace(/\s+/g, '_')}_Sales_${new Date().toISOString().split('T')[0]}.pdf`;
+			doc.save(fileName);
+		});
+	</script>
 
 </html>

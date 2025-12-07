@@ -11,6 +11,8 @@ const adminRoute = require('./routes/adminRoutes');
 const branchRoute = require('./routes/branchRoutes');
 const dataRoute = require('./routes/dataRoutes');
 const staffRoute = require('./routes/staffRoutes');
+const assetRoute = require('./routes/assetRoutes');
+const ledgerRoute = require('./routes/ledgerRoutes');
 
 db.connect((err) => {
     if (err) {
@@ -80,6 +82,8 @@ app.use(adminRoute);
 app.use(branchRoute);
 app.use(dataRoute);
 app.use(staffRoute);
+app.use(assetRoute);
+app.use(ledgerRoute);
 
 app.listen(PORT, () => {
     console.log(`Stores WEB API Server is running on PORT ${PORT}`);

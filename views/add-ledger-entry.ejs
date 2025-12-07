@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<title>MaryBill Conglomerate Ltd. - Add Ledger Entry</title>
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+	<script src="https://kit.fontawesome.com/a207e207d8.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="/css/ready.css">
+	<link rel="stylesheet" href="/css/demo.css">
+	<link rel="icon" type="image/x-icon" href="/img/app_icon.ico">
+	<link rel="stylesheet" href="/iziToast-master/dist/css/iziToast.min.css">
+	<style>
+		.ledger-card { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); border-radius: 12px; border: none; }
+		.card-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 12px 12px 0 0 !important; padding: 1.5rem; }
+		.card-header .card-title { color: white; font-weight: 700; font-size: 1.25rem; margin: 0; }
+		.entry-row { background: #f8f9fa; padding: 1rem; margin-bottom: 0.5rem; border-radius: 8px; border-left: 4px solid #667eea; }
+		.entry-row.debit { border-left-color: #48bb78; }
+		.entry-row.credit { border-left-color: #f56565; }
+		.btn-add-entry { background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); border: none; color: white; font-weight: 600; }
+		.btn-remove-entry { background: #f56565; border: none; color: white; }
+		.balance-display { font-size: 1.1rem; font-weight: 700; padding: 1rem; border-radius: 8px; margin-top: 1rem; }
+		.balance-display.balanced { background: #c6f6d5; color: #22543d; }
+		.balance-display.unbalanced { background: #fed7d7; color: #742a2a; }
+		.required-field::after { content: " *"; color: #e74c3c; }
+	</style>
+</head>
+<body>
+	<div class="wrapper">
+		<div class="main-header">
+			<div class="logo-header">
+				<a href="/admin/dashboard" class="logo">MaryBill Conglomerate</a>
+				<button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<button class="topbar-toggler more"><i class="la la-ellipsis-v"></i></button>
+			</div>
+			<nav class="navbar navbar-header navbar-expand-lg">
+				<div class="container-fluid">
+					<form class="navbar-left navbar-form nav-search mr-md-3" action="">
+						<div class="input-group">
+							<input type="text" placeholder="Search ..." class="form-control">
+							<div class="input-group-append"><span class="input-group-text"><i class="la la-search search-icon"></i></span></div>
+						</div>
+					</form>
+					<ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+						<li class="nav-item dropdown hidden-caret">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="la la-envelope"></i></a>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"><img src="/img/profile-icon.png" alt="user-img" width="36" class="img-circle"><span>Steven</span></a>
+							<ul class="dropdown-menu dropdown-user">
+								<li><div class="user-box"><div class="u-img"><img src="/img/profile-icon.png" alt="user"></div><div class="u-text"><h4>Steven</h4><p class="text-muted">hello@themekita.com</p><a href="#" class="btn btn-rounded btn-danger btn-sm">View Profile</a></div></div></li>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="#"><i class="ti-user"></i> My Profile</a>
+								<a class="dropdown-item" href="#"></i> My Balance</a>
+								<a class="dropdown-item" href="#"><i class="ti-email"></i> Inbox</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="#"><i class="ti-settings"></i> Account Setting</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="#"><i class="fa fa-power-off"></i> Logout</a>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+		<div class="sidebar">
+			<div class="scrollbar-inner sidebar-wrapper">
+				<div class="user">
+					<div class="photo"><img src="/img/profile-icon.png"></div>
+					<div class="info">
+						<a class="" data-toggle="collapse" href="#collapseExample" aria-expanded="true">
+							<span>Steven<span class="user-level">Administrator</span><span class="caret"></span></span>
+						</a>
+						<div class="clearfix"></div>
+						<div class="collapse in" id="collapseExample" aria-expanded="true">
+							<ul class="nav">
+								<li><a href="#profile"><span class="link-collapse">My Profile</span></a></li>
+								<li><a href="#edit"><span class="link-collapse">Edit Profile</span></a></li>
+								<li><a href="#settings"><span class="link-collapse">Settings</span></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<ul class="nav">
+					<li class="nav-item"><a href="/admin/dashboard"><i class="fa-solid fa-gauge"></i><p>Dashboard</p></a></li>
+					<li class="nav-item"><a href="/admin/product-upload"><i class="fa-solid fa-upload"></i><p>Upload Product</p></a></li>
+					<li class="nav-item"><a href="/admin/all-products"><i class="fa-solid fa-tarp"></i><p>All Products</p></a></li>
+					<li class="nav-item"><a href="/staff/add"><i class="fa-solid fa-user-plus"></i><p>Add Staff</p></a></li>
+					<li class="nav-item"><a href="/staff/all"><i class="fa-solid fa-users"></i><p>All Staff</p></a></li>
+					<li class="nav-item"><a href="/assets/add"><i class="fa-solid fa-box-archive"></i><p>Add Asset</p></a></li>
+					<li class="nav-item"><a href="/assets/all"><i class="fa-solid fa-boxes-stacked"></i><p>All Assets</p></a></li>
+					<li class="nav-item active"><a href="/ledger/add"><i class="fa-solid fa-book"></i><p>Ledger Entry</p></a></li>
+					<li class="nav-item"><a href="/ledger/view"><i class="fa-solid fa-book-open"></i><p>View Ledger</p></a></li>
+					<li class="nav-item"><a href="/ledger/accounts"><i class="fa-solid fa-sitemap"></i><p>Chart of Accounts</p></a></li>
+					<li class="nav-item"><a href="/ledger/trial-balance"><i class="fa-solid fa-balance-scale"></i><p>Trial Balance</p></a></li>
+					<li class="nav-item"><a href="/logout"><i class="fas fa-sign-out-alt"></i><p>Log Out</p></a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="main-panel">
+			<div class="content">
+				<div class="container-fluid">
+					<h4 class="page-title"><i class="fa-solid fa-book"></i> <span class="text-primary">Add Ledger Entry</span></h4>
+					<div class="row justify-content-center">
+						<div class="col-lg-10">
+							<div class="card ledger-card">
+								<form id="ledgerForm" action="/ledger/add" method="POST">
+									<div class="card-header">
+										<div class="card-title"><i class="fa-solid fa-file-invoice"></i> New Transaction Entry</div>
+									</div>
+									<div class="card-body">
+										<div class="row">
+											<div class="col-md-4">
+												<div class="form-group">
+													<label for="transactionDate" class="required-field">Transaction Date</label>
+													<input type="date" class="form-control" id="transactionDate" name="transactionDate" value="<%= new Date().toISOString().split('T')[0] %>" required>
+												</div>
+											</div>
+											<div class="col-md-4">
+												<div class="form-group">
+													<label for="transactionType" class="required-field">Transaction Type</label>
+													<select class="form-control" id="transactionType" name="transactionType" required>
+														<option value="">Select type</option>
+														<% transactionTypes.forEach(type => { %>
+															<option value="<%= type.type_code %>"><%= type.type_name %></option>
+														<% }); %>
+													</select>
+												</div>
+											</div>
+											<div class="col-md-4">
+												<div class="form-group">
+													<label for="referenceNumber">Reference Number</label>
+													<input type="text" class="form-control" id="referenceNumber" name="referenceNumber" placeholder="Optional">
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-12">
+												<div class="form-group">
+													<label for="description">Description</label>
+													<textarea class="form-control" id="description" name="description" rows="2" placeholder="Enter transaction description"></textarea>
+												</div>
+											</div>
+										</div>
+										<hr>
+										<h5 class="mb-3"><i class="fa-solid fa-list"></i> Ledger Entries</h5>
+										<div id="entriesContainer"></div>
+										<div class="row mt-3">
+											<div class="col-md-6">
+												<button type="button" class="btn btn-add-entry" onclick="addEntry('DEBIT')"><i class="fa-solid fa-plus"></i> Add Debit Entry</button>
+												<button type="button" class="btn btn-add-entry ml-2" onclick="addEntry('CREDIT')"><i class="fa-solid fa-plus"></i> Add Credit Entry</button>
+											</div>
+											<div class="col-md-6">
+												<div id="balanceDisplay" class="balance-display text-right">
+													<div>Total Debits: ₦<span id="totalDebits">0.00</span></div>
+													<div>Total Credits: ₦<span id="totalCredits">0.00</span></div>
+													<div><strong>Difference: ₦<span id="difference">0.00</span></strong></div>
+												</div>
+											</div>
+										</div>
+										<input type="hidden" name="entries" id="entriesData">
+									</div>
+									<div class="card-action">
+										<button type="submit" class="btn btn-success" id="submitBtn" disabled><i class="fa-solid fa-check"></i> Post Transaction</button>
+										<button type="reset" class="btn btn-danger" onclick="resetForm()"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<%- include('./partials/responseMessage') %>
+	<script src="/js/core/jquery.3.2.1.min.js"></script>
+	<script src="/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+	<script src="/js/core/popper.min.js"></script>
+	<script src="/js/core/bootstrap.min.js"></script>
+	<script src="/iziToast-master/dist/js/iziToast.min.js"></script>
+	<script src="/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+	<script src="/js/ready.min.js"></script>
+	<script src="/js/toast.js"></script>
+	<script>
+		let entryCounter = 0;
+		const accounts = <%- JSON.stringify(accounts) %>;
+		function addEntry(entryType) {
+			entryCounter++;
+			const entryHtml = `
+				<div class="entry-row ${entryType.toLowerCase()}" id="entry-${entryCounter}">
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label>Account</label>
+								<select class="form-control entry-account" data-entry="${entryCounter}" required>
+									<option value="">Select account</option>
+									${accounts.map(acc => `<option value="${acc.account_code}">${acc.account_code} - ${acc.account_name}</option>`).join('')}
+								</select>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="form-group">
+								<label>Type</label>
+								<input type="text" class="form-control" value="${entryType}" readonly>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>Amount</label>
+								<input type="number" class="form-control entry-amount" data-entry="${entryCounter}" data-type="${entryType}" step="0.01" min="0" placeholder="0.00" required>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="form-group">
+								<label>&nbsp;</label>
+								<button type="button" class="btn btn-remove-entry btn-block" onclick="removeEntry(${entryCounter})"><i class="fa-solid fa-trash"></i></button>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<input type="text" class="form-control entry-description" data-entry="${entryCounter}" placeholder="Entry description (optional)">
+							</div>
+						</div>
+					</div>
+				</div>
+			`;
+			document.getElementById('entriesContainer').insertAdjacentHTML('beforeend', entryHtml);
+			updateBalance();
+		}
+		function removeEntry(entryId) {
+			document.getElementById(`entry-${entryId}`).remove();
+			updateBalance();
+		}
+		function updateBalance() {
+			const amounts = document.querySelectorAll('.entry-amount');
+			let totalDebits = 0, totalCredits = 0;
+			amounts.forEach(input => {
+				const amount = parseFloat(input.value) || 0;
+				const type = input.getAttribute('data-type');
+				if (type === 'DEBIT') totalDebits += amount;
+				else totalCredits += amount;
+			});
+			const difference = Math.abs(totalDebits - totalCredits);
+			document.getElementById('totalDebits').textContent = totalDebits.toFixed(2);
+			document.getElementById('totalCredits').textContent = totalCredits.toFixed(2);
+			document.getElementById('difference').textContent = difference.toFixed(2);
+			const balanceDisplay = document.getElementById('balanceDisplay');
+			const submitBtn = document.getElementById('submitBtn');
+			if (difference < 0.01 && totalDebits > 0 && totalCredits > 0) {
+				balanceDisplay.className = 'balance-display balanced text-right';
+				submitBtn.disabled = false;
+			} else {
+				balanceDisplay.className = 'balance-display unbalanced text-right';
+				submitBtn.disabled = true;
+			}
+		}
+		document.addEventListener('input', function(e) {
+			if (e.target.classList.contains('entry-amount')) updateBalance();
+		});
+		document.getElementById('ledgerForm').addEventListener('submit', function(e) {
+			e.preventDefault();
+			const entries = [];
+			const entryRows = document.querySelectorAll('.entry-row');
+			entryRows.forEach(row => {
+				const accountSelect = row.querySelector('.entry-account');
+				const amountInput = row.querySelector('.entry-amount');
+				const descInput = row.querySelector('.entry-description');
+				const type = amountInput.getAttribute('data-type');
+				if (accountSelect.value && amountInput.value) {
+					entries.push({
+						accountCode: accountSelect.value,
+						entryType: type,
+						amount: parseFloat(amountInput.value),
+						description: descInput.value || ''
+					});
+				}
+			});
+			if (entries.length < 2) {
+				iziToast.error({ title: 'Error', message: 'At least two entries are required', position: 'topRight' });
+				return;
+			}
+			document.getElementById('entriesData').value = JSON.stringify(entries);
+			this.submit();
+		});
+		function resetForm() {
+			document.getElementById('entriesContainer').innerHTML = '';
+			entryCounter = 0;
+			updateBalance();
+		}
+		addEntry('DEBIT');
+		addEntry('CREDIT');
+	</script>
+</body>
+</html>

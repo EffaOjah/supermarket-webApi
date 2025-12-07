@@ -32,6 +32,8 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
     const { email, password } = req.body;
+    console.log(req.body);
+
 
     // Check if all details were provided
     if (!email || !password) {

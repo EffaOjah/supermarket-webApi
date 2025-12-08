@@ -1,56 +1,217 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<title>MaryBill Conglomerate Ltd. - Balance Sheet</title>
-	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+		name='viewport' />
 	<link rel="stylesheet" href="/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+	<link rel="stylesheet"
+		href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
 	<script src="https://kit.fontawesome.com/a207e207d8.js" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="/css/ready.css">
 	<link rel="stylesheet" href="/css/demo.css">
 	<link rel="icon" type="image/x-icon" href="/img/app_icon.ico">
 	<link rel="stylesheet" href="/iziToast-master/dist/css/iziToast.min.css">
 	<style>
-		.balance-sheet-card { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); border-radius: 12px; border: none; margin-bottom: 1.5rem; }
-		.card-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 12px 12px 0 0 !important; padding: 1.5rem; }
-		.card-header .card-title { color: white; font-weight: 700; font-size: 1.25rem; margin: 0; }
-		.section-header { background: linear-gradient(135deg, #edf2f7 0%, #e2e8f0 100%); padding: 1rem 1.5rem; font-weight: 700; font-size: 1.1rem; border-radius: 8px; margin-bottom: 1rem; }
-		.section-header.assets { background: linear-gradient(135deg, #bee3f8 0%, #90cdf4 100%); color: #2c5282; }
-		.section-header.liabilities { background: linear-gradient(135deg, #feebc8 0%, #fbd38d 100%); color: #7c2d12; }
-		.section-header.equity { background: linear-gradient(135deg, #e9d8fd 0%, #d6bcfa 100%); color: #553c9a; }
-		.account-row { padding: 0.75rem 1.5rem; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s; }
-		.account-row:hover { background: #f7fafc; transform: translateX(5px); }
-		.account-row:last-child { border-bottom: none; }
-		.account-name { font-weight: 500; color: #2d3748; }
-		.account-code { color: #718096; font-size: 0.875rem; margin-left: 0.5rem; }
-		.account-balance { font-weight: 600; color: #2d3748; font-size: 1.1rem; }
-		.subtotal-row { background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%); padding: 1rem 1.5rem; font-weight: 700; font-size: 1.15rem; border-top: 2px solid #cbd5e0; margin-top: 0.5rem; }
-		.total-row { background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%); color: white; padding: 1.25rem 1.5rem; font-weight: 700; font-size: 1.3rem; border-radius: 8px; margin: 1rem 0; }
-		.equation-section { background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%); padding: 2rem; border-radius: 12px; margin-top: 2rem; border: 2px solid #48bb78; }
-		.equation-section.unbalanced { background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%); border-color: #f56565; }
-		.equation-item { display: flex; justify-content: space-between; padding: 0.75rem 0; font-size: 1.2rem; font-weight: 600; }
-		.equation-item.main { font-size: 1.4rem; border-top: 3px solid #48bb78; padding-top: 1.5rem; margin-top: 1rem; }
-		.equation-item.main.unbalanced { border-top-color: #f56565; }
-		.filter-section { background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; }
-		.print-btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; color: white; }
-		.company-header { text-align: center; margin-bottom: 2rem; }
-		.company-name { font-size: 1.8rem; font-weight: 700; color: #2d3748; margin-bottom: 0.5rem; }
-		.report-title { font-size: 1.4rem; font-weight: 600; color: #4a5568; margin-bottom: 0.25rem; }
-		.report-date { font-size: 1.1rem; color: #718096; }
+		.balance-sheet-card {
+			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+			border-radius: 12px;
+			border: none;
+			margin-bottom: 1.5rem;
+		}
+
+		.card-header {
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			color: white;
+			border-radius: 12px 12px 0 0 !important;
+			padding: 1.5rem;
+		}
+
+		.card-header .card-title {
+			color: white;
+			font-weight: 700;
+			font-size: 1.25rem;
+			margin: 0;
+		}
+
+		.section-header {
+			background: linear-gradient(135deg, #edf2f7 0%, #e2e8f0 100%);
+			padding: 1rem 1.5rem;
+			font-weight: 700;
+			font-size: 1.1rem;
+			border-radius: 8px;
+			margin-bottom: 1rem;
+		}
+
+		.section-header.assets {
+			background: linear-gradient(135deg, #bee3f8 0%, #90cdf4 100%);
+			color: #2c5282;
+		}
+
+		.section-header.liabilities {
+			background: linear-gradient(135deg, #feebc8 0%, #fbd38d 100%);
+			color: #7c2d12;
+		}
+
+		.section-header.equity {
+			background: linear-gradient(135deg, #e9d8fd 0%, #d6bcfa 100%);
+			color: #553c9a;
+		}
+
+		.account-row {
+			padding: 0.75rem 1.5rem;
+			border-bottom: 1px solid #e2e8f0;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			transition: all 0.2s;
+		}
+
+		.account-row:hover {
+			background: #f7fafc;
+			transform: translateX(5px);
+		}
+
+		.account-row:last-child {
+			border-bottom: none;
+		}
+
+		.account-name {
+			font-weight: 500;
+			color: #2d3748;
+		}
+
+		.account-code {
+			color: #718096;
+			font-size: 0.875rem;
+			margin-left: 0.5rem;
+		}
+
+		.account-balance {
+			font-weight: 600;
+			color: #2d3748;
+			font-size: 1.1rem;
+		}
+
+		.subtotal-row {
+			background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+			padding: 1rem 1.5rem;
+			font-weight: 700;
+			font-size: 1.15rem;
+			border-top: 2px solid #cbd5e0;
+			margin-top: 0.5rem;
+		}
+
+		.total-row {
+			background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+			color: white;
+			padding: 1.25rem 1.5rem;
+			font-weight: 700;
+			font-size: 1.3rem;
+			border-radius: 8px;
+			margin: 1rem 0;
+		}
+
+		.equation-section {
+			background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+			padding: 2rem;
+			border-radius: 12px;
+			margin-top: 2rem;
+			border: 2px solid #48bb78;
+		}
+
+		.equation-section.unbalanced {
+			background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+			border-color: #f56565;
+		}
+
+		.equation-item {
+			display: flex;
+			justify-content: space-between;
+			padding: 0.75rem 0;
+			font-size: 1.2rem;
+			font-weight: 600;
+		}
+
+		.equation-item.main {
+			font-size: 1.4rem;
+			border-top: 3px solid #48bb78;
+			padding-top: 1.5rem;
+			margin-top: 1rem;
+		}
+
+		.equation-item.main.unbalanced {
+			border-top-color: #f56565;
+		}
+
+		.filter-section {
+			background: #f8f9fa;
+			padding: 1.5rem;
+			border-radius: 8px;
+			margin-bottom: 1.5rem;
+		}
+
+		.print-btn {
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			border: none;
+			color: white;
+		}
+
+		.company-header {
+			text-align: center;
+			margin-bottom: 2rem;
+		}
+
+		.company-name {
+			font-size: 1.8rem;
+			font-weight: 700;
+			color: #2d3748;
+			margin-bottom: 0.5rem;
+		}
+
+		.report-title {
+			font-size: 1.4rem;
+			font-weight: 600;
+			color: #4a5568;
+			margin-bottom: 0.25rem;
+		}
+
+		.report-date {
+			font-size: 1.1rem;
+			color: #718096;
+		}
+
 		@media print {
-			.sidebar, .main-header, .print-btn, .no-print, .filter-section { display: none !important; }
-			.main-panel { width: 100% !important; margin: 0 !important; }
-			.balance-sheet-card { box-shadow: none; }
+
+			.sidebar,
+			.main-header,
+			.print-btn,
+			.no-print,
+			.filter-section {
+				display: none !important;
+			}
+
+			.main-panel {
+				width: 100% !important;
+				margin: 0 !important;
+			}
+
+			.balance-sheet-card {
+				box-shadow: none;
+			}
 		}
 	</style>
 </head>
+
 <body>
 	<div class="wrapper">
 		<div class="main-header">
 			<div class="logo-header">
 				<a href="/admin/dashboard" class="logo">MaryBill Conglomerate</a>
-				<button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+				<button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse"
+					data-target="collapse" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
 				<button class="topbar-toggler more"><i class="la la-ellipsis-v"></i></button>
@@ -60,17 +221,31 @@
 					<form class="navbar-left navbar-form nav-search mr-md-3" action="">
 						<div class="input-group">
 							<input type="text" placeholder="Search ..." class="form-control">
-							<div class="input-group-append"><span class="input-group-text"><i class="la la-search search-icon"></i></span></div>
+							<div class="input-group-append"><span class="input-group-text"><i
+										class="la la-search search-icon"></i></span></div>
 						</div>
 					</form>
 					<ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
 						<li class="nav-item dropdown hidden-caret">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="la la-envelope"></i></a>
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+									class="la la-envelope"></i></a>
 						</li>
 						<li class="nav-item dropdown">
-							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"><img src="/img/profile-icon.png" alt="user-img" width="36" class="img-circle"><span>Steven</span></a>
+							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"
+								aria-expanded="false"><img src="/img/profile-icon.png" alt="user-img" width="36"
+									class="img-circle"><span>Steven</span></a>
 							<ul class="dropdown-menu dropdown-user">
-								<li><div class="user-box"><div class="u-img"><img src="/img/profile-icon.png" alt="user"></div><div class="u-text"><h4>Steven</h4><p class="text-muted">hello@themekita.com</p><a href="#" class="btn btn-rounded btn-danger btn-sm">View Profile</a></div></div></li>
+								<li>
+									<div class="user-box">
+										<div class="u-img"><img src="/img/profile-icon.png" alt="user"></div>
+										<div class="u-text">
+											<h4>Steven</h4>
+											<p class="text-muted">hello@themekita.com</p><a href="#"
+												class="btn btn-rounded btn-danger btn-sm">View Profile</a>
+										</div>
+									</div>
+								</li>
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="#"><i class="ti-user"></i> My Profile</a>
 								<a class="dropdown-item" href="#"></i> My Balance</a>
@@ -86,7 +261,7 @@
 			</nav>
 		</div>
 		<div class="sidebar">
-			<div class="scrollbar-inner sidebar-wrapper">
+			<div class="sidebar-wrapper">
 				<div class="user">
 					<div class="photo"><img src="/img/profile-icon.png"></div>
 					<div class="info">
@@ -104,19 +279,49 @@
 					</div>
 				</div>
 				<ul class="nav">
-					<li class="nav-item"><a href="/admin/dashboard"><i class="fa-solid fa-gauge"></i><p>Dashboard</p></a></li>
-					<li class="nav-item"><a href="/admin/product-upload"><i class="fa-solid fa-upload"></i><p>Upload Product</p></a></li>
-					<li class="nav-item"><a href="/admin/all-products"><i class="fa-solid fa-tarp"></i><p>All Products</p></a></li>
-					<li class="nav-item"><a href="/staff/add"><i class="fa-solid fa-user-plus"></i><p>Add Staff</p></a></li>
-					<li class="nav-item"><a href="/staff/all"><i class="fa-solid fa-users"></i><p>All Staff</p></a></li>
-					<li class="nav-item"><a href="/assets/add"><i class="fa-solid fa-box-archive"></i><p>Add Asset</p></a></li>
-					<li class="nav-item"><a href="/assets/all"><i class="fa-solid fa-boxes-stacked"></i><p>All Assets</p></a></li>
-					<li class="nav-item"><a href="/ledger/add"><i class="fa-solid fa-book"></i><p>Ledger Entry</p></a></li>
-					<li class="nav-item"><a href="/ledger/view"><i class="fa-solid fa-book-open"></i><p>View Ledger</p></a></li>
-					<li class="nav-item"><a href="/ledger/accounts"><i class="fa-solid fa-sitemap"></i><p>Chart of Accounts</p></a></li>
-					<li class="nav-item"><a href="/ledger/trial-balance"><i class="fa-solid fa-balance-scale"></i><p>Trial Balance</p></a></li>
-					<li class="nav-item active"><a href="/ledger/balance-sheet"><i class="fa-solid fa-file-invoice-dollar"></i><p>Balance Sheet</p></a></li>
-					<li class="nav-item"><a href="/logout"><i class="fas fa-sign-out-alt"></i><p>Log Out</p></a></li>
+					<li class="nav-item"><a href="/admin/dashboard"><i class="fa-solid fa-gauge"></i>
+							<p>Dashboard</p>
+						</a></li>
+					<li class="nav-item"><a href="/admin/product-upload"><i class="fa-solid fa-upload"></i>
+							<p>Upload Product</p>
+						</a></li>
+					<li class="nav-item"><a href="/admin/all-products"><i class="fa-solid fa-tarp"></i>
+							<p>All Products</p>
+						</a></li>
+					<li class="nav-item"><a href="/staff/add"><i class="fa-solid fa-user-plus"></i>
+							<p>Add Staff</p>
+						</a></li>
+					<li class="nav-item"><a href="/staff/all"><i class="fa-solid fa-users"></i>
+							<p>All Staff</p>
+						</a></li>
+					<li class="nav-item"><a href="/assets/add"><i class="fa-solid fa-box-archive"></i>
+							<p>Add Asset</p>
+						</a></li>
+					<li class="nav-item"><a href="/assets/all"><i class="fa-solid fa-boxes-stacked"></i>
+							<p>All Assets</p>
+						</a></li>
+					<li class="nav-item"><a href="/ledger/add"><i class="fa-solid fa-book"></i>
+							<p>Ledger Entry</p>
+						</a></li>
+					<li class="nav-item"><a href="/ledger/view"><i class="fa-solid fa-book-open"></i>
+							<p>View Ledger</p>
+						</a></li>
+					<li class="nav-item"><a href="/ledger/accounts"><i class="fa-solid fa-sitemap"></i>
+							<p>Chart of Accounts</p>
+						</a></li>
+					<li class="nav-item"><a href="/ledger/trial-balance"><i class="fa-solid fa-balance-scale"></i>
+							<p>Trial Balance</p>
+						</a></li>
+					<li class="nav-item active"><a href="/ledger/balance-sheet"><i
+								class="fa-solid fa-file-invoice-dollar"></i>
+							<p>Balance Sheet</p>
+						</a></li>
+					<li class="nav-item"><a href="/ledger/profit-loss"><i class="fa-solid fa-money-bill-trend-up"></i>
+							<p>Profit & Loss</p>
+						</a></li>
+					<li class="nav-item"><a href="/logout"><i class="fas fa-sign-out-alt"></i>
+							<p>Log Out</p>
+						</a></li>
 				</ul>
 			</div>
 		</div>
@@ -124,8 +329,10 @@
 			<div class="content">
 				<div class="container-fluid">
 					<div class="d-flex justify-content-between align-items-center mb-4 no-print">
-						<h4 class="page-title mb-0"><i class="fa-solid fa-file-invoice-dollar"></i> <span class="text-primary">Balance Sheet</span></h4>
-						<button onclick="window.print()" class="btn print-btn"><i class="fa-solid fa-print"></i> Print</button>
+						<h4 class="page-title mb-0"><i class="fa-solid fa-file-invoice-dollar"></i> <span
+								class="text-primary">Balance Sheet</span></h4>
+						<button onclick="window.print()" class="btn print-btn"><i class="fa-solid fa-print"></i>
+							Print</button>
 					</div>
 
 					<!-- Date Filter -->
@@ -135,13 +342,15 @@
 								<div class="col-md-4">
 									<div class="form-group">
 										<label><strong>As Of Date</strong></label>
-										<input type="date" class="form-control" name="asOfDate" value="<%= balanceSheet.asOfDate %>" required>
+										<input type="date" class="form-control" name="asOfDate"
+											value="<%= balanceSheet.asOfDate %>" required>
 									</div>
 								</div>
 								<div class="col-md-2">
 									<div class="form-group">
 										<label>&nbsp;</label>
-										<button type="submit" class="btn btn-primary"><i class="fa-solid fa-chart-line"></i> Generate Report</button>
+										<button type="submit" class="btn btn-primary"><i
+												class="fa-solid fa-chart-line"></i> Generate Report</button>
 									</div>
 								</div>
 							</div>
@@ -152,7 +361,9 @@
 					<div class="company-header">
 						<div class="company-name">MaryBill Conglomerate Ltd.</div>
 						<div class="report-title">Balance Sheet</div>
-						<div class="report-date">As of <%= new Date(balanceSheet.asOfDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></div>
+						<div class="report-date">As of <%= new Date(balanceSheet.asOfDate).toLocaleDateString('en-US', {
+								year: 'numeric' , month: 'long' , day: 'numeric' }) %>
+						</div>
 					</div>
 
 					<!-- Balance Sheet Content -->
@@ -164,82 +375,142 @@
 									<div class="section-header assets">
 										<i class="fa-solid fa-coins"></i> ASSETS
 									</div>
-									<% if (balanceSheet.assets.accounts.length > 0) { %>
-										<% balanceSheet.assets.accounts.forEach(account => { %>
+									<% if (balanceSheet.assets.accounts.length> 0) { %>
+										<% balanceSheet.assets.accounts.forEach(account=> { %>
 											<div class="account-row">
 												<div>
-													<span class="account-name"><%= account.accountName %></span>
+													<span class="account-name">
+														<%= account.accountName %>
+													</span>
 													<span class="account-code">(<%= account.accountCode %>)</span>
 												</div>
-												<div class="account-balance">₦<%= account.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></div>
-											</div>
-										<% }); %>
-									<% } else { %>
-										<div class="account-row">
-											<div class="text-muted">No asset accounts with balances</div>
-											<div class="account-balance">₦0.00</div>
-										</div>
-									<% } %>
-									<div class="subtotal-row d-flex justify-content-between">
-										<span>Total Assets</span>
-										<span>₦<%= balanceSheet.assets.total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></span>
-									</div>
-
-									<!-- LIABILITIES SECTION -->
-									<div class="section-header liabilities mt-4">
-										<i class="fa-solid fa-file-invoice"></i> LIABILITIES
-									</div>
-									<% if (balanceSheet.liabilities.accounts.length > 0) { %>
-										<% balanceSheet.liabilities.accounts.forEach(account => { %>
-											<div class="account-row">
-												<div>
-													<span class="account-name"><%= account.accountName %></span>
-													<span class="account-code">(<%= account.accountCode %>)</span>
+												<div class="account-balance">₦<%=
+														account.balance.toLocaleString('en-US', { minimumFractionDigits:
+														2, maximumFractionDigits: 2 }) %>
 												</div>
-												<div class="account-balance">₦<%= account.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></div>
 											</div>
-										<% }); %>
-									<% } else { %>
-										<div class="account-row">
-											<div class="text-muted">No liability accounts with balances</div>
-											<div class="account-balance">₦0.00</div>
-										</div>
-									<% } %>
-									<div class="subtotal-row d-flex justify-content-between">
-										<span>Total Liabilities</span>
-										<span>₦<%= balanceSheet.liabilities.total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></span>
-									</div>
+											<% }); %>
+												<% } else { %>
+													<div class="account-row">
+														<div class="text-muted">No asset accounts with balances</div>
+														<div class="account-balance">₦0.00</div>
+													</div>
+													<% } %>
+														<div class="subtotal-row d-flex justify-content-between">
+															<span>Total Assets</span>
+															<span>₦<%= balanceSheet.assets.total.toLocaleString('en-US',
+																	{ minimumFractionDigits: 2, maximumFractionDigits: 2
+																	}) %></span>
+														</div>
 
-									<!-- EQUITY SECTION -->
-									<div class="section-header equity mt-4">
-										<i class="fa-solid fa-landmark"></i> EQUITY
-									</div>
-									<% if (balanceSheet.equity.accounts.length > 0) { %>
-										<% balanceSheet.equity.accounts.forEach(account => { %>
-											<div class="account-row">
-												<div>
-													<span class="account-name"><%= account.accountName %></span>
-													<span class="account-code">(<%= account.accountCode %>)</span>
-												</div>
-												<div class="account-balance">₦<%= account.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></div>
-											</div>
-										<% }); %>
-									<% } else { %>
-										<div class="account-row">
-											<div class="text-muted">No equity accounts with balances</div>
-											<div class="account-balance">₦0.00</div>
-										</div>
-									<% } %>
-									<div class="subtotal-row d-flex justify-content-between">
-										<span>Total Equity</span>
-										<span>₦<%= balanceSheet.equity.total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></span>
-									</div>
+														<!-- LIABILITIES SECTION -->
+														<div class="section-header liabilities mt-4">
+															<i class="fa-solid fa-file-invoice"></i> LIABILITIES
+														</div>
+														<% if (balanceSheet.liabilities.accounts.length> 0) { %>
+															<% balanceSheet.liabilities.accounts.forEach(account=> { %>
+																<div class="account-row">
+																	<div>
+																		<span class="account-name">
+																			<%= account.accountName %>
+																		</span>
+																		<span class="account-code">(<%=
+																				account.accountCode %>)</span>
+																	</div>
+																	<div class="account-balance">₦<%=
+																			account.balance.toLocaleString('en-US', {
+																			minimumFractionDigits: 2,
+																			maximumFractionDigits: 2 }) %>
+																	</div>
+																</div>
+																<% }); %>
+																	<% } else { %>
+																		<div class="account-row">
+																			<div class="text-muted">No liability
+																				accounts with balances</div>
+																			<div class="account-balance">₦0.00</div>
+																		</div>
+																		<% } %>
+																			<div
+																				class="subtotal-row d-flex justify-content-between">
+																				<span>Total Liabilities</span>
+																				<span>₦<%=
+																						balanceSheet.liabilities.total.toLocaleString('en-US',
+																						{ minimumFractionDigits: 2,
+																						maximumFractionDigits: 2 }) %>
+																						</span>
+																			</div>
 
-									<!-- TOTAL LIABILITIES AND EQUITY -->
-									<div class="total-row d-flex justify-content-between mt-3">
-										<span><i class="fa-solid fa-plus-circle"></i> Total Liabilities and Equity</span>
-										<span>₦<%= balanceSheet.totalLiabilitiesAndEquity.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></span>
-									</div>
+																			<!-- EQUITY SECTION -->
+																			<div class="section-header equity mt-4">
+																				<i class="fa-solid fa-landmark"></i>
+																				EQUITY
+																			</div>
+																			<% if (balanceSheet.equity.accounts.length>
+																				0) { %>
+																				<%
+																					balanceSheet.equity.accounts.forEach(account=>
+																					{ %>
+																					<div class="account-row">
+																						<div>
+																							<span class="account-name">
+																								<%= account.accountName
+																									%>
+																							</span>
+																							<span class="account-code">(
+																								<%= account.accountCode
+																									%>)</span>
+																						</div>
+																						<div class="account-balance">₦
+																							<%= account.balance.toLocaleString('en-US',
+																								{ minimumFractionDigits:
+																								2,
+																								maximumFractionDigits: 2
+																								}) %>
+																						</div>
+																					</div>
+																					<% }); %>
+																						<% } else { %>
+																							<div class="account-row">
+																								<div class="text-muted">
+																									No equity accounts
+																									with balances</div>
+																								<div
+																									class="account-balance">
+																									₦0.00</div>
+																							</div>
+																							<% } %>
+																								<div
+																									class="subtotal-row d-flex justify-content-between">
+																									<span>Total
+																										Equity</span>
+																									<span>₦<%=
+																											balanceSheet.equity.total.toLocaleString('en-US',
+																											{
+																											minimumFractionDigits:
+																											2,
+																											maximumFractionDigits:
+																											2 }) %>
+																											</span>
+																								</div>
+
+																								<!-- TOTAL LIABILITIES AND EQUITY -->
+																								<div
+																									class="total-row d-flex justify-content-between mt-3">
+																									<span><i
+																											class="fa-solid fa-plus-circle"></i>
+																										Total
+																										Liabilities and
+																										Equity</span>
+																									<span>₦<%=
+																											balanceSheet.totalLiabilitiesAndEquity.toLocaleString('en-US',
+																											{
+																											minimumFractionDigits:
+																											2,
+																											maximumFractionDigits:
+																											2 }) %>
+																											</span>
+																								</div>
 								</div>
 							</div>
 						</div>
@@ -252,16 +523,19 @@
 						</h5>
 						<div class="equation-item">
 							<span><i class="fa-solid fa-coins"></i> Total Assets</span>
-							<strong>₦<%= balanceSheet.assets.total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></strong>
+							<strong>₦<%= balanceSheet.assets.total.toLocaleString('en-US', { minimumFractionDigits: 2,
+									maximumFractionDigits: 2 }) %></strong>
 						</div>
 						<div class="equation-item">
 							<span><i class="fa-solid fa-equals"></i> Total Liabilities + Equity</span>
-							<strong>₦<%= balanceSheet.totalLiabilitiesAndEquity.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></strong>
+							<strong>₦<%= balanceSheet.totalLiabilitiesAndEquity.toLocaleString('en-US', {
+									minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></strong>
 						</div>
 						<div class="equation-item main <%= balanceSheet.isBalanced ? '' : 'unbalanced' %>">
 							<span><i class="fa-solid fa-not-equal"></i> Difference</span>
 							<strong class="<%= balanceSheet.isBalanced ? 'text-success' : 'text-danger' %>">
-								₦<%= Math.abs(balanceSheet.difference).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+								₦<%= Math.abs(balanceSheet.difference).toLocaleString('en-US', { minimumFractionDigits:
+									2, maximumFractionDigits: 2 }) %>
 							</strong>
 						</div>
 						<div class="text-center mt-4">
@@ -269,11 +543,12 @@
 								<span class="badge badge-success" style="font-size: 1.2rem; padding: 0.75rem 1.5rem;">
 									<i class="fa-solid fa-check-circle"></i> Balance Sheet is Balanced
 								</span>
-							<% } else { %>
-								<span class="badge badge-danger" style="font-size: 1.2rem; padding: 0.75rem 1.5rem;">
-									<i class="fa-solid fa-exclamation-triangle"></i> Balance Sheet is Unbalanced
-								</span>
-							<% } %>
+								<% } else { %>
+									<span class="badge badge-danger"
+										style="font-size: 1.2rem; padding: 0.75rem 1.5rem;">
+										<i class="fa-solid fa-exclamation-triangle"></i> Balance Sheet is Unbalanced
+									</span>
+									<% } %>
 						</div>
 					</div>
 				</div>
@@ -281,13 +556,14 @@
 		</div>
 	</div>
 	<%- include('./partials/responseMessage') %>
-	<script src="/js/core/jquery.3.2.1.min.js"></script>
-	<script src="/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
-	<script src="/js/core/popper.min.js"></script>
-	<script src="/js/core/bootstrap.min.js"></script>
-	<script src="/iziToast-master/dist/js/iziToast.min.js"></script>
-	<script src="/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
-	<script src="/js/ready.min.js"></script>
-	<script src="/js/toast.js"></script>
+		<script src="/js/core/jquery.3.2.1.min.js"></script>
+		<script src="/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+		<script src="/js/core/popper.min.js"></script>
+		<script src="/js/core/bootstrap.min.js"></script>
+		<script src="/iziToast-master/dist/js/iziToast.min.js"></script>
+		<script src="/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+		<script src="/js/ready.min.js"></script>
+		<script src="/js/toast.js"></script>
 </body>
+
 </html>

@@ -376,6 +376,72 @@ const voidTransaction = async (transactionId) => {
     });
 };
 
+// Get Profit and Loss
+const getProfitLoss = async (startDate, endDate) => {
+    return new Promise((resolve, reject) => {
+        getAllAccounts().then(accounts => {
+            // Group accounts
+            const revenueAccounts = accounts.filter(a => a.account_type === 'REVENUE');
+            const expenseAccounts = accounts.filter(a => a.account_type === 'EXPENSE');
+
+            // Helper to get balance for a period (Movement only)
+            const getPeriodBalance = (accountCode) => {
+                return new Promise((resolveBalance, rejectBalance) => {
+                    const query = `
+                        SELECT 
+                            SUM(CASE WHEN entry_type = 'DEBIT' THEN amount ELSE 0 END) as total_debits,
+                            SUM(CASE WHEN entry_type = 'CREDIT' THEN amount ELSE 0 END) as total_credits
+                        FROM ledger_entries
+                        WHERE account_code = ? AND entry_date >= ? AND entry_date <= ?
+                    `;
+                    db.query(query, [accountCode, startDate, endDate], (err, result) => {
+                        if (err) return rejectBalance(err);
+                        const debits = result[0]?.total_debits || 0;
+                        const credits = result[0]?.total_credits || 0;
+                        resolveBalance({ debits, credits });
+                    });
+                });
+            };
+
+            const revPromises = revenueAccounts.map(a => getPeriodBalance(a.account_code)
+                .then(b => ({ ...a, ...b, net: b.credits - b.debits }))); // Revenue is Credit normal
+
+            const expPromises = expenseAccounts.map(a => getPeriodBalance(a.account_code)
+                .then(b => ({ ...a, ...b, net: b.debits - b.credits }))); // Expense is Debit normal
+
+            Promise.all([Promise.all(revPromises), Promise.all(expPromises)])
+                .then(([revResults, expResults]) => {
+                    // Filter out zero movement accounts
+                    const activeRevenue = revResults.filter(a => Math.abs(a.net) > 0.01);
+                    const activeExpenses = expResults.filter(a => Math.abs(a.net) > 0.01);
+
+                    const totalRevenue = activeRevenue.reduce((sum, a) => sum + a.net, 0);
+
+                    // Separate COGS (Account 5000)
+                    const cogsAccounts = activeExpenses.filter(a => a.account_code.toString() === '5000');
+                    const operatingExpenses = activeExpenses.filter(a => a.account_code.toString() !== '5000');
+
+                    const totalCOGS = cogsAccounts.reduce((sum, a) => sum + a.net, 0);
+                    const totalOpExpenses = operatingExpenses.reduce((sum, a) => sum + a.net, 0);
+
+                    const grossProfit = totalRevenue - totalCOGS;
+                    const netProfit = grossProfit - totalOpExpenses;
+
+                    resolve({
+                        startDate,
+                        endDate,
+                        revenue: { accounts: activeRevenue, total: totalRevenue },
+                        cogs: { accounts: cogsAccounts, total: totalCOGS },
+                        grossProfit,
+                        expenses: { accounts: operatingExpenses, total: totalOpExpenses },
+                        netProfit
+                    });
+                }).catch(reject);
+
+        }).catch(reject);
+    });
+};
+
 module.exports = {
     // Chart of Accounts
     getAllAccounts,
@@ -393,5 +459,6 @@ module.exports = {
     getAccountBalance,
     getTrialBalance,
     getBalanceSheet,
+    getProfitLoss,
     voidTransaction
 };

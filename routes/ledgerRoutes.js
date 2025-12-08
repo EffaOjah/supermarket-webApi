@@ -34,6 +34,9 @@ router.get("/ledger/trial-balance", ledgerController.renderTrialBalance);
 // Render balance sheet
 router.get("/ledger/balance-sheet", ledgerController.renderBalanceSheet);
 
+// Render profit and loss
+router.get("/ledger/profit-loss", ledgerController.renderProfitLoss);
+
 // Render account statement
 router.get("/ledger/account-statement/:accountCode", ledgerController.renderAccountStatement);
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -88,6 +88,18 @@
 					<li class="nav-item"><a href="/ledger/view"><i class="fa-solid fa-book-open"></i><p>View Ledger</p></a></li>
 					<li class="nav-item active"><a href="/ledger/accounts"><i class="fa-solid fa-sitemap"></i><p>Chart of Accounts</p></a></li>
 					<li class="nav-item"><a href="/ledger/trial-balance"><i class="fa-solid fa-balance-scale"></i><p>Trial Balance</p></a></li>
+					<li class="nav-item">
+						<a href="/ledger/balance-sheet">
+							<i class="fa-solid fa-file-invoice-dollar"></i>
+							<p>Balance Sheet</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="/ledger/profit-loss">
+							<i class="fa-solid fa-money-bill-trend-up"></i>
+							<p>Profit & Loss</p>
+						</a>
+					</li>
 					<li class="nav-item"><a href="/logout"><i class="fas fa-sign-out-alt"></i><p>Log Out</p></a></li>
 				</ul>
 			</div>
@@ -109,7 +121,7 @@
 							<div class="col-md-4">
 								<div class="balance-item text-center">
 									<small class="text-muted">Current Balance</small>
-									<h3 class="mb-0">₦<%= balance.balance.toLocaleString('en-NG', {minimumFractionDigits: 2, maximumFractionDigits: 2}) %></h3>
+									<h3 class="mb-0">â‚¦<%= balance.balance.toLocaleString('en-NG', {minimumFractionDigits: 2, maximumFractionDigits: 2}) %></h3>
 								</div>
 							</div>
 						</div>
@@ -118,19 +130,19 @@
 						<div class="col-md-4">
 							<div class="balance-item text-center">
 								<small class="text-muted">Total Debits</small>
-								<h5 class="text-success mb-0">₦<%= balance.totalDebits.toLocaleString('en-NG', {minimumFractionDigits: 2, maximumFractionDigits: 2}) %></h5>
+								<h5 class="text-success mb-0">â‚¦<%= balance.totalDebits.toLocaleString('en-NG', {minimumFractionDigits: 2, maximumFractionDigits: 2}) %></h5>
 							</div>
 						</div>
 						<div class="col-md-4">
 							<div class="balance-item text-center">
 								<small class="text-muted">Total Credits</small>
-								<h5 class="text-danger mb-0">₦<%= balance.totalCredits.toLocaleString('en-NG', {minimumFractionDigits: 2, maximumFractionDigits: 2}) %></h5>
+								<h5 class="text-danger mb-0">â‚¦<%= balance.totalCredits.toLocaleString('en-NG', {minimumFractionDigits: 2, maximumFractionDigits: 2}) %></h5>
 							</div>
 						</div>
 						<div class="col-md-4">
 							<div class="balance-item text-center">
 								<small class="text-muted">Net Balance</small>
-								<h5 class="text-primary mb-0">₦<%= balance.balance.toLocaleString('en-NG', {minimumFractionDigits: 2, maximumFractionDigits: 2}) %></h5>
+								<h5 class="text-primary mb-0">â‚¦<%= balance.balance.toLocaleString('en-NG', {minimumFractionDigits: 2, maximumFractionDigits: 2}) %></h5>
 							</div>
 						</div>
 					</div>

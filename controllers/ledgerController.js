@@ -233,6 +233,33 @@ const renderBalanceSheet = async (req, res) => {
     }
 };
 
+// ==================== PROFIT AND LOSS ====================
+
+// Render Profit and Loss
+const renderProfitLoss = async (req, res) => {
+    try {
+        let { startDate, endDate } = req.query;
+
+        // Default to current month if not provided
+        if (!startDate || !endDate) {
+            const now = new Date();
+            const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+            const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+            startDate = startDate || firstDay.toISOString().split('T')[0];
+            endDate = endDate || lastDay.toISOString().split('T')[0];
+        }
+
+        const report = await ledgerModel.getProfitLoss(startDate, endDate);
+
+        res.render("profit-loss", { report });
+    } catch (error) {
+        console.error("Error generating profit and loss report:", error);
+        req.flash("error_msg", "Failed to generate profit and loss report");
+        res.redirect("/admin/dashboard");
+    }
+};
+
 module.exports = {
     renderAddEntryPage,
     createTransaction,
@@ -242,5 +269,6 @@ module.exports = {
     addAccount,
     renderTrialBalance,
     renderAccountStatement,
-    renderBalanceSheet
+    renderBalanceSheet,
+    renderProfitLoss
 };

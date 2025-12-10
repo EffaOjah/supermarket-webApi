@@ -77,13 +77,25 @@ app.get('/', (req, res) => {
 
 
 // Use external routes
+
+
+
+
+// Use external routes
 app.use(authRoute);
 app.use(adminRoute);
 app.use(branchRoute);
 app.use(dataRoute);
 app.use(staffRoute);
 app.use(assetRoute);
+app.use(assetRoute);
 app.use(ledgerRoute);
+const payrollRoute = require('./routes/payrollRoutes');
+app.use('/payroll', payrollRoute);
+const attendanceRoute = require('./routes/attendanceRoutes');
+app.use('/attendance', attendanceRoute);
+const leaveRoute = require('./routes/leaveRoutes');
+app.use('/leave', leaveRoute);
 
 app.listen(PORT, () => {
     console.log(`Stores WEB API Server is running on PORT ${PORT}`);

@@ -11,4 +11,10 @@ router.post("/assets/add", assetController.addAsset);
 // Render all assets page
 router.get("/assets/all", assetController.renderAllAssetsPage);
 
+// Render update asset page
+router.get("/assets/:id/update", assetController.renderUpdateAssetPage);
+
+// Handle update asset form submission
+router.post("/assets/:id/update", assetController.updateAsset);
+
 module.exports = router;

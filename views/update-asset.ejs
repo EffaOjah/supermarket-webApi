@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<title>Update Asset - MaryBill</title>
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+	<script src="https://kit.fontawesome.com/a207e207d8.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="/css/ready.css">
+	<link rel="stylesheet" href="/css/demo.css">
+    <link rel="stylesheet" href="/iziToast-master/dist/css/iziToast.min.css">
+</head>
+<body>
+    <div class="wrapper">
+        <%- include('./partials/sidebar.ejs') %>
+        
+        <div class="main-panel">
+            <div class="content">
+                <div class="container-fluid">
+                    <h4 class="page-title">Update Asset</h4>
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Asset Details</h4>
+                                </div>
+                                <div class="card-body">
+                                    <form action="/assets/<%= asset.asset_id %>/update" method="POST">
+                                        <h6 class="text-uppercase border-bottom pb-2 mb-3 text-primary">Basic Information</h6>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Asset Name</label>
+                                                    <input type="text" class="form-control" name="assetName" value="<%= asset.asset_name %>" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Category</label>
+                                                    <select class="form-control" name="assetCategory" required>
+                                                        <option value="Equipment" <%= asset.asset_category === 'Equipment' ? 'selected' : '' %>>Equipment</option>
+                                                        <option value="Furniture" <%= asset.asset_category === 'Furniture' ? 'selected' : '' %>>Furniture</option>
+                                                        <option value="Vehicles" <%= asset.asset_category === 'Vehicles' ? 'selected' : '' %>>Vehicles</option>
+                                                        <option value="Electronics" <%= asset.asset_category === 'Electronics' ? 'selected' : '' %>>Electronics</option>
+                                                        <option value="Machinery" <%= asset.asset_category === 'Machinery' ? 'selected' : '' %>>Machinery</option>
+                                                        <option value="Office Supplies" <%= asset.asset_category === 'Office Supplies' ? 'selected' : '' %>>Office Supplies</option>
+                                                        <option value="IT Hardware" <%= asset.asset_category === 'IT Hardware' ? 'selected' : '' %>>IT Hardware</option>
+                                                        <option value="Other" <%= asset.asset_category === 'Other' ? 'selected' : '' %>>Other</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Description</label>
+                                            <textarea class="form-control" name="assetDescription" rows="2"><%= asset.asset_description %></textarea>
+                                        </div>
+
+                                        <h6 class="text-uppercase border-bottom pb-2 mb-3 mt-4 text-primary">Financials & Depreciation</h6>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Purchase Date</label>
+                                                    <input type="date" class="form-control" name="purchaseDate" value="<%= new Date(asset.purchase_date).toISOString().split('T')[0] %>" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Purchase Price</label>
+                                                    <input type="number" class="form-control" name="purchasePrice" value="<%= asset.purchase_price %>" step="0.01" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Current Value (Auto-Calc)</label>
+                                                    <input type="number" class="form-control" name="currentValue" value="<%= asset.current_value %>" step="0.01">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Useful Life (Years)</label>
+                                                    <input type="number" class="form-control" name="usefulLife" value="<%= asset.useful_life_years || 5 %>" min="1" step="0.5">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Salvage Value</label>
+                                                    <input type="number" class="form-control" name="salvageValue" value="<%= asset.salvage_value || 0 %>" step="0.01">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <h6 class="text-uppercase border-bottom pb-2 mb-3 mt-4 text-primary">Status & Location</h6>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Condition</label>
+                                                    <select class="form-control" name="assetCondition" required>
+                                                        <option value="Excellent" <%= asset.asset_condition === 'Excellent' ? 'selected' : '' %>>Excellent</option>
+                                                        <option value="Good" <%= asset.asset_condition === 'Good' ? 'selected' : '' %>>Good</option>
+                                                        <option value="Fair" <%= asset.asset_condition === 'Fair' ? 'selected' : '' %>>Fair</option>
+                                                        <option value="Poor" <%= asset.asset_condition === 'Poor' ? 'selected' : '' %>>Poor</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Status</label>
+                                                    <select class="form-control" name="status" required>
+                                                        <option value="Active" <%= asset.status === 'Active' ? 'selected' : '' %>>Active</option>
+                                                        <option value="Under Maintenance" <%= asset.status === 'Under Maintenance' ? 'selected' : '' %>>Under Maintenance</option>
+                                                        <option value="Retired" <%= asset.status === 'Retired' ? 'selected' : '' %>>Retired</option>
+                                                        <option value="Disposed" <%= asset.status === 'Disposed' ? 'selected' : '' %>>Disposed</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Location</label>
+                                                    <select class="form-control" name="location" required>
+                                                        <option value="Head Office" <%= asset.location === 'Head Office' ? 'selected' : '' %>>Head Office</option>
+                                                        <option value="Warehouse" <%= asset.location === 'Warehouse' ? 'selected' : '' %>>Warehouse</option>
+                                                        <% if (branches && branches.length > 0) { %>
+                                                            <% branches.forEach(branch => { %>
+                                                                <option value="<%= branch.branch_name %>" <%= asset.location === branch.branch_name ? 'selected' : '' %>><%= branch.branch_name %></option>
+                                                            <% }); %>
+                                                        <% } %>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Serial Number</label>
+                                                    <input type="text" class="form-control" name="serialNumber" value="<%= asset.serial_number %>">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="card-action">
+                                            <button type="submit" class="btn btn-success">Update Asset</button>
+                                            <a href="/assets/all" class="btn btn-danger">Cancel</a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <%- include('./partials/responseMessage') %>
+</body>
+<script src="/js/core/jquery.3.2.1.min.js"></script>
+<script src="/js/core/popper.min.js"></script>
+<script src="/js/core/bootstrap.min.js"></script>
+<script src="/iziToast-master/dist/js/iziToast.min.js"></script>
+<script src="/js/ready.min.js"></script>
+<script src="/js/toast.js"></script>
+</html>

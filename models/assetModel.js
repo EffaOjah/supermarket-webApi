@@ -1,6 +1,7 @@
 const db = require("../config/dbConfig");
 
 // Insert new asset
+// Insert new asset
 const insertAsset = async (assetData) => {
     return new Promise((resolve, reject) => {
         const {
@@ -14,7 +15,9 @@ const insertAsset = async (assetData) => {
             location,
             serialNumber,
             warrantyExpiry,
-            status
+            status,
+            usefulLife,
+            salvageValue
         } = assetData;
 
         db.query(
@@ -29,8 +32,10 @@ const insertAsset = async (assetData) => {
         location, 
         serial_number, 
         warranty_expiry, 
-        status
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        status,
+        useful_life_years,
+        salvage_value
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
                 assetName,
                 assetCategory,
@@ -42,7 +47,9 @@ const insertAsset = async (assetData) => {
                 location,
                 serialNumber,
                 warrantyExpiry,
-                status
+                status,
+                usefulLife,
+                salvageValue
             ],
             (err, result) => {
                 if (err) {
@@ -86,6 +93,7 @@ const getAssetById = async (assetId) => {
 };
 
 // Update asset
+// Update asset
 const updateAsset = async (assetId, assetData) => {
     return new Promise((resolve, reject) => {
         const {
@@ -99,7 +107,9 @@ const updateAsset = async (assetId, assetData) => {
             location,
             serialNumber,
             warrantyExpiry,
-            status
+            status,
+            usefulLife,
+            salvageValue
         } = assetData;
 
         db.query(
@@ -114,7 +124,9 @@ const updateAsset = async (assetId, assetData) => {
         location = ?, 
         serial_number = ?, 
         warranty_expiry = ?, 
-        status = ?
+        status = ?,
+        useful_life_years = ?,
+        salvage_value = ?
       WHERE asset_id = ?`,
             [
                 assetName,
@@ -128,6 +140,8 @@ const updateAsset = async (assetId, assetData) => {
                 serialNumber,
                 warrantyExpiry,
                 status,
+                usefulLife,
+                salvageValue,
                 assetId
             ],
             (err, result) => {

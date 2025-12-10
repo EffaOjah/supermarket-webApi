@@ -80,126 +80,168 @@
 				</div>
 			</nav>
 		</div>
-		<div class="sidebar">
-			<div class="sidebar-wrapper">
-				<div class="user">
-					<div class="photo">
-						<img src="/img/profile-icon.png">
-					</div>
-					<div class="info">
-						<a class="" data-toggle="collapse" href="#collapseExample" aria-expanded="true">
-							<span>
-								Steven
-								<span class="user-level">Administrator</span>
-								<span class="caret"></span>
-							</span>
-						</a>
-						<div class="clearfix"></div>
+        <!-- Sidebar -->
+         <div class="sidebar">
+  <div class="sidebar-wrapper">
+    <div class="user">
+      <div class="photo">
+        <img src="/img/profile-icon.png" />
+      </div>
+      <div class="info">
+        <a
+          class=""
+          data-toggle="collapse"
+          href="#collapseExample"
+          aria-expanded="true"
+        >
+          <span>
+            Steven
+            <span class="user-level">Administrator</span>
+            <span class="caret"></span>
+          </span>
+        </a>
+        <div class="clearfix"></div>
 
-						<div class="collapse in" id="collapseExample" aria-expanded="true">
-							<ul class="nav">
-								<li>
-									<a href="#profile">
-										<span class="link-collapse">My Profile</span>
-									</a>
-								</li>
-								<li>
-									<a href="#edit">
-										<span class="link-collapse">Edit Profile</span>
-									</a>
-								</li>
-								<li>
-									<a href="#settings">
-										<span class="link-collapse">Settings</span>
-									</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-				<ul class="nav">
-					<li class="nav-item">
-						<a href="/admin/dashboard">
-							<i class="fa-solid fa-gauge"></i>
-							<p>Dashboard</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/admin/product-upload">
-							<i class="fa-solid fa-upload"></i>
-							<p>Upload Product</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/admin/all-products">
-							<i class="fa-solid fa-tarp"></i>
-							<p>All Products</p>
-						</a>
-					</li>
-					<li class="nav-item active">
-						<a href="/staff/add">
-							<i class="fa-solid fa-user-plus"></i>
-							<p>Add Staff</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/staff/all">
-							<i class="fa-solid fa-users"></i>
-							<p>All Staff</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/assets/add">
-							<i class="fa-solid fa-box-archive"></i>
-							<p>Add Asset</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/assets/all">
-							<i class="fa-solid fa-boxes-stacked"></i>
-							<p>All Assets</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/ledger/add">
-							<i class="fa-solid fa-book"></i>
-							<p>Ledger Entry</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/ledger/view">
-							<i class="fa-solid fa-book-open"></i>
-							<p>View Ledger</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/ledger/accounts">
-							<i class="fa-solid fa-sitemap"></i>
-							<p>Chart of Accounts</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/ledger/trial-balance">
-							<i class="fa-solid fa-balance-scale"></i>
-							<p>Trial Balance</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/ledger/balance-sheet">
-							<i class="fa-solid fa-file-invoice-dollar"></i>
-							<p>Balance Sheet</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/ledger/profit-loss">
-							<i class="fa-solid fa-money-bill-trend-up"></i>
-							<p>Profit & Loss</p>
-						</a>
-					</li>
-					<li class="nav-item"><a href="/logout"><i class="fas fa-sign-out-alt"></i><p>Log Out</p></a></li>
-				</ul>
-			</div>
-		</div>
+        <div class="collapse in" id="collapseExample" aria-expanded="true">
+          <ul class="nav">
+            <li>
+              <a href="#profile">
+                <span class="link-collapse">My Profile</span>
+              </a>
+            </li>
+            <li>
+              <a href="#edit">
+                <span class="link-collapse">Edit Profile</span>
+              </a>
+            </li>
+            <li>
+              <a href="#settings">
+                <span class="link-collapse">Settings</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <ul class="nav">
+      <li class="nav-item">
+        <a href="/admin/dashboard">
+          <i class="fa-solid fa-gauge"></i>
+          <p>Dashboard</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/admin/product-upload">
+          <i class="fa-solid fa-upload"></i>
+          <p>Upload Product</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/admin/all-products">
+          <i class="fa-solid fa-tarp"></i>
+          <p>All Products</p>
+        </a>
+      </li>
+      <li class="nav-item active">
+        <a href="/staff/add">
+          <i class="fa-solid fa-user-plus"></i>
+          <p>Add Staff</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/staff/all">
+          <i class="fa-solid fa-users"></i>
+          <p>All Staff</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/payroll/setup">
+          <i class="fa-solid fa-money-check-dollar"></i>
+          <p>Payroll Config</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/payroll/run">
+          <i class="fa-solid fa-play"></i>
+          <p>Run Payroll</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/payroll/history">
+          <i class="fa-solid fa-file-invoice-dollar"></i>
+          <p>Payroll History</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/attendance">
+          <i class="fa-solid fa-clock"></i>
+          <p>Attendance</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/leave/manage">
+          <i class="fa-solid fa-calendar-check"></i>
+          <p>Leave Mgmt</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/assets/add">
+          <i class="fa-solid fa-box-archive"></i>
+          <p>Add Asset</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/assets/all">
+          <i class="fa-solid fa-boxes-stacked"></i>
+          <p>All Assets</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/ledger/add">
+          <i class="fa-solid fa-book"></i>
+          <p>Ledger Entry</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/ledger/view">
+          <i class="fa-solid fa-book-open"></i>
+          <p>View Ledger</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/ledger/accounts">
+          <i class="fa-solid fa-sitemap"></i>
+          <p>Chart of Accounts</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/ledger/trial-balance">
+          <i class="fa-solid fa-balance-scale"></i>
+          <p>Trial Balance</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/ledger/balance-sheet">
+          <i class="fa-solid fa-file-invoice-dollar"></i>
+          <p>Balance Sheet</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/ledger/profit-loss">
+          <i class="fa-solid fa-money-bill-trend-up"></i>
+          <p>Profit & Loss</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/logout">
+          <i class="fas fa-sign-out-alt"></i>
+          <p>Log Out</p>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<!-- End Sidebar -->
 		<div class="main-panel">
 			<div class="content">
 				<div class="container-fluid">
@@ -211,43 +253,121 @@
 									<div class="card-header">
 										<div class="card-title">Fill in staff details</div>
 									</div>
-									<div class="card-body">
-										<!-- Staff Name -->
-										<div class="form-group">
-											<label for="staffName">Staff Name</label>
-											<input type="text" class="form-control" id="staffName" name="staffName"
-												placeholder="Enter staff name" required>
-										</div>
-										<!-- Email -->
-										<div class="form-group">
-											<label for="email">Email</label>
-											<input type="email" class="form-control" id="email" name="email"
-												placeholder="Enter email address" required>
-										</div>
-										<!-- Phone -->
-										<div class="form-group">
-											<label for="phone">Phone</label>
-											<input type="tel" class="form-control" id="phone" name="phone"
-												placeholder="Enter phone number" required>
-										</div>
-										<!-- Address -->
-										<div class="form-group">
-											<label for="address">Address</label>
-											<textarea class="form-control" id="address" name="address" rows="3"
-												placeholder="Enter address" required></textarea>
-										</div>
-										<!-- Salary -->
-										<div class="form-group">
-											<label for="salary">Salary</label>
-											<input type="number" class="form-control" id="salary" name="salary"
-												placeholder="0.00" step="0.01" required>
-										</div>
-										<!-- Level -->
-										<div class="form-group">
-											<label for="level">Level</label>
-											<input type="text" class="form-control" id="level" name="level"
-												placeholder="Enter staff level" required>
-										</div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <!-- First Name -->
+                                                <div class="form-group">
+                                                    <label for="firstName">First Name</label>
+                                                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <!-- Last Name -->
+                                                <div class="form-group">
+                                                    <label for="lastName">Last Name</label>
+                                                    <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name" required>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Email -->
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter email address" required>
+                                        </div>
+
+                                        <!-- Phone -->
+                                        <div class="form-group">
+                                            <label for="phone">Phone</label>
+                                            <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter phone number">
+                                        </div>
+
+                                        <!-- Address -->
+                                        <div class="form-group">
+                                            <label for="address">Address</label>
+                                            <textarea class="form-control" id="address" name="address" rows="2" placeholder="Enter address"></textarea>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <!-- Department -->
+                                                <div class="form-group">
+                                                    <label for="department">Department</label>
+                                                    <input type="text" class="form-control" id="department" name="department" placeholder="Department">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <!-- Job Role -->
+                                                <div class="form-group">
+                                                    <label for="jobRole">Job Role</label>
+                                                    <input type="text" class="form-control" id="jobRole" name="jobRole" placeholder="Job Role" required>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                                                        <h6 class="mt-4 text-primary">Salary & Payroll</h6>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="structureId">Pay Grade (Salary Structure)</label>
+                                                <select class="form-control" id="structureId" name="structureId">
+                                                    <option value="">-- Select Grade --</option>
+                                                    <% if (structures && structures.length > 0) { %>
+                                                        <% structures.forEach(s => { %>
+                                                            <option value="<%= s.structure_id %>"><%= s.name %> (<%= s.currency %> <%= s.frequency %>)</option>
+                                                        <% }) %>
+                                                    <% } %>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="basicSalary">Basic Salary (Override)</label>
+                                                <input type="number" class="form-control" id="basicSalary" name="basicSalary" placeholder="0.00" step="0.01">
+                                                <small class="form-text text-muted">Leave empty to use Structure default</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h6 class="mt-4 text-primary">Bank Details</h6>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="bankName">Bank Name</label>
+                                                    <input type="text" class="form-control" id="bankName" name="bankName" placeholder="Bank Name">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="accountNumber">Account Number</label>
+                                                    <input type="text" class="form-control" id="accountNumber" name="accountNumber" placeholder="Account Number">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="accountName">Account Name</label>
+                                                    <input type="text" class="form-control" id="accountName" name="accountName" placeholder="Account Name">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <h6 class="mt-4 text-primary">Tax & Pension</h6>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="taxId">Tax ID (TIN)</label>
+                                                    <input type="text" class="form-control" id="taxId" name="taxId" placeholder="Tax ID">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="pensionId">Pension ID</label>
+                                                    <input type="text" class="form-control" id="pensionId" name="pensionId" placeholder="Pension ID">
+                                                </div>
+                                            </div>
+                                        </div>
+
 									</div>
 									<div class="card-action">
 										<button class="btn btn-success">Submit</button>

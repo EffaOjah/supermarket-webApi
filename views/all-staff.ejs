@@ -80,134 +80,169 @@
 				</div>
 			</nav>
 		</div>
-		<div class="sidebar">
-			<div class="sidebar-wrapper">
-				<div class="user">
-					<div class="photo">
-						<img src="/img/profile-icon.png">
-					</div>
-					<div class="info">
-						<a class="" data-toggle="collapse" href="#collapseExample" aria-expanded="true">
-							<span>
-								Steven
-								<span class="user-level">Administrator</span>
-								<span class="caret"></span>
-							</span>
-						</a>
-						<div class="clearfix"></div>
+        <!-- Sidebar -->
+		 <div class="sidebar">
+  <div class="sidebar-wrapper">
+    <div class="user">
+      <div class="photo">
+        <img src="/img/profile-icon.png" />
+      </div>
+      <div class="info">
+        <a
+          class=""
+          data-toggle="collapse"
+          href="#collapseExample"
+          aria-expanded="true"
+        >
+          <span>
+            Steven
+            <span class="user-level">Administrator</span>
+            <span class="caret"></span>
+          </span>
+        </a>
+        <div class="clearfix"></div>
 
-						<div class="collapse in" id="collapseExample" aria-expanded="true">
-							<ul class="nav">
-								<li>
-									<a href="#profile">
-										<span class="link-collapse">My Profile</span>
-									</a>
-								</li>
-								<li>
-									<a href="#edit">
-										<span class="link-collapse">Edit Profile</span>
-									</a>
-								</li>
-								<li>
-									<a href="#settings">
-										<span class="link-collapse">Settings</span>
-									</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-				<ul class="nav">
-					<li class="nav-item">
-						<a href="/admin/dashboard">
-							<i class="fa-solid fa-gauge"></i>
-							<p>Dashboard</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/admin/product-upload">
-							<i class="fa-solid fa-upload"></i>
-							<p>Upload Product</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/admin/all-products">
-							<i class="fa-solid fa-tarp"></i>
-							<p>All Products</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/staff/add">
-							<i class="fa-solid fa-user-plus"></i>
-							<p>Add Staff</p>
-						</a>
-					</li>
-					<li class="nav-item active">
-						<a href="/staff/all">
-							<i class="fa-solid fa-users"></i>
-							<p>All Staff</p>
-							<span class="badge badge-count">
-								<%= staffs.length %>
-							</span>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/assets/add">
-							<i class="fa-solid fa-box-archive"></i>
-							<p>Add Asset</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/assets/all">
-							<i class="fa-solid fa-boxes-stacked"></i>
-							<p>All Assets</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/ledger/add">
-							<i class="fa-solid fa-book"></i>
-							<p>Ledger Entry</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/ledger/view">
-							<i class="fa-solid fa-book-open"></i>
-							<p>View Ledger</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/ledger/accounts">
-							<i class="fa-solid fa-sitemap"></i>
-							<p>Chart of Accounts</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/ledger/trial-balance">
-							<i class="fa-solid fa-balance-scale"></i>
-							<p>Trial Balance</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/ledger/balance-sheet">
-							<i class="fa-solid fa-file-invoice-dollar"></i>
-							<p>Balance Sheet</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/ledger/profit-loss">
-							<i class="fa-solid fa-money-bill-trend-up"></i>
-							<p>Profit & Loss</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/logout">
-							<i class="fas fa-sign-out-alt"></i>
-							<p>Log Out</p>
-						</a>
-					</li>
-				</ul>
-			</div>
-		</div>
+        <div class="collapse in" id="collapseExample" aria-expanded="true">
+          <ul class="nav">
+            <li>
+              <a href="#profile">
+                <span class="link-collapse">My Profile</span>
+              </a>
+            </li>
+            <li>
+              <a href="#edit">
+                <span class="link-collapse">Edit Profile</span>
+              </a>
+            </li>
+            <li>
+              <a href="#settings">
+                <span class="link-collapse">Settings</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <ul class="nav">
+      <li class="nav-item">
+        <a href="/admin/dashboard">
+          <i class="fa-solid fa-gauge"></i>
+          <p>Dashboard</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/admin/product-upload">
+          <i class="fa-solid fa-upload"></i>
+          <p>Upload Product</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/admin/all-products">
+          <i class="fa-solid fa-tarp"></i>
+          <p>All Products</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/staff/add">
+          <i class="fa-solid fa-user-plus"></i>
+          <p>Add Staff</p>
+        </a>
+      </li>
+      <li class="nav-item active">
+        <a href="/staff/all">
+          <i class="fa-solid fa-users"></i>
+          <p>All Staff</p>
+		  <span class="badge badge-count"><%= staffs.length %></span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/payroll/setup">
+          <i class="fa-solid fa-money-check-dollar"></i>
+          <p>Payroll Config</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/payroll/run">
+          <i class="fa-solid fa-play"></i>
+          <p>Run Payroll</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/payroll/history">
+          <i class="fa-solid fa-file-invoice-dollar"></i>
+          <p>Payroll History</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/attendance">
+          <i class="fa-solid fa-clock"></i>
+          <p>Attendance</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/leave/manage">
+          <i class="fa-solid fa-calendar-check"></i>
+          <p>Leave Mgmt</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/assets/add">
+          <i class="fa-solid fa-box-archive"></i>
+          <p>Add Asset</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/assets/all">
+          <i class="fa-solid fa-boxes-stacked"></i>
+          <p>All Assets</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/ledger/add">
+          <i class="fa-solid fa-book"></i>
+          <p>Ledger Entry</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/ledger/view">
+          <i class="fa-solid fa-book-open"></i>
+          <p>View Ledger</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/ledger/accounts">
+          <i class="fa-solid fa-sitemap"></i>
+          <p>Chart of Accounts</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/ledger/trial-balance">
+          <i class="fa-solid fa-balance-scale"></i>
+          <p>Trial Balance</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/ledger/balance-sheet">
+          <i class="fa-solid fa-file-invoice-dollar"></i>
+          <p>Balance Sheet</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/ledger/profit-loss">
+          <i class="fa-solid fa-money-bill-trend-up"></i>
+          <p>Profit & Loss</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/logout">
+          <i class="fas fa-sign-out-alt"></i>
+          <p>Log Out</p>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<!-- End Sidebar -->
 		<div class="main-panel">
 			<div class="content">
 				<div class="container-fluid">
@@ -224,49 +259,55 @@
 					<div class="row justify-content-center">
 						<div class="card">
 							<div class="card-header">
-								<div class="card-title">Staff Details</div>
+								<div class="card-title">Staff Directory</div>
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-bordered">
+									<table class="table table-hover table-striped">
 										<thead>
 											<tr>
-												<th>#</th>
+												<th>Staff ID</th>
 												<th>Name</th>
-												<th>Email</th>
+												<th>Department</th>
+												<th>Role</th>
 												<th>Phone</th>
-												<th>Address</th>
-												<th>Salary</th>
-												<th>Level</th>
-												<th>Action</th>
+												<th>Status</th>
+												<th class="text-center" style="width: 150px;">Actions</th>
 											</tr>
 										</thead>
 										<tbody>
 											<% staffs.forEach((staff, index)=> { %>
 												<tr>
-													<th scope="row">
-														<%= index + 1 %>
-													</th>
+													<td><%= staff.staff_id %></td>
 													<td>
-														<%= staff.staff_name %>
+														<div class="d-flex align-items-center">
+															<div class="avatar avatar-sm mr-2">
+																<span class="avatar-title rounded-circle border border-white bg-info"><%= staff.first_name.charAt(0) %><%= staff.last_name.charAt(0) %></span>
+															</div>
+															<div>
+																<div class="font-weight-bold"><%= staff.first_name %> <%= staff.last_name %></div>
+																<small class="text-muted"><%= staff.email %></small>
+															</div>
+														</div>
 													</td>
+													<td><%= staff.department %></td>
+													<td><%= staff.job_role %></td>
+													<td><%= staff.phone %></td>
 													<td>
-														<%= staff.email %>
+														<span class="badge badge-<%= staff.employment_status === 'Active' ? 'success' : 'secondary' %>">
+															<%= staff.employment_status %>
+														</span>
 													</td>
-													<td>
-														<%= staff.phone %>
-													</td>
-													<td>
-														<%= staff.address %>
-													</td>
-													<td>
-														₦<%= staff.salary %>
-													</td>
-													<td>
-														<%= staff.level %>
-													</td>
-													<td><a href="/staff/<%= staff.payroll_id %>/update" class="btn-sm btn-primary"
-															style="cursor: pointer;">Edit</a>
+													<td class="text-center">
+														<div class="btn-group">
+															<button type="button" class="btn btn-icon btn-round btn-info btn-sm view-staff-btn"
+																data-staff='<%- JSON.stringify(staff).replace(/'/g, "&#39;") %>' title="View Details">
+																<i class="fa fa-eye"></i>
+															</button>
+															<a href="/staff/<%= staff.employee_id %>/update" class="btn btn-icon btn-round btn-primary btn-sm" title="Edit">
+																<i class="fa fa-edit"></i>
+															</a>
+														</div>
 													</td>
 												</tr>
 												<% }) %>
@@ -280,43 +321,86 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- Staff Details Modal -->
+	<div class="modal fade" id="staffDetailsModal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header bg-primary text-white">
+					<h5 class="modal-title">Staff Details</h5>
+					<button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12 text-center mb-4">
+							<div class="avatar avatar-xl">
+								<span class="avatar-title rounded-circle border border-white bg-info" id="modalAvatar" style="font-size: 2rem;"></span>
+							</div>
+							<h4 class="mt-2" id="modalName"></h4>
+							<p class="text-muted" id="modalRole"></p>
+						</div>
+					</div>
+					
+					<ul class="nav nav-tabs" id="myTab" role="tablist">
+						<li class="nav-item">
+							<a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab">Personal Info</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" id="financial-tab" data-toggle="tab" href="#financial" role="tab">Financial & Payroll</a>
+						</li>
+					</ul>
+					
+					<div class="tab-content mt-3" id="myTabContent">
+						<div class="tab-pane fade show active" id="profile" role="tabpanel">
+							<div class="row">
+								<div class="col-md-6">
+									<p><strong>Staff ID:</strong> <span id="modalStaffId"></span></p>
+									<p><strong>Email:</strong> <span id="modalEmail"></span></p>
+									<p><strong>Phone:</strong> <span id="modalPhone"></span></p>
+								</div>
+								<div class="col-md-6">
+									<p><strong>Department:</strong> <span id="modalDept"></span></p>
+									<p><strong>Date Joined:</strong> <span id="modalJoined"></span></p>
+									<p><strong>Address:</strong> <span id="modalAddress"></span></p>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane fade" id="financial" role="tabpanel">
+							<div class="row">
+								<div class="col-md-6">
+									<h6 class="text-primary">Bank Details</h6>
+									<p><strong>Bank:</strong> <span id="modalBank"></span></p>
+									<p><strong>Account Name:</strong> <span id="modalAccName"></span></p>
+									<p><strong>Account No:</strong> <span id="modalAccNo"></span></p>
+								</div>
+								<div class="col-md-6">
+									<h6 class="text-primary">Payroll Config</h6>
+									<p><strong>Tax ID:</strong> <span id="modalTax"></span></p>
+									<p><strong>Pension ID:</strong> <span id="modalPension"></span></p>
+									<p><strong>Pay Grade:</strong> <span id="modalStructure"></span></p>
+									<p><strong>Basic Salary:</strong> <span id="modalBasic"></span></p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	</div>
 
 	<%- include('./partials/responseMessage') %>
-		<script>
-			document.getElementById("staffSearch").addEventListener("input", function () {
-				const searchValue = this.value.toLowerCase();
-				const table = document.querySelector(".table");
-				const tbody = table.querySelector("tbody");
-				const rows = tbody.querySelectorAll("tr");
 
-				let anyVisible = false;
-
-				rows.forEach(row => {
-					const name = row.cells[1].textContent.toLowerCase();
-					const email = row.cells[2].textContent.toLowerCase();
-					const phone = row.cells[3].textContent.toLowerCase();
-					const address = row.cells[4].textContent.toLowerCase();
-					const level = row.cells[6].textContent.toLowerCase();
-
-					const match = name.includes(searchValue) ||
-						email.includes(searchValue) ||
-						phone.includes(searchValue) ||
-						address.includes(searchValue) ||
-						level.includes(searchValue);
-
-					if (match) {
-						row.style.display = "";
-						anyVisible = true;
-					} else {
-						row.style.display = "none";
-					}
-				});
-
-				// Hide the table if no match is found
-				table.parentElement.parentElement.style.display = anyVisible ? "" : "none";
-			});
-		</script>
 
 </body>
 <script src="/js/core/jquery.3.2.1.min.js"></script>
@@ -335,5 +419,55 @@
 <script src="/js/demo.js"></script>
 
 <script src="/js/toast.js"></script>
+<script>
+	$(document).ready(function() {
+		// Search Function
+		$("#staffSearch").on("keyup", function() {
+			var value = $(this).val().toLowerCase();
+			$("table tbody tr").filter(function() {
+				$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+			});
+		});
+
+		// View Details Modal
+		$('.view-staff-btn').click(function() {
+			const staff = $(this).data('staff');
+			
+			// Header
+			const firstName = staff.first_name || '';
+			const lastName = staff.last_name || '';
+			const initials = ((firstName.charAt(0) || '') + (lastName.charAt(0) || '')).toUpperCase();
+			
+			$('#modalAvatar').text(initials || '?');
+			$('#modalName').text(firstName + ' ' + lastName);
+			$('#modalRole').text((staff.job_role || 'No Role') + ' - ' + (staff.employment_status || 'Unknown'));
+			
+			// Profile
+			$('#modalStaffId').text(staff.staff_id);
+			$('#modalEmail').text(staff.email);
+			$('#modalPhone').text(staff.phone);
+			$('#modalDept').text(staff.department);
+			if (staff.created_at) {
+				$('#modalJoined').text(new Date(staff.created_at).toLocaleDateString());
+			}
+			$('#modalAddress').text(staff.address || 'N/A');
+
+			// Financial
+			$('#modalBank').text(staff.bank_name || '-');
+			$('#modalAccName').text(staff.account_name || '-');
+			$('#modalAccNo').text(staff.account_number || '-');
+			
+			$('#modalTax').text(staff.tax_id || '-');
+			$('#modalPension').text(staff.pension_id || '-');
+			$('#modalStructure').text(staff.structure_name || 'Not Assigned');
+			
+			// Format currency for basic salary
+			const basic = parseFloat(staff.basic_salary) || 0;
+			$('#modalBasic').text('₦' + basic.toLocaleString());
+
+			$('#staffDetailsModal').modal('show');
+		});
+	});
+</script>
 
 </html>

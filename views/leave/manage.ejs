@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<title>MaryBill Conglomerate Ltd. - Dashboard</title>
-	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
-		name='viewport' />
-	<link rel="stylesheet" href="/css/bootstrap.min.css">
-	<link rel="stylesheet"
-		href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
-	<script src="https://kit.fontawesome.com/a207e207d8.js" crossorigin="anonymous"></script>
-	<link rel="stylesheet" href="/css/ready.css">
-	<link rel="stylesheet" href="/css/demo.css">
-	<link rel="icon" type="image/x-icon" href="/img/app_icon.ico">
-
-	<link rel="stylesheet" href="/iziToast-master/dist/css/iziToast.min.css">
-</head>
-
-<body>
-	<div class="wrapper">
-		<div class="main-header">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Manage Leaves - MaryBill</title>
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"
+      name="viewport"
+    />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    />
+    <script
+      src="https://kit.fontawesome.com/a207e207d8.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="/css/ready.css" />
+    <link rel="stylesheet" href="/css/demo.css" />
+    <link rel="stylesheet" href="/iziToast-master/dist/css/iziToast.min.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="main-header">
 			<div class="logo-header">
 				<a href="/admin/dashboard" class="logo">
 					MaryBill Conglomerate
@@ -49,72 +52,7 @@
 								aria-haspopup="true" aria-expanded="false">
 								<i class="la la-envelope"></i>
 							</a>
-							<!-- <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<a class="dropdown-item" href="#">Action</a>
-								<a class="dropdown-item" href="#">Another action</a>
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="#">Something else here</a>
-							</div> -->
 						</li>
-						<!-- <li class="nav-item dropdown hidden-caret">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-								aria-haspopup="true" aria-expanded="false">
-								<i class="la la-bell"></i>
-								<span class="notification"></span>
-							</a>
-							<ul class="dropdown-menu notif-box" aria-labelledby="navbarDropdown">
-								<li>
-									<div class="dropdown-title">You have 4 new notification</div>
-								</li>
-								<li>
-									<div class="notif-center">
-										<a href="#">
-											<div class="notif-icon notif-primary"> <i class="la la-user-plus"></i>
-											</div>
-											<div class="notif-content">
-												<span class="block">
-													New user registered
-												</span>
-												<span class="time">5 minutes ago</span>
-											</div>
-										</a>
-										<a href="#">
-											<div class="notif-icon notif-success"> <i class="la la-comment"></i> </div>
-											<div class="notif-content">
-												<span class="block">
-													Rahmad commented on Admin
-												</span>
-												<span class="time">12 minutes ago</span>
-											</div>
-										</a>
-										<a href="#">
-											<div class="notif-img">
-												<img src="/img/profile2.jpg" alt="Img Profile">
-											</div>
-											<div class="notif-content">
-												<span class="block">
-													Reza send messages to you
-												</span>
-												<span class="time">12 minutes ago</span>
-											</div>
-										</a>
-										<a href="#">
-											<div class="notif-icon notif-danger"> <i class="la la-heart"></i> </div>
-											<div class="notif-content">
-												<span class="block">
-													Farrah liked Admin
-												</span>
-												<span class="time">17 minutes ago</span>
-											</div>
-										</a>
-									</div>
-								</li>
-								<li>
-									<a class="see-all" href="javascript:void(0);"> <strong>See all
-											notifications</strong> <i class="la la-angle-right"></i> </a>
-								</li>
-							</ul>
-						</li> -->
 						<li class="nav-item dropdown">
 							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img
 									src="/img/profile-icon.png" alt="user-img" width="36" class="img-circle"><span>Steven</span></span>
@@ -137,7 +75,7 @@
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="#"><i class="ti-settings"></i> Account Setting</a>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="#"><i class="fa fa-power-off"></i> Logout</a>
+								<a class="dropdown-item" href="/logout"><i class="fa fa-power-off"></i> Logout</a>
 							</ul>
 							<!-- /.dropdown-user -->
 						</li>
@@ -145,8 +83,8 @@
 				</div>
 			</nav>
 		</div>
-		<!-- Sidebar -->
-		<div class="sidebar">
+        <!-- Sidebar -->
+		 <div class="sidebar">
   <div class="sidebar-wrapper">
     <div class="user">
       <div class="photo">
@@ -189,7 +127,7 @@
       </div>
     </div>
     <ul class="nav">
-      <li class="nav-item active">
+      <li class="nav-item">
         <a href="/admin/dashboard">
           <i class="fa-solid fa-gauge"></i>
           <p>Dashboard</p>
@@ -243,7 +181,7 @@
           <p>Attendance</p>
         </a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item active">
         <a href="/leave/manage">
           <i class="fa-solid fa-calendar-check"></i>
           <p>Leave Mgmt</p>
@@ -307,69 +245,131 @@
   </div>
 </div>
 <!-- End Sidebar -->
-		<div class="main-panel">
-			<div class="content">
-				<div class="container-fluid">
-					<h4 class="page-title">Dashboard > <span class="text-primary">Branches</span></h4>
-					<div class="row justify-content-center">
-						<% if (branches.length < 1) { %>
-							<h1>No Branches Available</h1>
-							<% } else { %>
-								<% branches.forEach(branch=> { %>
-									<a href="/branch/<%= branch.branch_id %>" class="col-md-3" title="view">
-										<div class="card card-stats card-primary" style="box-sizing: border-box; height: 150px;">
-											<div class="card-body ">
-												<div class="row">
-													<div class="col-5">
-														<div class="icon-big text-center">
-															<i class="la la-bar-chart"></i>
-														</div>
-													</div>
-													<div class="col-7 d-flex align-items-center">
-														<div class="numbers">
-															<h6 class="card-title">
-																<%= branch.branch_name %>
-															</h6>
-															<p class="card-category">Last Inspected: <span>
-																	<%= branch.last_inspected %>
-																</span></p>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</a>
-									<% }) %>
-										<% } %>
 
+      <div class="main-panel">
+        <div class="content">
+          <div class="container-fluid">
+            <h4 class="page-title">Manage Leave Requests</h4>
 
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-header">
+                    <div class="card-title">
+                      All Requests
+                      <a
+                        href="/leave/apply"
+                        class="btn btn-primary btn-sm float-right"
+                        >New Request</a
+                      >
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th>Staff</th>
+                            <th>Type</th>
+                            <th>Dates</th>
+                            <th>Days</th>
+                            <th>Reason</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% leaves.forEach(l => { %>
+                          <tr>
+                            <td>
+                              <strong
+                                ><%= l.first_name %> <%= l.last_name %></strong
+                              ><br /><small><%= l.department %></small>
+                            </td>
+                            <td><%= l.leave_type %></td>
+                            <td>
+                              <%= new Date(l.start_date).toLocaleDateString() %>
+                              - <%= new Date(l.end_date).toLocaleDateString() %>
+                            </td>
+                            <td><%= l.days_requested %></td>
+                            <td><%= l.reason %></td>
+                            <td>
+                              <% if(l.status === 'Pending') { %>
+                              <span class="badge badge-warning">Pending</span>
+                              <% } else if(l.status === 'Approved') { %>
+                              <span class="badge badge-success">Approved</span>
+                              <% } else { %>
+                              <span class="badge badge-danger">Rejected</span>
+                              <% } %>
+                            </td>
+                            <td>
+                              <% if(l.status === 'Pending') { %>
+                              <form
+                                action="/leave/update-status/<%= l.leave_id %>"
+                                method="POST"
+                                style="display: inline"
+                              >
+                                <input
+                                  type="hidden"
+                                  name="status"
+                                  value="Approved"
+                                />
+                                <button
+                                  type="submit"
+                                  class="btn btn-success btn-xs"
+                                  title="Approve"
+                                >
+                                  <i class="fa fa-check"></i>
+                                </button>
+                              </form>
+                              <form
+                                action="/leave/update-status/<%= l.leave_id %>"
+                                method="POST"
+                                style="display: inline"
+                              >
+                                <input
+                                  type="hidden"
+                                  name="status"
+                                  value="Rejected"
+                                />
+                                <button
+                                  type="submit"
+                                  class="btn btn-danger btn-xs"
+                                  title="Reject"
+                                >
+                                  <i class="fa fa-times"></i>
+                                </button>
+                              </form>
+                              <% } else { %>
+                              <span class="text-muted">-</span>
+                              <% } %>
+                            </td>
+                          </tr>
+                          <% }) %> <% if(leaves.length === 0) { %>
+                          <tr>
+                            <td colspan="7" class="text-center">
+                              No leave requests found.
+                            </td>
+                          </tr>
+                          <% } %>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-					</div>
-				</div>
-			</div>
-
-		</div>
-	</div>
-	</div>
-
-	<%- include('./partials/responseMessage') %>
-</body>
-<script src="/js/core/jquery.3.2.1.min.js"></script>
-<script src="/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
-<script src="/js/core/popper.min.js"></script>
-<script src="/js/core/bootstrap.min.js"></script>
-<script src="/js/plugin/chartist/chartist.min.js"></script>
-<script src="/js/plugin/chartist/plugin/chartist-plugin-tooltip.min.js"></script>
-<!-- <script src="/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script> -->
-<script src="/iziToast-master/dist/js/iziToast.min.js"></script>
-<script src="/js/plugin/bootstrap-toggle/bootstrap-toggle.min.js"></script>
-<script src="/js/plugin/jquery-mapael/jquery.mapael.min.js"></script>
-<script src="/js/plugin/jquery-mapael/maps/world_countries.min.js"></script>
-<script src="/js/plugin/chart-circle/circles.min.js"></script>
-<script src="/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
-<script src="/js/ready.min.js"></script>
-<script src="/js/demo.js"></script>
-
-<script src="/js/toast.js"></script>
-
+    <%- include('../partials/responseMessage') %>
+  </body>
+  <script src="/js/core/jquery.3.2.1.min.js"></script>
+  <script src="/js/core/popper.min.js"></script>
+  <script src="/js/core/bootstrap.min.js"></script>
+  <script src="/iziToast-master/dist/js/iziToast.min.js"></script>
+  <script src="/js/ready.min.js"></script>
+  <script src="/js/toast.js"></script>
 </html>

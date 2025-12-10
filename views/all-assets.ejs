@@ -171,6 +171,7 @@
 			</div>
 			<nav class="navbar navbar-header navbar-expand-lg">
 				<div class="container-fluid">
+
 					<form class="navbar-left navbar-form nav-search mr-md-3" action="">
 						<div class="input-group">
 							<input type="text" placeholder="Search ..." class="form-control">
@@ -210,137 +211,175 @@
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="#"><i class="ti-settings"></i> Account Setting</a>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="#"><i class="fa fa-power-off"></i> Logout</a>
+								<a class="dropdown-item" href="/logout"><i class="fa fa-power-off"></i> Logout</a>
 							</ul>
+							<!-- /.dropdown-user -->
 						</li>
 					</ul>
 				</div>
 			</nav>
 		</div>
-		<div class="sidebar">
-			<div class="sidebar-wrapper">
-				<div class="user">
-					<div class="photo">
-						<img src="/img/profile-icon.png">
-					</div>
-					<div class="info">
-						<a class="" data-toggle="collapse" href="#collapseExample" aria-expanded="true">
-							<span>
-								Steven
-								<span class="user-level">Administrator</span>
-								<span class="caret"></span>
-							</span>
-						</a>
-						<div class="clearfix"></div>
-						<div class="collapse in" id="collapseExample" aria-expanded="true">
-							<ul class="nav">
-								<li>
-									<a href="#profile">
-										<span class="link-collapse">My Profile</span>
-									</a>
-								</li>
-								<li>
-									<a href="#edit">
-										<span class="link-collapse">Edit Profile</span>
-									</a>
-								</li>
-								<li>
-									<a href="#settings">
-										<span class="link-collapse">Settings</span>
-									</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-				<ul class="nav">
-					<li class="nav-item">
-						<a href="/admin/dashboard">
-							<i class="fa-solid fa-gauge"></i>
-							<p>Dashboard</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/admin/product-upload">
-							<i class="fa-solid fa-upload"></i>
-							<p>Upload Product</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/admin/all-products">
-							<i class="fa-solid fa-tarp"></i>
-							<p>All Products</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/staff/add">
-							<i class="fa-solid fa-user-plus"></i>
-							<p>Add Staff</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/staff/all">
-							<i class="fa-solid fa-users"></i>
-							<p>All Staff</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/assets/add">
-							<i class="fa-solid fa-box-archive"></i>
-							<p>Add Asset</p>
-						</a>
-					</li>
-					<li class="nav-item active">
-						<a href="/assets/all">
-							<i class="fa-solid fa-boxes-stacked"></i>
-							<p>All Assets</p>
-						</a>
-					</li>
-										<li class="nav-item">
-						<a href="/ledger/add">
-							<i class="fa-solid fa-book"></i>
-							<p>Ledger Entry</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/ledger/view">
-							<i class="fa-solid fa-book-open"></i>
-							<p>View Ledger</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/ledger/accounts">
-							<i class="fa-solid fa-sitemap"></i>
-							<p>Chart of Accounts</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/ledger/trial-balance">
-							<i class="fa-solid fa-balance-scale"></i>
-							<p>Trial Balance</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/ledger/balance-sheet">
-							<i class="fa-solid fa-file-invoice-dollar"></i>
-							<p>Balance Sheet</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="/ledger/profit-loss">
-							<i class="fa-solid fa-money-bill-trend-up"></i>
-							<p>Profit & Loss</p>
-						</a>
-					</li>
-<li class="nav-item">
-						<a href="/logout">
-							<i class="fas fa-sign-out-alt"></i>
-							<p>Log Out</p>
-						</a>
-					</li>
-				</ul>
-			</div>
-		</div>
+        <!-- Sidebar -->
+		 <div class="sidebar">
+  <div class="sidebar-wrapper">
+    <div class="user">
+      <div class="photo">
+        <img src="/img/profile-icon.png" />
+      </div>
+      <div class="info">
+        <a
+          class=""
+          data-toggle="collapse"
+          href="#collapseExample"
+          aria-expanded="true"
+        >
+          <span>
+            Steven
+            <span class="user-level">Administrator</span>
+            <span class="caret"></span>
+          </span>
+        </a>
+        <div class="clearfix"></div>
+
+        <div class="collapse in" id="collapseExample" aria-expanded="true">
+          <ul class="nav">
+            <li>
+              <a href="#profile">
+                <span class="link-collapse">My Profile</span>
+              </a>
+            </li>
+            <li>
+              <a href="#edit">
+                <span class="link-collapse">Edit Profile</span>
+              </a>
+            </li>
+            <li>
+              <a href="#settings">
+                <span class="link-collapse">Settings</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <ul class="nav">
+      <li class="nav-item">
+        <a href="/admin/dashboard">
+          <i class="fa-solid fa-gauge"></i>
+          <p>Dashboard</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/admin/product-upload">
+          <i class="fa-solid fa-upload"></i>
+          <p>Upload Product</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/admin/all-products">
+          <i class="fa-solid fa-tarp"></i>
+          <p>All Products</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/staff/add">
+          <i class="fa-solid fa-user-plus"></i>
+          <p>Add Staff</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/staff/all">
+          <i class="fa-solid fa-users"></i>
+          <p>All Staff</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/payroll/setup">
+          <i class="fa-solid fa-money-check-dollar"></i>
+          <p>Payroll Config</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/payroll/run">
+          <i class="fa-solid fa-play"></i>
+          <p>Run Payroll</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/payroll/history">
+          <i class="fa-solid fa-file-invoice-dollar"></i>
+          <p>Payroll History</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/attendance">
+          <i class="fa-solid fa-clock"></i>
+          <p>Attendance</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/leave/manage">
+          <i class="fa-solid fa-calendar-check"></i>
+          <p>Leave Mgmt</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/assets/add">
+          <i class="fa-solid fa-box-archive"></i>
+          <p>Add Asset</p>
+        </a>
+      </li>
+      <li class="nav-item active">
+        <a href="/assets/all">
+          <i class="fa-solid fa-boxes-stacked"></i>
+          <p>All Assets</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/ledger/add">
+          <i class="fa-solid fa-book"></i>
+          <p>Ledger Entry</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/ledger/view">
+          <i class="fa-solid fa-book-open"></i>
+          <p>View Ledger</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/ledger/accounts">
+          <i class="fa-solid fa-sitemap"></i>
+          <p>Chart of Accounts</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/ledger/trial-balance">
+          <i class="fa-solid fa-balance-scale"></i>
+          <p>Trial Balance</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/ledger/balance-sheet">
+          <i class="fa-solid fa-file-invoice-dollar"></i>
+          <p>Balance Sheet</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/ledger/profit-loss">
+          <i class="fa-solid fa-money-bill-trend-up"></i>
+          <p>Profit & Loss</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/logout">
+          <i class="fas fa-sign-out-alt"></i>
+          <p>Log Out</p>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
 		<div class="main-panel">
 			<div class="content">
 				<div class="container-fluid">
@@ -373,11 +412,14 @@
 														<th>Asset Name</th>
 														<th>Category</th>
 														<th>Purchase Date</th>
+														<th>Useful Life</th>
 														<th>Purchase Price</th>
+														<th>Depreciation</th>
 														<th>Current Value</th>
 														<th>Condition</th>
 														<th>Location</th>
 														<th>Status</th>
+														<th>Action</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -391,8 +433,17 @@
 															</td>
 															<td><%= asset.asset_category %></td>
 															<td><%= new Date(asset.purchase_date).toLocaleDateString() %></td>
+															<td><%= asset.useful_life_years || '-' %> years</td>
 															<td class="asset-value">₦<%= parseFloat(asset.purchase_price).toLocaleString() %></td>
-															<td class="asset-value">₦<%= parseFloat(asset.current_value).toLocaleString() %></td>
+															<td class="text-danger">
+																<% 
+																	const cost = parseFloat(asset.purchase_price);
+																	const curr = parseFloat(asset.current_value);
+																	const dep = cost - curr;
+																%>
+																-₦<%= dep.toLocaleString() %>
+															</td>
+															<td class="asset-value">₦<%= curr.toLocaleString() %></td>
 															<td>
 																<span class="condition-<%= asset.asset_condition.toLowerCase() %>">
 																	<%= asset.asset_condition %>
@@ -411,6 +462,11 @@
 																<% } else { %>
 																	<span class="badge badge-info"><%= asset.status %></span>
 																<% } %>
+															</td>
+															<td>
+																<a href="/assets/<%= asset.asset_id %>/update" class="btn btn-sm btn-link text-primary" data-toggle="tooltip" title="Edit Asset">
+																	<i class="fa fa-edit"></i>
+																</a>
 															</td>
 														</tr>
 													<% }); %>

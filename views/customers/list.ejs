@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>Attendance - MaryBill</title>
+    <title>Customers</title>
     <meta
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"
       name="viewport"
@@ -52,7 +51,72 @@
 								aria-haspopup="true" aria-expanded="false">
 								<i class="la la-envelope"></i>
 							</a>
+							<!-- <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" href="#">Action</a>
+								<a class="dropdown-item" href="#">Another action</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="#">Something else here</a>
+							</div> -->
 						</li>
+						<!-- <li class="nav-item dropdown hidden-caret">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+								aria-haspopup="true" aria-expanded="false">
+								<i class="la la-bell"></i>
+								<span class="notification"></span>
+							</a>
+							<ul class="dropdown-menu notif-box" aria-labelledby="navbarDropdown">
+								<li>
+									<div class="dropdown-title">You have 4 new notification</div>
+								</li>
+								<li>
+									<div class="notif-center">
+										<a href="#">
+											<div class="notif-icon notif-primary"> <i class="la la-user-plus"></i>
+											</div>
+											<div class="notif-content">
+												<span class="block">
+													New user registered
+												</span>
+												<span class="time">5 minutes ago</span>
+											</div>
+										</a>
+										<a href="#">
+											<div class="notif-icon notif-success"> <i class="la la-comment"></i> </div>
+											<div class="notif-content">
+												<span class="block">
+													Rahmad commented on Admin
+												</span>
+												<span class="time">12 minutes ago</span>
+											</div>
+										</a>
+										<a href="#">
+											<div class="notif-img">
+												<img src="/img/profile2.jpg" alt="Img Profile">
+											</div>
+											<div class="notif-content">
+												<span class="block">
+													Reza send messages to you
+												</span>
+												<span class="time">12 minutes ago</span>
+											</div>
+										</a>
+										<a href="#">
+											<div class="notif-icon notif-danger"> <i class="la la-heart"></i> </div>
+											<div class="notif-content">
+												<span class="block">
+													Farrah liked Admin
+												</span>
+												<span class="time">17 minutes ago</span>
+											</div>
+										</a>
+									</div>
+								</li>
+								<li>
+									<a class="see-all" href="javascript:void(0);"> <strong>See all
+											notifications</strong> <i class="la la-angle-right"></i> </a>
+								</li>
+							</ul>
+						</li> -->
 						<li class="nav-item dropdown">
 							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img
 									src="/img/profile-icon.png" alt="user-img" width="36" class="img-circle"><span>Steven</span></span>
@@ -75,7 +139,7 @@
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="#"><i class="ti-settings"></i> Account Setting</a>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="/logout"><i class="fa fa-power-off"></i> Logout</a>
+								<a class="dropdown-item" href="#"><i class="fa fa-power-off"></i> Logout</a>
 							</ul>
 							<!-- /.dropdown-user -->
 						</li>
@@ -83,8 +147,8 @@
 				</div>
 			</nav>
 		</div>
-        <!-- Sidebar -->
-		 <div class="sidebar">
+		<!-- Sidebar -->
+		<div class="sidebar">
   <div class="sidebar-wrapper">
     <div class="user">
       <div class="photo">
@@ -175,7 +239,7 @@
           <p>Payroll History</p>
         </a>
       </li>
-      <li class="nav-item active">
+      <li class="nav-item">
         <a href="/attendance">
           <i class="fa-solid fa-clock"></i>
           <p>Attendance</p>
@@ -188,7 +252,7 @@
         </a>
       </li>
       
-      <li class="nav-item">
+      <li class="nav-item active">
         <a href="/customers">
           <i class="fa-solid fa-users-viewfinder"></i>
           <p>Customers</p>
@@ -262,109 +326,40 @@
       <div class="main-panel">
         <div class="content">
           <div class="container-fluid">
-            <h4 class="page-title">Attendance Dashboard (<%= today %>)</h4>
+            <h4 class="page-title">Customers</h4>
+            <button
+              class="btn btn-primary mb-3"
+              data-toggle="modal"
+              data-target="#addCustomerModal"
+            >
+              Add Customer
+            </button>
 
-            <div class="row">
-              <!-- Clock In/Out Panel (Admin Simulation) -->
-              <div class="col-md-4">
-                <div class="card">
-                  <div class="card-header">
-                    <h4 class="card-title">Action Panel</h4>
-                  </div>
-                  <div class="card-body">
-                    <h6 class="text-uppercase">Clock In</h6>
-                    <form
-                      action="/attendance/clock-in"
-                      method="POST"
-                      class="mb-4"
-                    >
-                      <div class="form-group">
-                        <select class="form-control" name="employeeId" required>
-                          <option value="">Select Employee</option>
-                          <% allStaff.forEach(s => { %>
-                          <option value="<%= s.employee_id %>">
-                            <%= s.first_name %> <%= s.last_name %>
-                          </option>
-                          <% }) %>
-                        </select>
-                      </div>
-                      <button type="submit" class="btn btn-success btn-block">
-                        Clock In
-                      </button>
-                    </form>
-
-                    <h6 class="text-uppercase border-top pt-3">Clock Out</h6>
-                    <form action="/attendance/clock-out" method="POST">
-                      <div class="form-group">
-                        <select class="form-control" name="employeeId" required>
-                          <option value="">Select Employee</option>
-                          <% allStaff.forEach(s => { %>
-                          <option value="<%= s.employee_id %>">
-                            <%= s.first_name %> <%= s.last_name %>
-                          </option>
-                          <% }) %>
-                        </select>
-                      </div>
-                      <button type="submit" class="btn btn-warning btn-block">
-                        Clock Out
-                      </button>
-                    </form>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Daily Attendance List -->
-              <div class="col-md-8">
-                <div class="card">
-                  <div class="card-header">
-                    <h4 class="card-title">Today's Attendance</h4>
-                  </div>
-                  <div class="card-body">
-                    <table class="table table-hover">
-                      <thead>
-                        <tr>
-                          <th>Employee</th>
-                          <th>Department</th>
-                          <th>Clock In</th>
-                          <th>Clock Out</th>
-                          <th>Status</th>
-                          <th>Overtime</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <% dailyAttendance.forEach(a => { %>
-                        <tr>
-                          <td><%= a.first_name %> <%= a.last_name %></td>
-                          <td><%= a.department %></td>
-                          <td>
-                            <%= new Date(a.clock_in).toLocaleTimeString() %>
-                          </td>
-                          <td>
-                            <%= a.clock_out ? new
-                            Date(a.clock_out).toLocaleTimeString() : '-' %>
-                          </td>
-                          <td>
-                            <span
-                              class="badge badge-<%= a.status == 'Present' ? 'success' : 'secondary' %>"
-                            >
-                              <%= a.status %>
-                            </span>
-                          </td>
-                          <td>
-                            <%= a.overtime_hours > 0 ? a.overtime_hours + ' hrs'
-                            : '-' %>
-                          </td>
-                        </tr>
-                        <% }) %> <% if(dailyAttendance.length === 0) { %>
-                        <tr>
-                          <td colspan="6" class="text-center">
-                            No attendance records for today.
-                          </td>
-                        </tr>
-                        <% } %>
-                      </tbody>
-                    </table>
-                  </div>
+            <div class="card">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                        <th>Balance</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% customers.forEach(customer => { %>
+                      <tr>
+                        <td><%= customer.name %></td>
+                        <td><%= customer.email %></td>
+                        <td><%= customer.phone %></td>
+                        <td><%= customer.address %></td>
+                        <td>₦<%= customer.account_balance %></td>
+                      </tr>
+                      <% }) %>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -373,12 +368,57 @@
       </div>
     </div>
 
-    <%- include('../partials/responseMessage') %>
-  </body>
-  <script src="/js/core/jquery.3.2.1.min.js"></script>
+    <!-- Add Customer Modal -->
+    <div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add New Customer</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              <span>&times;</span>
+            </button>
+          </div>
+          <form action="/customers/add" method="POST">
+            <div class="modal-body">
+              <div class="form-group">
+                <label>Name</label>
+                <input type="text" name="name" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" name="email" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label>Phone</label>
+                <input type="text" name="phone" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label>Address</label>
+                <textarea name="address" class="form-control"></textarea>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="submit" class="btn btn-primary">
+                Save Customer
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="/js/core/jquery.3.2.1.min.js"></script>
   <script src="/js/core/popper.min.js"></script>
   <script src="/js/core/bootstrap.min.js"></script>
   <script src="/iziToast-master/dist/js/iziToast.min.js"></script>
   <script src="/js/ready.min.js"></script>
   <script src="/js/toast.js"></script>
+  </body>
 </html>

@@ -13,6 +13,7 @@ const dataRoute = require('./routes/dataRoutes');
 const staffRoute = require('./routes/staffRoutes');
 const assetRoute = require('./routes/assetRoutes');
 const ledgerRoute = require('./routes/ledgerRoutes');
+const invoiceRoute = require('./routes/invoiceRoutes');
 
 db.connect((err) => {
     if (err) {
@@ -90,6 +91,7 @@ app.use(staffRoute);
 app.use(assetRoute);
 app.use(assetRoute);
 app.use(ledgerRoute);
+app.use(invoiceRoute);
 const payrollRoute = require('./routes/payrollRoutes');
 app.use('/payroll', payrollRoute);
 const attendanceRoute = require('./routes/attendanceRoutes');

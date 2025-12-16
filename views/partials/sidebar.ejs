@@ -41,121 +41,169 @@
       </div>
     </div>
     <ul class="nav">
-      <li class="nav-item">
+      <li
+        class="nav-item <%= currentPath === '/admin/dashboard' ? 'active' : '' %>"
+      >
         <a href="/admin/dashboard">
           <i class="fa-solid fa-gauge"></i>
           <p>Dashboard</p>
         </a>
       </li>
-      <li class="nav-item">
+      <li
+        class="nav-item <%= currentPath === '/admin/product-upload' ? 'active' : '' %>"
+      >
         <a href="/admin/product-upload">
           <i class="fa-solid fa-upload"></i>
           <p>Upload Product</p>
         </a>
       </li>
-      <li class="nav-item">
+      <li
+        class="nav-item <%= currentPath === '/admin/all-products' ? 'active' : '' %>"
+      >
         <a href="/admin/all-products">
           <i class="fa-solid fa-tarp"></i>
           <p>All Products</p>
         </a>
       </li>
-      <li class="nav-item">
+      <li
+        class="nav-item <%= currentPath.startsWith('/staff/add') ? 'active' : '' %>"
+      >
         <a href="/staff/add">
           <i class="fa-solid fa-user-plus"></i>
           <p>Add Staff</p>
         </a>
       </li>
-      <li class="nav-item">
+      <li
+        class="nav-item <%= currentPath.startsWith('/staff/all') ? 'active' : '' %>"
+      >
         <a href="/staff/all">
           <i class="fa-solid fa-users"></i>
           <p>All Staff</p>
         </a>
       </li>
-      <li class="nav-item">
+      <li
+        class="nav-item <%= currentPath.startsWith('/payroll/setup') ? 'active' : '' %>"
+      >
         <a href="/payroll/setup">
           <i class="fa-solid fa-money-check-dollar"></i>
           <p>Payroll Config</p>
         </a>
       </li>
-      <li class="nav-item">
+      <li
+        class="nav-item <%= currentPath.startsWith('/payroll/run') ? 'active' : '' %>"
+      >
         <a href="/payroll/run">
           <i class="fa-solid fa-play"></i>
           <p>Run Payroll</p>
         </a>
       </li>
-      <li class="nav-item">
+      <li
+        class="nav-item <%= currentPath.startsWith('/payroll/history') ? 'active' : '' %>"
+      >
         <a href="/payroll/history">
           <i class="fa-solid fa-file-invoice-dollar"></i>
           <p>Payroll History</p>
         </a>
       </li>
-      <li class="nav-item">
+      <li
+        class="nav-item <%= currentPath.startsWith('/attendance') ? 'active' : '' %>"
+      >
         <a href="/attendance">
           <i class="fa-solid fa-clock"></i>
           <p>Attendance</p>
         </a>
       </li>
-      <li class="nav-item">
+      <li
+        class="nav-item <%= currentPath.startsWith('/leave') ? 'active' : '' %>"
+      >
         <a href="/leave/manage">
           <i class="fa-solid fa-calendar-check"></i>
           <p>Leave Mgmt</p>
         </a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item <%= currentPath === '/assets/add' ? 'active' : '' %>">
         <a href="/assets/add">
           <i class="fa-solid fa-box-archive"></i>
           <p>Add Asset</p>
         </a>
       </li>
-      <li class="nav-item">
+      <li
+        class="nav-item <%= currentPath.startsWith('/customers') ? 'active' : '' %>"
+      >
         <a href="/customers">
           <i class="fa-solid fa-users-viewfinder"></i>
           <p>Customers</p>
         </a>
       </li>
-      <li class="nav-item">
+      <li
+        class="nav-item <%= currentPath.startsWith('/invoices') ? 'active' : '' %>"
+      >
         <a href="/invoices">
           <i class="fa-solid fa-file-invoice"></i>
           <p>Invoices</p>
         </a>
       </li>
-      <li class="nav-item">
+      <li
+        class="nav-item <%= currentPath === '/payments/receive' ? 'active' : '' %>"
+      >
+        <a href="/payments/receive">
+          <i class="fa-solid fa-money-bill-wave"></i>
+          <p>Receive Payment</p>
+        </a>
+      </li>
+      <li class="nav-item <%= currentPath === '/payments' ? 'active' : '' %>">
+        <a href="/payments">
+          <i class="fa-solid fa-history"></i>
+          <p>Payment History</p>
+        </a>
+      </li>
+      <li class="nav-item <%= currentPath === '/assets/all' ? 'active' : '' %>">
         <a href="/assets/all">
           <i class="fa-solid fa-boxes-stacked"></i>
           <p>All Assets</p>
         </a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item <%= currentPath === '/ledger/add' ? 'active' : '' %>">
         <a href="/ledger/add">
           <i class="fa-solid fa-book"></i>
           <p>Ledger Entry</p>
         </a>
       </li>
-      <li class="nav-item">
+      <li
+        class="nav-item <%= currentPath === '/ledger/view' ? 'active' : '' %>"
+      >
         <a href="/ledger/view">
           <i class="fa-solid fa-book-open"></i>
           <p>View Ledger</p>
         </a>
       </li>
-      <li class="nav-item">
+      <li
+        class="nav-item <%= currentPath === '/ledger/accounts' ? 'active' : '' %>"
+      >
         <a href="/ledger/accounts">
           <i class="fa-solid fa-sitemap"></i>
           <p>Chart of Accounts</p>
         </a>
       </li>
-      <li class="nav-item">
+      <li
+        class="nav-item <%= currentPath === '/ledger/trial-balance' ? 'active' : '' %>"
+      >
         <a href="/ledger/trial-balance">
           <i class="fa-solid fa-balance-scale"></i>
           <p>Trial Balance</p>
         </a>
       </li>
-      <li class="nav-item">
+      <li
+        class="nav-item <%= currentPath === '/ledger/balance-sheet' ? 'active' : '' %>"
+      >
         <a href="/ledger/balance-sheet">
           <i class="fa-solid fa-file-invoice-dollar"></i>
           <p>Balance Sheet</p>
         </a>
       </li>
-      <li class="nav-item">
+      <li
+        class="nav-item <%= currentPath === '/ledger/profit-loss' ? 'active' : '' %>"
+      >
         <a href="/ledger/profit-loss">
           <i class="fa-solid fa-money-bill-trend-up"></i>
           <p>Profit & Loss</p>

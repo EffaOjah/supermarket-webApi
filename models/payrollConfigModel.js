@@ -90,6 +90,40 @@ const getStructureComponents = (structureId) => {
     });
 };
 
+// ==================== DELETION METHODS ====================
+
+const deleteStructure = (id) => {
+    return new Promise((resolve, reject) => {
+        // Note: Database constraints might restrict this if used in payroll runs
+        db.query("DELETE FROM salary_structures WHERE structure_id = ?", [id], (err, result) => {
+            if (err) reject(err);
+            resolve(result);
+        });
+    });
+};
+
+const deleteComponent = (id) => {
+    return new Promise((resolve, reject) => {
+        db.query("DELETE FROM salary_components WHERE component_id = ?", [id], (err, result) => {
+            if (err) reject(err);
+            resolve(result);
+        });
+    });
+};
+
+const removeComponentFromStructure = (structureId, componentId) => {
+    return new Promise((resolve, reject) => {
+        db.query(
+            "DELETE FROM salary_structure_components WHERE structure_id = ? AND component_id = ?",
+            [structureId, componentId],
+            (err, result) => {
+                if (err) reject(err);
+                resolve(result);
+            }
+        );
+    });
+};
+
 module.exports = {
     getAllComponents,
     createComponent,
@@ -97,5 +131,8 @@ module.exports = {
     createStructure,
     getStructureById,
     addComponentToStructure,
-    getStructureComponents
+    getStructureComponents,
+    deleteStructure,
+    deleteComponent,
+    removeComponentFromStructure
 };

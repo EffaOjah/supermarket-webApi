@@ -80,10 +80,52 @@ const addComponentToStructure = async (req, res) => {
     }
 };
 
+const deleteStructure = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await payrollConfigModel.deleteStructure(id);
+        req.flash('success_msg', 'Salary structure deleted successfully');
+        res.redirect('/payroll/setup');
+    } catch (error) {
+        console.error(error);
+        req.flash('error_msg', 'Failed to delete structure. It may be in use.');
+        res.redirect('/payroll/setup');
+    }
+};
+
+const deleteComponent = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await payrollConfigModel.deleteComponent(id);
+        req.flash('success_msg', 'Salary component deleted successfully');
+        res.redirect('/payroll/setup');
+    } catch (error) {
+        console.error(error);
+        req.flash('error_msg', 'Failed to delete component. It may be in use.');
+        res.redirect('/payroll/setup');
+    }
+};
+
+const removeComponentFromStructure = async (req, res) => {
+    try {
+        const { structureId, componentId } = req.body;
+        await payrollConfigModel.removeComponentFromStructure(structureId, componentId);
+        req.flash('success_msg', 'Component removed from structure');
+        res.redirect(`/payroll/structure/${structureId}`);
+    } catch (error) {
+        console.error(error);
+        req.flash('error_msg', 'Failed to remove component');
+        res.redirect('back');
+    }
+};
+
 module.exports = {
     getStructureSetupPage,
     getStructureDetailsPage,
     createStructure,
     createComponent,
-    addComponentToStructure
+    addComponentToStructure,
+    deleteStructure,
+    deleteComponent,
+    removeComponentFromStructure
 };

@@ -60,10 +60,11 @@ app.use(session({
 }));
 app.use(flash());
 
-// Custom middleware to pass flash messages to views
+// Custom middleware to pass flash messages and current path to views
 app.use((req, res, next) => {
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
+    res.locals.currentPath = req.path;
     next();
 });
 
@@ -98,6 +99,9 @@ const attendanceRoute = require('./routes/attendanceRoutes');
 app.use('/attendance', attendanceRoute);
 const leaveRoute = require('./routes/leaveRoutes');
 app.use('/leave', leaveRoute);
+
+const paymentRoute = require('./routes/paymentRoutes');
+app.use('/payments', paymentRoute);
 
 app.listen(PORT, () => {
     console.log(`Stores WEB API Server is running on PORT ${PORT}`);

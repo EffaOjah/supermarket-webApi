@@ -18,4 +18,9 @@ router.post('/component/create', payrollConfigController.createComponent);
 router.post('/structure/add-component', payrollConfigController.addComponentToStructure);
 router.post('/process', payrollController.processPayroll);
 
+// Deletion Routes
+router.post('/structure/delete/:id', payrollConfigController.deleteStructure);
+router.post('/component/delete/:id', payrollConfigController.deleteComponent);
+router.post('/structure/remove-component', payrollConfigController.removeComponentFromStructure);
+
 module.exports = router;

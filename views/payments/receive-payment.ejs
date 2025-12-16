@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Receive Payment</title>
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"
+      name="viewport"
+    />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    />
+    <script
+      src="https://kit.fontawesome.com/a207e207d8.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="/css/ready.css" />
+    <link rel="stylesheet" href="/css/demo.css" />
+    <link rel="stylesheet" href="/iziToast-master/dist/css/iziToast.min.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="main-header">
+        <div class="logo-header">
+          <a href="/admin/dashboard" class="logo">
+            MaryBill Conglomerate
+          </a>
+          <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse"
+            data-target="collapse" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <button class="topbar-toggler more"><i class="la la-ellipsis-v"></i></button>
+        </div>
+        <nav class="navbar navbar-header navbar-expand-lg">
+          <div class="container-fluid">
+            <!-- Navbar items can be copied from other pages or included via partial if available (checking file list suggests partials might not be fully used or need manual copy) -->
+            <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+               <li class="nav-item dropdown">
+                            <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img
+                                    src="/img/profile-icon.png" alt="user-img" width="36" class="img-circle"><span>Admin</span></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <a class="dropdown-item" href="/logout"><i class="fa fa-power-off"></i> Logout</a>
+                            </ul>
+                        </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      
+      <!-- Sidebar -->
+      <%- include('../partials/sidebar') %>
+      <!-- End Sidebar -->
+
+      <div class="main-panel">
+        <div class="content">
+          <div class="container-fluid">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <h4 class="page-title mb-0">Receive Payment</h4>
+            </div>
+
+            <div class="row justify-content-center">
+              <div class="col-md-8">
+                <div class="card shadow">
+                  <div class="card-header bg-primary text-white">
+                    <div class="card-title text-white"><i class="fas fa-money-bill-wave"></i> Payment Details</div>
+                  </div>
+                  <div class="card-body">
+                    <form action="/payments/receive" method="POST" id="paymentForm">
+                      
+                      <div class="form-group">
+                        <label>Customer</label>
+                        <select id="customerSelect" class="form-control" onchange="filterInvoices()">
+                          <option value="">-- All Customers --</option>
+                          <% customers.forEach(customer => { %>
+                            <option value="<%= customer.customer_id %>"><%= customer.name %></option>
+                          <% }) %>
+                        </select>
+                      </div>
+
+                      <div class="form-group">
+                        <label>Invoice <span class="text-danger">*</span></label>
+                        <select name="invoiceId" id="invoiceSelect" class="form-control" required onchange="selectInvoice()">
+                          <option value="">-- Select Invoice --</option>
+                          <% invoices.forEach(invoice => { %>
+                            <option 
+                                value="<%= invoice.invoice_id %>" 
+                                data-customer="<%= invoice.customer_id %>"
+                                data-amount="<%= invoice.total_amount %>"
+                                data-paid="<%= invoice.amount_paid %>"
+                                <% if (typeof selectedInvoiceId !== 'undefined' && selectedInvoiceId == invoice.invoice_id) { %> selected <% } %>
+                            > 
+                              <%= invoice.invoice_number %> - <%= invoice.customer_name %> (Total: ₦<%= invoice.total_amount %> | Paid: ₦<%= invoice.amount_paid %>)
+                            </option>
+                          <% }) %>
+                        </select>
+                        <small class="form-text text-muted">Select an invoice to pay against.</small>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Payment Date <span class="text-danger">*</span></label>
+                                <input type="date" name="paymentDate" class="form-control" required value="<%= new Date().toISOString().split('T')[0] %>">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                             <div class="form-group">
+                                <label>Payment Method</label>
+                                <select name="paymentMethod" class="form-control">
+                                    <option value="Cash">Cash</option>
+                                    <option value="Bank Transfer">Bank Transfer</option>
+                                    <option value="Cheque">Cheque</option>
+                                    <option value="POS">POS</option>
+                                </select>
+                            </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label>Amount Received (₦) <span class="text-danger">*</span></label>
+                        <input type="number" name="amount" id="amountInput" class="form-control form-control-lg" step="0.01" required placeholder="0.00">
+                      </div>
+
+                      <div class="form-group">
+                        <label>Reference / Notes</label>
+                        <textarea name="reference" class="form-control" rows="2" placeholder="e.g. Bank Ref #12345"></textarea>
+                      </div>
+
+                      <div class="form-group text-right">
+                         <button type="submit" class="btn btn-success btn-lg">
+                            <i class="fas fa-check"></i> Submit Payment
+                         </button>
+                      </div>
+
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/js/core/jquery.3.2.1.min.js"></script>
+    <script src="/js/core/popper.min.js"></script>
+    <script src="/js/core/bootstrap.min.js"></script>
+    <script src="/iziToast-master/dist/js/iziToast.min.js"></script>
+    <script src="/js/ready.min.js"></script>
+    
+    <% if(error_msg && error_msg.length > 0){ %>
+        <script>
+            iziToast.error({
+                title: 'Error',
+                message: '<%= error_msg %>',
+                position: 'topRight'
+            });
+        </script>
+    <% } %>
+    
+    <% if(success_msg && success_msg.length > 0){ %>
+        <script>
+            iziToast.success({
+                title: 'Success',
+                message: '<%= success_msg %>',
+                position: 'topRight'
+            });
+        </script>
+    <% } %>
+
+    <script>
+        function filterInvoices() {
+            const customerId = document.getElementById('customerSelect').value;
+            const invoiceSelect = document.getElementById('invoiceSelect');
+            const options = invoiceSelect.options;
+
+            for (let i = 0; i < options.length; i++) {
+                const option = options[i];
+                if (option.value === "") continue; // Skip default option
+
+                const invoiceCustomer = option.getAttribute('data-customer');
+                
+                if (customerId === "" || customerId === invoiceCustomer) {
+                    option.style.display = "";
+                } else {
+                    option.style.display = "none";
+                }
+            }
+            // Reset selection if hidden
+            if(invoiceSelect.selectedOptions[0].style.display === 'none') {
+                invoiceSelect.value = "";
+            }
+        }
+
+        function selectInvoice() {
+            const invoiceSelect = document.getElementById('invoiceSelect');
+            const selectedOption = invoiceSelect.options[invoiceSelect.selectedIndex];
+            
+            if (selectedOption.value) {
+                // Auto fill amount
+                const amountDue = parseFloat(selectedOption.getAttribute('data-amount')) || 0;
+                const amountPaid = parseFloat(selectedOption.getAttribute('data-paid')) || 0;
+                const remaining = amountDue - amountPaid;
+                
+                const amountInput = document.getElementById('amountInput');
+                amountInput.value = remaining.toFixed(2); // Suggest full remaining payment
+                amountInput.max = remaining.toFixed(2); // Set max validation
+                amountInput.placeholder = `Max: ${remaining.toFixed(2)}`;
+                
+                // Add helper text or toast if needed, but HTML5 validation handles the block.
+                
+                // Auto select customer (reverse sync)
+                const customerId = selectedOption.getAttribute('data-customer');
+                const customerSelect = document.getElementById('customerSelect');
+                customerSelect.value = customerId;
+                
+                // Trigger filter to ensure consistency (optional, but good for UI state)
+                // filterInvoices(); // If we do this, it might hide other invoices. Better to just set it.
+            }
+        }
+        // Check if invoice is already selected (from query param) and trigger update
+        if (document.getElementById('invoiceSelect').value) {
+            selectInvoice();
+        }
+    </script>
+  </body>
+</html>

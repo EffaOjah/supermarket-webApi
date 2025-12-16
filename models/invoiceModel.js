@@ -4,9 +4,12 @@ const db = require('../config/dbConfig');
 const getAllInvoices = async () => {
     return new Promise((resolve, reject) => {
         const query = `
-            SELECT i.*, c.name as customer_name 
+            SELECT i.*, c.name as customer_name, 
+            COALESCE(SUM(p.amount), 0) as amount_paid
             FROM invoices i 
             JOIN customers c ON i.customer_id = c.customer_id 
+            LEFT JOIN payments p ON i.invoice_id = p.invoice_id
+            GROUP BY i.invoice_id
             ORDER BY i.invoice_date DESC
         `;
         db.query(query, (err, result) => {

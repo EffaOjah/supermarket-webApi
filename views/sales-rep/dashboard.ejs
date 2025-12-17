@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Sales Rep Dashboard</title>
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"
+      name="viewport"
+    />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    />
+    <link rel="stylesheet" href="/css/ready.css" />
+    <link rel="stylesheet" href="/iziToast-master/dist/css/iziToast.min.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <div
+        class="main-header"
+        style="background: #fff; box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05)"
+      >
+        <div
+          class="container-fluid d-flex justify-content-between align-items-center"
+          style="height: 60px"
+        >
+          <div
+            class="logo-header"
+            style="width: auto; background: transparent; padding-left: 0"
+          >
+            <a
+              href="#"
+              class="logo"
+              style="color: #575962; font-size: 20px; font-weight: bold"
+              >MaryBill Sales Rep</a
+            >
+          </div>
+          <div class="user-controls d-flex align-items-center">
+            <span class="mr-2 d-none d-sm-inline-block"
+              >Hello, <%= salesRep.name %></span
+            >
+            <span class="mr-2 d-inline-block d-sm-none"
+              ><i class="la la-user"></i
+            ></span>
+            <a href="/sales-rep/logout" class="btn btn-sm btn-danger">Logout</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="main-panel" style="width: 100%">
+        <div class="content">
+          <div class="container-fluid">
+            <h4 class="page-title">Dashboard</h4>
+
+            <div class="row">
+              <div class="col-md-4">
+                <div class="card card-stats card-warning">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-5">
+                        <div class="icon-big text-center">
+                          <i class="la la-money"></i>
+                        </div>
+                      </div>
+                      <div class="col-7 d-flex align-items-center">
+                        <div class="numbers">
+                          <p class="card-category">Current Debt</p>
+                          <h4 class="card-title"><%= salesRep.debt %></h4>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <a
+                  href="/sales-rep/request"
+                  class="btn btn-success btn-lg btn-block"
+                  style="
+                    height: 100px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                >
+                  <i class="la la-plus mr-2"></i> Request Products
+                </a>
+              </div>
+            </div>
+
+            <div class="row mt-4">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-header">
+                    <div class="card-title">My Requests</div>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table table-head-bg-success">
+                        <thead>
+                          <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Total Amount</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% if(requests.length < 1) { %>
+                          <tr>
+                            <td colspan="5">No requests found.</td>
+                          </tr>
+                          <% } else { %> <% requests.forEach(req => { %>
+                          <tr>
+                            <td>#<%= req.id %></td>
+                            <td>
+                              <%= new Date(req.created_at).toLocaleDateString()
+                              %>
+                            </td>
+                            <td><%= req.total_amount %></td>
+                            <td>
+                              <span
+                                class="badge badge-<%= req.status === 'APPROVED' ? 'success' : (req.status === 'DECLINED' ? 'danger' : 'warning') %>"
+                              >
+                                <%= req.status %>
+                              </span>
+                            </td>
+                            <td>
+                              <a
+                                href="/sales-rep/requests/<%= req.id %>"
+                                class="btn btn-sm btn-info"
+                                >View Details</a
+                              >
+                            </td>
+                          </tr>
+
+                          <% }) %> <% } %>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%- include('../partials/responseMessage') %>
+    <script src="/js/core/jquery.3.2.1.min.js"></script>
+    <script src="/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+    <script src="/js/core/popper.min.js"></script>
+    <script src="/js/core/bootstrap.min.js"></script>
+    <script src="/iziToast-master/dist/js/iziToast.min.js"></script>
+    <script src="/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <script src="/js/ready.min.js"></script>
+    <script src="/js/toast.js"></script>
+  </body>
+</html>

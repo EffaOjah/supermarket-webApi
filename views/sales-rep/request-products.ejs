@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Request Products - Sales Rep</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/ready.css" />
+    <link rel="stylesheet" href="/iziToast-master/dist/css/iziToast.min.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="main-panel" style="width: 100%">
+        <div class="content">
+          <div class="container-fluid">
+            <div class="d-flex align-items-center mb-3">
+              <a href="/sales-rep/dashboard" class="btn btn-secondary mr-3"
+                >Back</a
+              >
+              <h4 class="page-title mb-0">Request Products</h4>
+            </div>
+
+            <div class="card">
+              <div class="card-body">
+                <form action="/sales-rep/request" method="POST">
+                  <div id="items-container">
+                    <!-- Dynamic Items -->
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-info btn-sm mb-3"
+                    onclick="addItem()"
+                  >
+                    + Add Product
+                  </button>
+
+                  <input
+                    type="hidden"
+                    name="requestItems"
+                    id="requestItemsInput"
+                  />
+                  <br />
+                  <button
+                    type="submit"
+                    class="btn btn-success mt-3"
+                    onclick="prepareSubmission(event)"
+                  >
+                    Submit Request
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%- include('../partials/responseMessage') %>
+    <script src="/js/core/jquery.3.2.1.min.js"></script>
+    <script src="/js/core/bootstrap.min.js"></script>
+    <script src="/iziToast-master/dist/js/iziToast.min.js"></script>
+    <script src="/js/toast.js"></script>
+
+    <script>
+      const products = <%- JSON.stringify(products) %>;
+
+      function addItem() {
+          const container = document.getElementById('items-container');
+          const index = container.children.length;
+
+          const div = document.createElement('div');
+          div.className = 'row mb-2 item-row';
+          div.innerHTML = `
+              <div class="col-md-6">
+                  <select class="form-control product-select" required>
+                      <option value="">Select Product</option>
+                      ${products.map(p => `<option value="${p.product_id}">${p.product_name} (Stock: ${p.stock_quantity || 'N/A'})</option>`).join('')}
+                  </select>
+              </div>
+              <div class="col-md-4">
+                  <input type="number" class="form-control quantity-input" placeholder="Quantity" min="1" required>
+              </div>
+              <div class="col-md-2">
+                  <button type="button" class="btn btn-danger btn-sm" onclick="this.closest('.row').remove()">X</button>
+              </div>
+          `;
+          container.appendChild(div);
+      }
+
+      function prepareSubmission(e) {
+          const rows = document.querySelectorAll('.item-row');
+          if(rows.length === 0) {
+              e.preventDefault();
+              alert('Please add at least one product');
+              return;
+          }
+
+          const items = [];
+          rows.forEach(row => {
+              const productId = row.querySelector('.product-select').value;
+              const quantity = row.querySelector('.quantity-input').value;
+              if(productId && quantity) {
+                  items.push({ productId, quantity });
+              }
+          });
+
+          document.getElementById('requestItemsInput').value = JSON.stringify(items);
+      }
+
+      // Add initial item
+      addItem();
+    </script>
+  </body>
+</html>

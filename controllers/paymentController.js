@@ -46,6 +46,11 @@ const receivePayment = async (req, res) => {
 
         const paymentAmount = parseFloat(amount);
 
+        if (paymentAmount <= 0) {
+            req.flash('error_msg', 'Payment amount must be greater than 0');
+            return res.redirect('/payments/receive');
+        }
+
         // Validation: Check for overpayment
         const currentTotalPaid = parseFloat((await paymentModel.getTotalPaidForInvoice(invoiceId))) || 0;
         const invoiceTotal = parseFloat(invoice.total_amount);

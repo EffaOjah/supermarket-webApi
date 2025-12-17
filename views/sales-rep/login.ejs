@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sales Rep Login - MaryBill</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/ready.css" />
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"
+      name="viewport"
+    />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    />
+    <script
+      src="https://kit.fontawesome.com/a207e207d8.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="/css/ready.css" />
+    <link rel="stylesheet" href="/css/demo.css" />
+    <link rel="icon" type="image/x-icon" href="/img/app_icon.ico" />
+    <link rel="stylesheet" href="/iziToast-master/dist/css/iziToast.min.css" />
+    <style>
+      .login-wrapper {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f3f3f3;
+      }
+      .login-card {
+        width: 100%;
+        max-width: 400px;
+        padding: 2rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-wrapper">
+      <div class="login-card">
+        <h3 class="text-center mb-4">Sales Rep Login</h3>
+        <% if (locals.error_msg && locals.error_msg.length > 0) { %>
+        <div class="alert alert-danger"><%= error_msg %></div>
+        <% } %> <% if (locals.error && locals.error.length > 0) { %>
+        <div class="alert alert-danger"><%= error %></div>
+        <% } %>
+        <form action="/sales-rep/login" method="POST">
+          <div class="form-group">
+            <label>Unique ID</label>
+            <input
+              type="text"
+              name="uniqueId"
+              class="form-control"
+              placeholder="Enter your Unique ID"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary btn-block mt-3">
+            Login
+          </button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

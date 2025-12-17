@@ -55,4 +55,17 @@ router.get('/admin/fetch-today-records', verifyToken, adminController.getTodaySa
 // Get the sale record from date range
 router.get('/admin/fetch-records-from-range', verifyToken, adminController.getSalesAnalysisFromDateRange);
 
+// Sales Rep Management Routes
+router.get('/admin/sales-reps/add', verifyToken, adminController.getAddSalesRep);
+router.post('/admin/sales-reps/add', verifyToken, adminController.addSalesRep);
+router.get('/admin/sales-reps', verifyToken, adminController.getAllSalesRepsList);
+router.get('/admin/sales-reps/:id/payment', verifyToken, adminController.getRecordRepPayment);
+router.post('/admin/sales-reps/:id/payment', verifyToken, adminController.handleRepPayment);
+
+// Product Requests Routes
+router.get('/admin/product-requests', verifyToken, adminController.getAllProductRequests);
+router.get('/admin/product-requests/:id', verifyToken, adminController.viewRequestDetails);
+router.post('/admin/product-requests/:id/action', verifyToken, adminController.handleRequestAction);
+
+
 module.exports = router;

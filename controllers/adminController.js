@@ -2,6 +2,10 @@
 
 // Admin Model
 const AdminModel = require("../models/adminModel");
+const SalesRepModel = require('../models/salesRepModel');
+const RequestModel = require('../models/requestModel');
+const LedgerModel = require('../models/ledgerModel');
+
 
 function validatePrice(req, res, price, label, redirectUrl) {
   if (price && price < 1) {
@@ -139,7 +143,7 @@ const updateProduct = async (req, res) => {
     console.log('Please provide all details');
 
     req.flash('error_msg', 'Please provide all details');
-    return res.redirect(`/product/${productId}/update`);
+    return res.redirect(`/ product / ${productId}/update`);
   }
 
   // Make sure the prices ain't less than 1
@@ -266,6 +270,170 @@ const getSalesAnalysisFromDateRange = async (req, res) => {
   }
 }
 
+const viewRequestDetails = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const request = await RequestModel.getRequestById(id);
+    console.log(request);
+    if (!request) {
+      req.flash('error_msg', 'Request not found');
+      return res.redirect('/admin/product-requests');
+    }
+    res.render('admin/request-details', { request });
+  } catch (error) {
+    console.error(error);
+    res.render('error-page');
+  }
+};
+
+const getRecordRepPayment = async (req, res) => {
+  const { id } = req.params;
+  const salesReps = await SalesRepModel.getAllSalesReps();
+  const rep = salesReps.find(r => r.id == id);
+  if (!rep) {
+    req.flash('error_msg', 'Sales Rep not found');
+    return res.redirect('/admin/sales-reps');
+  }
+  res.render('admin/sales-rep-payment', { rep });
+};
+
+const handleRepPayment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { amount, paymentDate, paymentMethod, reference, notes } = req.body;
+
+    const salesReps = await SalesRepModel.getAllSalesReps();
+    const rep = salesReps.find(r => r.id == id);
+    if (!rep) {
+      req.flash('error_msg', 'Sales Rep not found');
+      return res.redirect('/admin/sales-reps');
+    }
+
+    if (parseFloat(amount) <= 0) {
+      req.flash('error_msg', 'Payment amount must be greater than 0');
+      return res.redirect(`/admin/sales-reps/${id}/payment`);
+    }
+
+    if (parseFloat(amount) > parseFloat(rep.debt)) {
+      req.flash('error_msg', `Payment amount (₦${amount}) exceeds current debt (₦${rep.debt})`);
+      return res.redirect(`/admin/sales-reps/${id}/payment`);
+    }
+
+    await SalesRepModel.recordPayment({
+      salesRepId: id,
+      amount,
+      paymentDate,
+      paymentMethod,
+      reference,
+      notes
+    });
+
+
+    // Post to Ledger
+    // Debit Cash (1000), Credit Rep Receivables (assuming 1200 akin to customers)
+    // Ideally we might want a specific account for Reps, but 1200 is fine for now as per plan
+    // Post to Ledger
+    // Debit Cash (1000), Credit Rep Receivables (assuming 1200 akin to customers)
+    // Ideally we might want a specific account for Reps, but 1200 is fine for now as per plan
+
+    await LedgerModel.insertTransaction({
+
+      transactionId: `TXN-REP-PAY-${id}-${Date.now()}`,
+      transactionDate: paymentDate,
+      transactionType: 'PAYMENT',
+      referenceNumber: reference || `REP-PAY-${id}`,
+      description: `Payment from Sales Rep: ${rep ? rep.name : id}`,
+      totalAmount: amount,
+      createdBy: 'admin',
+      entries: [
+        {
+          accountCode: '1000', // Cash
+          entryType: 'DEBIT',
+          amount: amount,
+          description: `Payment from Rep ${rep ? rep.name : id}`
+        },
+        {
+          accountCode: '1200', // Accounts Receivable
+          entryType: 'CREDIT',
+          amount: amount,
+          description: `Payment from Rep ${rep ? rep.name : id}`
+        }
+      ]
+    });
+
+    req.flash('success_msg', 'Payment recorded successfully');
+    res.redirect('/admin/sales-reps');
+  } catch (error) {
+    console.error(error);
+    req.flash('error_msg', 'Error recording payment');
+    res.redirect('/admin/sales-reps');
+  }
+};
+
+// Sales Rep Management
+const getAddSalesRep = (req, res) => {
+  res.render('admin/add-sales-rep');
+};
+
+const addSalesRep = async (req, res) => {
+  const { name, email, phone } = req.body;
+  try {
+    const uniqueId = 'REP-' + Math.floor(1000 + Math.random() * 9000); // Simple ID generation
+    await SalesRepModel.createSalesRep({ name, email, phone, uniqueId });
+    req.flash('success_msg', `Sales Rep added successfully. Unique ID: ${uniqueId}`);
+    res.redirect('/admin/sales-reps');
+  } catch (error) {
+    console.error(error);
+    req.flash('error_msg', 'Error adding sales rep');
+    res.redirect('/admin/sales-reps/add');
+  }
+};
+
+const getAllSalesRepsList = async (req, res) => {
+  try {
+    const salesReps = await SalesRepModel.getAllSalesReps();
+    res.render('admin/sales-reps', { salesReps });
+  } catch (error) {
+    console.error(error);
+    res.render('error-page');
+  }
+};
+
+const getAllProductRequests = async (req, res) => {
+  try {
+    const requests = await RequestModel.getAllRequests();
+    res.render('admin/product-requests', { requests });
+  } catch (error) {
+    console.error(error);
+    res.render('error-page');
+  }
+};
+
+const handleRequestAction = async (req, res) => {
+  const { action } = req.body; // 'approve' or 'decline'
+  const { id } = req.params;
+
+  try {
+    const request = await RequestModel.getRequestById(id);
+    if (!request) return res.status(404).send('Request not found');
+
+    if (action === 'approve') {
+      // Check debt limit if needed? For now just approve.
+      await RequestModel.updateRequestStatus(id, 'APPROVED');
+      await SalesRepModel.updateDebt(request.sales_rep_id, request.total_amount);
+      req.flash('success_msg', 'Request approved');
+    } else if (action === 'decline') {
+      await RequestModel.updateRequestStatus(id, 'DECLINED');
+      req.flash('success_msg', 'Request declined');
+    }
+    res.redirect('/admin/product-requests');
+  } catch (error) {
+    console.error(error);
+    req.flash('error_msg', 'Error processing request');
+    res.redirect('/admin/product-requests');
+  }
+};
+
 module.exports = {
   getDashboard,
   getProductUpload,
@@ -276,5 +444,15 @@ module.exports = {
   getStoreBranchById,
   getBranchSales,
   getTodaySalesAnalysis,
-  getSalesAnalysisFromDateRange
+  getSalesAnalysisFromDateRange,
+  getAddSalesRep,
+  addSalesRep,
+  getAllSalesRepsList,
+  getAllProductRequests,
+  handleRequestAction,
+  viewRequestDetails,
+  getRecordRepPayment,
+  handleRepPayment
 };
+
+

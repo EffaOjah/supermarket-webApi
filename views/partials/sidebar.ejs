@@ -209,6 +209,22 @@
           <p>Profit & Loss</p>
         </a>
       </li>
+      <li
+        class="nav-item <%= currentPath.startsWith('/admin/sales-reps') ? 'active' : '' %>"
+      >
+        <a href="/admin/sales-reps">
+          <i class="fa-solid fa-user-tie"></i>
+          <p>Sales Reps</p>
+        </a>
+      </li>
+      <li
+        class="nav-item <%= currentPath.startsWith('/admin/product-requests') ? 'active' : '' %>"
+      >
+        <a href="/admin/product-requests">
+          <i class="fa-solid fa-clipboard-list"></i>
+          <p>Product Requests</p>
+        </a>
+      </li>
       <li class="nav-item">
         <a href="/logout">
           <i class="fas fa-sign-out-alt"></i>

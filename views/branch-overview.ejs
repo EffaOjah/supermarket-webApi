@@ -112,7 +112,108 @@
 		</div>
 		
 		<!-- Sidebar -->
-		<%- include('partials/sidebar') %>
+		<div class="sidebar">	
+			<div class="sidebar-wrapper">
+				<div class="user">
+					<div class="photo">
+						<img src="/img/profile-icon.png" />
+					</div>
+					<div class="info">
+						<a
+							class=""
+							data-toggle="collapse"
+							href="#collapseExample"
+							aria-expanded="true"
+						>
+							<span>
+								Steven
+								<span class="user-level">Administrator</span>
+								<span class="caret"></span>
+							</span>
+						</a>
+        <div class="clearfix"></div>
+
+        <div class="collapse in" id="collapseExample" aria-expanded="true">
+          <ul class="nav">
+            <li>
+              <a href="#profile">
+                <span class="link-collapse">My Profile</span>
+              </a>
+            </li>
+            <li>
+              <a href="#edit">
+                <span class="link-collapse">Edit Profile</span>
+              </a>
+            </li>
+            <li>
+              <a href="#settings">
+                <span class="link-collapse">Settings</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <ul class="nav">
+					<li class="nav-item">
+						<a href="/admin/dashboard">
+							<i class="fa-solid fa-gauge"></i>
+							<p>Dashboard</p>
+						</a>
+					</li>
+					<li class="nav-item active">
+						<a href="/branch/<%= branch[0].branch_id %>">
+							<i class="fas fa-chart-pie"></i>
+							<p>Branch Overview</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="/stock-branch/<%= branch[0].branch_id %>">
+							<i class="fa-solid fa-arrow-trend-up"></i>
+							<p>Stock Branch</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="/branch/<%= branch[0].branch_id %>/products">
+							<i class="fa-solid fa-tarp"></i>
+							<p>Branch Products</p>
+							<span class="badge badge-count">
+								<%= products.length %>
+							</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="/branch/<%= branch[0].branch_id %>/sales">
+							<i class="fa-solid fa-cart-shopping"></i>
+							<p>Sales</p>
+							<span class="badge badge-count"></span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="/branch/<%= branch[0].branch_id %>/notifications">
+							<i class="far fa-bell"></i>
+							<p>Notifications</p>
+							<span class="badge badge-count"></span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="/branch/<%= branch[0].branch_id %>/transfer-stock">
+							<i class="fa-solid fa-share"></i>
+							<p>Transfer Stock</p>
+							<span class="badge badge-count"></span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="/logout">
+							<i class="fas fa-sign-out-alt"></i>
+							<p>Log Out</p>
+						</a>
+					</li>
+
+				</ul>
+  </div>
+</div>
+
 		<!-- End Sidebar -->
 		
 		<div class="main-panel">
@@ -132,10 +233,10 @@
 								<h6>Total revenue</h6>
 								<h6>₦<span>0</span></h6>
 							</div>
-							<div class="col-md-3 p-5 bg-primary mx-3 mb-3 text-center rounded">
+							<!-- <div class="col-md-3 p-5 bg-primary mx-3 mb-3 text-center rounded">
 								<h6>Profit & Loss</h6>
 								<h6>₦<span id="profit_or_loss" class="fw-bolder">0</span></h6>
-							</div>
+							</div> -->
 						</div>
 						<% } else { %>
 							<div class="row justify-content-center p-2 text-white">
@@ -151,12 +252,12 @@
 											<%= overview[0].total_revenue || 0 %>
 										</span></h6>
 								</div>
-								<div class="col-md-3 p-5 bg-primary mx-3 mb-3 text-center rounded">
+								<!-- <div class="col-md-3 p-5 bg-primary mx-3 mb-3 text-center rounded">
 									<h6>Profit & Loss</h6>
 									<h6>₦<span id="profit_or_loss" class="fw-bolder">
 											<%= overview[0].profit_or_loss || 0 %>
 										</span></h6>
-								</div>
+								</div> -->
 							</div>
 							<% } %>
 

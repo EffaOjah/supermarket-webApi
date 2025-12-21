@@ -123,10 +123,31 @@
                             </td>
                             <td>
                               <a
+                                href="/admin/sales-reps/<%= rep.id %>/edit"
+                                class="btn btn-sm btn-primary"
+                                title="Edit"
+                                ><i class="fa fa-edit"></i
+                              ></a>
+                              <form
+                                action="/admin/sales-reps/<%= rep.id %>/delete"
+                                method="POST"
+                                style="display: inline"
+                                onsubmit="return confirm('Are you sure you want to delete this sales representative?')"
+                              >
+                                <button
+                                  type="submit"
+                                  class="btn btn-sm btn-danger"
+                                  title="Delete"
+                                >
+                                  <i class="fa fa-trash"></i>
+                                </button>
+                              </form>
+                              <a
                                 href="/admin/sales-reps/<%= rep.id %>/payment"
                                 class="btn btn-sm btn-success"
-                                >Record Payment</a
-                              >
+                                title="Record Payment"
+                                ><i class="fa fa-money"></i
+                              ></a>
                             </td>
                           </tr>
 

@@ -375,9 +375,18 @@ const getAddSalesRep = (req, res) => {
   res.render('admin/add-sales-rep');
 };
 
+const isValidEmail = (email) => {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email);
+}
+
 const addSalesRep = async (req, res) => {
   const { name, email, phone } = req.body;
   try {
+    if (!isValidEmail(email)) {
+      req.flash('error_msg', 'Invalid email address');
+      return res.redirect('/admin/sales-reps/add');
+    }
     const uniqueId = 'REP-' + Math.floor(1000 + Math.random() * 9000); // Simple ID generation
     await SalesRepModel.createSalesRep({ name, email, phone, uniqueId });
     req.flash('success_msg', `Sales Rep added successfully. Unique ID: ${uniqueId}`);
@@ -399,6 +408,38 @@ const getAllSalesRepsList = async (req, res) => {
   }
 };
 
+const getEditSalesRep = async (req, res) => {
+  try {
+    const salesRep = await SalesRepModel.getSalesRepById(req.params.id);
+    if (!salesRep) {
+      req.flash('error_msg', 'Sales Representative not found');
+      return res.redirect('/admin/sales-reps');
+    }
+    res.render('admin/edit-sales-rep', { salesRep });
+  } catch (error) {
+    console.error(error);
+    res.render('error-page');
+  }
+};
+
+const updateSalesRep = async (req, res) => {
+  const { id } = req.params;
+  const { name, email, phone } = req.body;
+  try {
+    if (!isValidEmail(email)) {
+      req.flash('error_msg', 'Invalid email address');
+      return res.redirect(`/admin/sales-reps/${id}/edit`);
+    }
+    await SalesRepModel.updateSalesRep(id, { name, email, phone });
+    req.flash('success_msg', 'Sales Representative updated successfully');
+    res.redirect('/admin/sales-reps');
+  } catch (error) {
+    console.error(error);
+    req.flash('error_msg', 'Error updating sales representative');
+    res.redirect(`/admin/sales-reps/${id}/edit`);
+  }
+};
+
 const getAllProductRequests = async (req, res) => {
   try {
     const requests = await RequestModel.getAllRequests();
@@ -406,6 +447,19 @@ const getAllProductRequests = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.render('error-page');
+  }
+};
+
+const deleteSalesRep = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await SalesRepModel.deleteSalesRep(id);
+    req.flash('success_msg', 'Sales Representative deleted successfully');
+    res.redirect('/admin/sales-reps');
+  } catch (error) {
+    console.error(error);
+    req.flash('error_msg', 'Error deleting sales representative. It may be in use.');
+    res.redirect('/admin/sales-reps');
   }
 };
 
@@ -452,7 +506,8 @@ module.exports = {
   handleRequestAction,
   viewRequestDetails,
   getRecordRepPayment,
-  handleRepPayment
+  handleRepPayment,
+  getEditSalesRep,
+  updateSalesRep,
+  deleteSalesRep
 };
-
-

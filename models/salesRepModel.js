@@ -55,7 +55,7 @@ const createSalesRep = (data) => {
 // Find by Unique ID
 const findByUniqueId = (uniqueId) => {
     return new Promise((resolve, reject) => {
-        const query = "SELECT * FROM sales_reps WHERE unique_id = ?";
+        const query = "SELECT * FROM sales_reps WHERE unique_id = ? AND is_deleted = 0";
         db.query(query, [uniqueId], (err, result) => {
             if (err) return reject(err);
             resolve(result[0]); // Return first match
@@ -66,7 +66,7 @@ const findByUniqueId = (uniqueId) => {
 // Get all sales reps
 const getAllSalesReps = () => {
     return new Promise((resolve, reject) => {
-        const query = "SELECT * FROM sales_reps ORDER BY created_at DESC";
+        const query = "SELECT * FROM sales_reps WHERE is_deleted = 0 ORDER BY created_at DESC";
         db.query(query, (err, result) => {
             if (err) return reject(err);
             resolve(result);
@@ -85,12 +85,48 @@ const updateDebt = (id, amount) => {
     });
 };
 
+// Get Sales Rep by ID
+const getSalesRepById = (id) => {
+    return new Promise((resolve, reject) => {
+        const query = "SELECT * FROM sales_reps WHERE id = ? AND is_deleted = 0";
+        db.query(query, [id], (err, result) => {
+            if (err) return reject(err);
+            resolve(result[0]);
+        });
+    });
+};
+
+// Update Sales Rep details
+const updateSalesRep = (id, data) => {
+    return new Promise((resolve, reject) => {
+        const { name, email, phone } = data;
+        const query = "UPDATE sales_reps SET name = ?, email = ?, phone = ? WHERE id = ?";
+        db.query(query, [name, email, phone, id], (err, result) => {
+            if (err) return reject(err);
+            resolve(result);
+        });
+    });
+};
+
+// Delete Sales Rep (Soft Delete)
+const deleteSalesRep = (id) => {
+    return new Promise((resolve, reject) => {
+        const query = "UPDATE sales_reps SET is_deleted = 1 WHERE id = ?";
+        db.query(query, [id], (err, result) => {
+            if (err) return reject(err);
+            resolve(result);
+        });
+    });
+};
+
 module.exports = {
     createSalesRep,
     findByUniqueId,
     getAllSalesReps,
+    getSalesRepById,
+    updateSalesRep,
+    deleteSalesRep,
     updateDebt,
     recordPayment,
     getPaymentsBySalesRep
 };
-

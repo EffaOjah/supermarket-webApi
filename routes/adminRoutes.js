@@ -59,6 +59,9 @@ router.get('/admin/fetch-records-from-range', verifyToken, adminController.getSa
 router.get('/admin/sales-reps/add', verifyToken, adminController.getAddSalesRep);
 router.post('/admin/sales-reps/add', verifyToken, adminController.addSalesRep);
 router.get('/admin/sales-reps', verifyToken, adminController.getAllSalesRepsList);
+router.get('/admin/sales-reps/:id/edit', verifyToken, adminController.getEditSalesRep);
+router.post('/admin/sales-reps/:id/edit', verifyToken, adminController.updateSalesRep);
+router.post('/admin/sales-reps/:id/delete', verifyToken, adminController.deleteSalesRep);
 router.get('/admin/sales-reps/:id/payment', verifyToken, adminController.getRecordRepPayment);
 router.post('/admin/sales-reps/:id/payment', verifyToken, adminController.handleRepPayment);
 

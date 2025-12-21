@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>MaryBill - Add Sales Rep</title>
+    <title>MaryBill - Edit Sales Rep</title>
     <meta
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"
       name="viewport"
@@ -72,18 +72,22 @@
       <div class="main-panel">
         <div class="content">
           <div class="container-fluid">
-            <h4 class="page-title">Add Sales Representative</h4>
+            <h4 class="page-title">Edit Sales Representative</h4>
             <div class="row">
               <div class="col-md-8">
                 <div class="card">
                   <div class="card-body">
-                    <form action="/admin/sales-reps/add" method="POST">
+                    <form
+                      action="/admin/sales-reps/<%= salesRep.id %>/edit"
+                      method="POST"
+                    >
                       <div class="form-group">
                         <label>Full Name</label>
                         <input
                           type="text"
                           name="name"
                           class="form-control"
+                          value="<%= salesRep.name %>"
                           required
                         />
                       </div>
@@ -93,6 +97,7 @@
                           type="email"
                           name="email"
                           class="form-control"
+                          value="<%= salesRep.email %>"
                           required
                         />
                       </div>
@@ -102,11 +107,21 @@
                           type="tel"
                           name="phone"
                           class="form-control"
+                          value="<%= salesRep.phone %>"
                           required
                         />
                       </div>
+                      <div class="form-group">
+                        <label>Unique ID (Read-only)</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          value="<%= salesRep.unique_id %>"
+                          disabled
+                        />
+                      </div>
                       <button type="submit" class="btn btn-success mt-3">
-                        Register Sales Rep
+                        Update Sales Rep
                       </button>
                       <a
                         href="/admin/sales-reps"

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>MaryBill - Invoice Details</title>
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"
+      name="viewport"
+    />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    />
+    <script
+      src="https://kit.fontawesome.com/a207e207d8.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="/css/ready.css" />
+    <link rel="stylesheet" href="/css/demo.css" />
+    <link rel="icon" type="image/x-icon" href="/img/app_icon.ico" />
+    <link rel="stylesheet" href="/iziToast-master/dist/css/iziToast.min.css" />
+    <style>
+      .invoice-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+      }
+      .invoice-detail-row {
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+      }
+      .invoice-detail-row:last-child {
+        border-bottom: none;
+      }
+      .total-section {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 5px;
+        margin-top: 20px;
+      }
+
+      /* Print Styles */
+      @media print {
+        /* Hide navigation, sidebar, and buttons */
+        .main-header,
+        .sidebar,
+        .btn,
+        button,
+        .page-title,
+        .navbar,
+        .topbar-toggler,
+        .sidenav-toggler,
+        a[href="/admin/sales-rep-invoices"] {
+          display: none !important;
+        }
+
+        /* Remove margins and padding from main content */
+        .main-panel {
+          margin-left: 0 !important;
+          width: 100% !important;
+        }
+
+        .content {
+          padding: 0 !important;
+        }
+
+        .container-fluid {
+          padding: 20px !important;
+        }
+
+        /* Ensure invoice header prints with background */
+        .invoice-header {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+          page-break-inside: avoid;
+        }
+
+        /* Optimize table for printing */
+        .table {
+          page-break-inside: avoid;
+        }
+
+        /* Remove shadows and rounded corners for cleaner print */
+        .card {
+          box-shadow: none !important;
+          border: 1px solid #ddd;
+        }
+
+        /* Ensure proper page breaks */
+        .total-section {
+          page-break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="main-header">
+        <div class="logo-header">
+          <a href="/admin/dashboard" class="logo">MaryBill Conglomerate</a>
+          <button
+            class="navbar-toggler sidenav-toggler ml-auto"
+            type="button"
+            data-toggle="collapse"
+            data-target="collapse"
+            aria-controls="sidebar"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <button class="topbar-toggler more">
+            <i class="la la-ellipsis-v"></i>
+          </button>
+        </div>
+        <nav class="navbar navbar-header navbar-expand-lg">
+          <div class="container-fluid">
+            <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+              <li class="nav-item dropdown">
+                <a
+                  class="dropdown-toggle profile-pic"
+                  data-toggle="dropdown"
+                  href="#"
+                  aria-expanded="false"
+                >
+                  <img
+                    src="/img/profile-icon.png"
+                    alt="user-img"
+                    width="36"
+                    class="img-circle"
+                  /><span>Admin</span>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                  <a class="dropdown-item" href="/logout"
+                    ><i class="fa fa-power-off"></i> Logout</a
+                  >
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <%- include('../partials/sidebar') %>
+      <div class="main-panel">
+        <div class="content">
+          <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h4 class="page-title">Invoice Details</h4>
+              <a
+                href="/admin/sales-rep-invoices"
+                class="btn btn-sm btn-outline-secondary"
+              >
+                <i class="fas fa-arrow-left"></i> Back to List
+              </a>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <!-- Invoice Header -->
+                    <div class="invoice-header">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <h3><%= invoice.invoice_number %></h3>
+                          <p class="mb-0">
+                            <i class="fa fa-user"></i> Sales Rep:
+                            <strong><%= invoice.salesRep.name %></strong>
+                          </p>
+                          <p class="mb-0">
+                            <i class="fa fa-envelope"></i> <%=
+                            invoice.salesRep.email || 'N/A' %>
+                          </p>
+                          <p class="mb-0">
+                            <i class="fa fa-phone"></i> <%=
+                            invoice.salesRep.phone %>
+                          </p>
+                        </div>
+                        <div class="col-md-6 text-right">
+                          <h4>
+                            <% if(invoice.status === 'PAID') { %>
+                            <span class="badge badge-success">PAID</span>
+                            <% } else if(invoice.status === 'UNPAID') { %>
+                            <span class="badge badge-danger">UNPAID</span>
+                            <% } else { %>
+                            <span class="badge badge-warning"
+                              ><%= invoice.status %></span
+                            >
+                            <% } %>
+                          </h4>
+                          <p class="mb-1">
+                            <strong>Invoice Date:</strong> <%= new
+                            Date(invoice.invoice_date).toLocaleDateString() %>
+                          </p>
+                          <% if(invoice.due_date) { %>
+                          <p class="mb-1">
+                            <strong>Due Date:</strong> <%= new
+                            Date(invoice.due_date).toLocaleDateString() %>
+                          </p>
+                          <% } %>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Invoice Items -->
+                    <h5 class="mb-3">
+                      <i class="fa fa-list"></i> Invoice Items
+                    </h5>
+                    <div class="table-responsive">
+                      <table class="table table-bordered">
+                        <thead class="thead-light">
+                          <tr>
+                            <th>#</th>
+                            <th>Product Name</th>
+                            <th class="text-right">Quantity</th>
+                            <th class="text-right">Unit Price</th>
+                            <th class="text-right">Total</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% invoice.items.forEach((item, index) => { %>
+                          <tr>
+                            <td><%= index + 1 %></td>
+                            <td><%= item.product_name %></td>
+                            <td class="text-right"><%= item.quantity %></td>
+                            <td class="text-right">
+                              ₦<%= parseFloat(item.unit_price).toLocaleString()
+                              %>
+                            </td>
+                            <td class="text-right">
+                              ₦<%= parseFloat(item.total).toLocaleString() %>
+                            </td>
+                          </tr>
+                          <% }) %>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <!-- Total Section -->
+                    <div class="total-section">
+                      <div class="row">
+                        <div class="col-md-8"></div>
+                        <div class="col-md-4">
+                          <div class="invoice-detail-row">
+                            <div class="d-flex justify-content-between">
+                              <strong>Grand Total:</strong>
+                              <strong
+                                >₦<%=
+                                parseFloat(invoice.total_amount).toLocaleString()
+                                %></strong
+                              >
+                            </div>
+                          </div>
+                          <div class="invoice-detail-row">
+                            <div
+                              class="d-flex justify-content-between text-success"
+                            >
+                              <strong>Total Paid:</strong>
+                              <strong
+                                >₦<%= parseFloat(totalPaid).toLocaleString()
+                                %></strong
+                              >
+                            </div>
+                          </div>
+                          <div
+                            class="invoice-detail-row"
+                            style="
+                              border-top: 2px solid #ddd;
+                              margin-top: 5px;
+                              padding-top: 10px;
+                            "
+                          >
+                            <div
+                              class="d-flex justify-content-between text-primary"
+                            >
+                              <strong>Balance Due:</strong>
+                              <strong
+                                >₦<%= parseFloat(balance).toLocaleString()
+                                %></strong
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Payment History -->
+                    <% if(payments && payments.length > 0) { %>
+                    <h5 class="mt-4 mb-3">
+                      <i class="fa fa-history"></i> Payment History
+                    </h5>
+                    <div class="table-responsive">
+                      <table class="table table-sm table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Date</th>
+                            <th>Method</th>
+                            <th>Reference</th>
+                            <th class="text-right">Amount</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% if(payments && payments.length > 0) { %> <%
+                          payments.forEach(function(p) { %>
+                          <tr>
+                            <td>
+                              <%= new Date(p.payment_date).toLocaleDateString()
+                              %>
+                            </td>
+                            <td><%= p.payment_method %></td>
+                            <td><%= p.reference || 'N/A' %></td>
+                            <td class="text-right">
+                              ₦<%= parseFloat(p.amount).toLocaleString() %>
+                            </td>
+                          </tr>
+                          <% }) %> <% } %>
+                        </tbody>
+                      </table>
+                    </div>
+                    <% } %>
+
+                    <!-- Actions -->
+                    <div class="mt-4 text-right">
+                      <% if(invoice.status !== 'PAID') { %>
+                      <a
+                        href="/admin/sales-rep-invoices/<%= invoice.invoice_id %>/payment"
+                        class="btn btn-success btn-lg"
+                      >
+                        <i class="fa fa-money"></i> Record Payment
+                      </a>
+                      <% } else { %>
+                      <button
+                        type="button"
+                        class="btn btn-secondary btn-lg"
+                        disabled
+                      >
+                        <i class="fa fa-check"></i> Payment Recorded
+                      </button>
+                      <% } %>
+                      <button
+                        type="button"
+                        class="btn btn-info btn-lg"
+                        onclick="window.print()"
+                      >
+                        <i class="fa fa-print"></i> Print Invoice
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%- include('../partials/responseMessage') %>
+  </body>
+  <script src="/js/core/jquery.3.2.1.min.js"></script>
+  <script src="/js/core/popper.min.js"></script>
+  <script src="/js/core/bootstrap.min.js"></script>
+  <script src="/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+  <script src="/js/ready.min.js"></script>
+  <script src="/iziToast-master/dist/js/iziToast.min.js"></script>
+  <script src="/js/toast.js"></script>
+</html>

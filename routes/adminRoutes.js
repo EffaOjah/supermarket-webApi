@@ -65,6 +65,14 @@ router.post('/admin/sales-reps/:id/delete', verifyToken, adminController.deleteS
 router.get('/admin/sales-reps/:id/payment', verifyToken, adminController.getRecordRepPayment);
 router.post('/admin/sales-reps/:id/payment', verifyToken, adminController.handleRepPayment);
 
+// Sales Rep Invoice Management Routes
+router.get('/admin/sales-rep-invoices', verifyToken, adminController.renderSalesRepInvoiceList);
+router.get('/admin/sales-rep-invoices/create', verifyToken, adminController.renderCreateSalesRepInvoice);
+router.post('/admin/sales-rep-invoices/create', verifyToken, adminController.createSalesRepInvoice);
+router.get('/admin/sales-rep-invoices/:id', verifyToken, adminController.viewSalesRepInvoiceDetails);
+router.get('/admin/sales-rep-invoices/:id/payment', verifyToken, adminController.renderSalesRepInvoicePaymentForm);
+router.post('/admin/sales-rep-invoices/:id/payment', verifyToken, adminController.recordSalesRepInvoicePayment);
+
 // Product Requests Routes
 router.get('/admin/product-requests', verifyToken, adminController.getAllProductRequests);
 router.get('/admin/product-requests/:id', verifyToken, adminController.viewRequestDetails);

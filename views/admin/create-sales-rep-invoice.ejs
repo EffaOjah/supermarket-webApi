@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Create Sales Rep Invoice</title>
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"
+      name="viewport"
+    />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    />
+    <script
+      src="https://kit.fontawesome.com/a207e207d8.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="/css/ready.css" />
+    <link rel="stylesheet" href="/css/demo.css" />
+    <link rel="stylesheet" href="/iziToast-master/dist/css/iziToast.min.css" />
+    <style>
+      .item-row {
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-radius: 5px;
+        border: 1px solid #eee;
+        margin-bottom: 10px;
+        transition: all 0.3s;
+      }
+      .item-row:hover {
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      }
+      .remove-btn {
+        color: #dc3545;
+        cursor: pointer;
+        transition: color 0.2s;
+      }
+      .remove-btn:hover {
+        color: #a71d2a;
+      }
+      .total-display {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #28a745;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="main-header">
+			<div class="logo-header">
+				<a href="/admin/dashboard" class="logo">
+					MaryBill Conglomerate
+				</a>
+				<button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse"
+					data-target="collapse" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<button class="topbar-toggler more"><i class="la la-ellipsis-v"></i></button>
+			</div>
+			<nav class="navbar navbar-header navbar-expand-lg">
+				<div class="container-fluid">
+					<ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+						<li class="nav-item dropdown">
+							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img
+									src="/img/profile-icon.png" alt="user-img" width="36" class="img-circle"><span>Admin</span></span>
+							</a>
+							<ul class="dropdown-menu dropdown-user">
+								<a class="dropdown-item" href="/logout"><i class="fa fa-power-off"></i> Logout</a>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+		<!-- Sidebar -->
+		<%- include('../partials/sidebar') %>
+		<!-- End Sidebar -->
+
+      <div class="main-panel">
+        <div class="content">
+          <div class="container-fluid">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <h4 class="page-title mb-0">Create Sales Rep Invoice</h4>
+              <a href="/admin/sales-rep-invoices" class="btn btn-sm btn-outline-secondary">
+                <i class="fas fa-arrow-left"></i> Back to List
+              </a>
+            </div>
+
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <form action="/admin/sales-rep-invoices/create" method="POST" id="invoiceForm">
+                  <h5 class="text-primary mb-3">
+                    <i class="fas fa-user"></i> Sales Rep Details
+                  </h5>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label
+                          >Select Sales Rep
+                          <span class="text-danger">*</span></label
+                        >
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"
+                              ><i class="fas fa-user-circle"></i
+                            ></span>
+                          </div>
+                          <select
+                            name="salesRepId"
+                            class="form-control"
+                            required
+                          >
+                            <option value="">-- Choose Sales Rep --</option>
+                            <% salesReps.forEach(rep => { %>
+                            <option value="<%= rep.id %>">
+                              <%= rep.name %> (Debt: ₦<%= rep.debt %>)
+                            </option>
+                            <% }) %>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label
+                          >Invoice Date
+                          <span class="text-danger">*</span></label
+                        >
+                        <input
+                          type="date"
+                          name="invoiceDate"
+                          class="form-control"
+                          required
+                          value="<%= new Date().toISOString().split('T')[0] %>"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label>Due Date</label>
+                        <input
+                          type="date"
+                          name="dueDate"
+                          class="form-control"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <hr class="my-4" />
+
+                  <div
+                    class="d-flex align-items-center justify-content-between mb-3"
+                  >
+                    <h5 class="text-primary mb-0">
+                      <i class="fas fa-shopping-cart"></i> Invoice Items
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-primary"
+                      onclick="addItem()"
+                    >
+                      <i class="fas fa-plus"></i> Add Item
+                    </button>
+                  </div>
+
+                  <div id="itemsContainer">
+                    <!-- Items will be rendered here -->
+                  </div>
+
+                  <hr class="my-4" />
+
+                  <div class="row justify-content-end">
+                    <div class="col-md-4 text-right">
+                      <h5 class="mb-3">Grand Total</h5>
+                      <div class="total-display">
+                        ₦ <span id="grandTotal">0.00</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <input type="hidden" name="items" id="itemsInput" />
+
+                  <div class="mt-4 text-right">
+                    <button type="submit" class="btn btn-success btn-lg px-5">
+                      <i class="fas fa-check-circle"></i> Create Invoice
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let items = [];
+      const products = <%- JSON.stringify(products) %>;
+
+      function renderItems() {
+        const container = document.getElementById("itemsContainer");
+        container.innerHTML = "";
+
+        if (items.length === 0) {
+          container.innerHTML =
+            '<div class="text-center text-muted py-3">No items added. Click "Add Item" to start.</div>';
+          updateGrandTotal();
+          updateInput();
+          return;
+        }
+
+        items.forEach((item, index) => {
+          const div = document.createElement("div");
+          div.className = "item-row";
+          div.innerHTML = `
+                    <div class="row align-items-center">
+                        <div class="col-md-1 text-center">
+                            <span class="badge badge-light text-muted">#${
+                              index + 1
+                            }</span>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group p-0">
+                                <select class="form-control" onchange="updateItemProduct(${index}, this.value)">
+                                    <option value="">-- Select Product --</option>
+                                    ${products.map(p => `<option value="${p.product_id}" ${item.productId == p.product_id ? 'selected' : ''}>
+                                        ${p.product_name} - ₦${p.wholesale_selling_price}
+                                    </option>`).join('')}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group p-0">
+                                <div class="input-group">
+                                    <input type="number" class="form-control" placeholder="Qty" 
+                                        value="${item.quantity}" min="1"
+                                        oninput="updateItem(${index}, 'quantity', this.value)">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group p-0">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">₦</span>
+                                    </div>
+                                    <input type="number" class="form-control" placeholder="Price" 
+                                        value="${item.unitPrice}" step="0.01" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1 text-right">
+                            <i class="fas fa-trash-alt remove-btn" onclick="removeItem(${index})" title="Remove Item"></i>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                            <div class="col-md-12 text-right">
+                            <small class="text-muted">Subtotal: ₦ <strong id="subtotal-${index}">${item.total.toLocaleString(
+            "en-US",
+            { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+          )}</strong></small>
+                            </div>
+                    </div>
+                `;
+          container.appendChild(div);
+        });
+        updateGrandTotal();
+        updateInput();
+      }
+
+      function addItem() {
+        items.push({ productId: "", productName: "", quantity: 1, unitPrice: 0, total: 0 });
+        renderItems();
+      }
+
+      function removeItem(index) {
+        items.splice(index, 1);
+        renderItems();
+      }
+
+      function updateItemProduct(index, productId) {
+        const product = products.find(p => p.product_id == productId);
+        if (product) {
+          const price = parseFloat(product.wholesale_selling_price);
+          if (isNaN(price) || price <= 0) {
+            iziToast.error({
+              title: 'Invalid Price',
+              message: `The product "${product.product_name}" does not have a valid wholesale price (₦${product.wholesale_selling_price}). Please update the product price before adding it to an invoice.`,
+              position: 'topRight'
+            });
+            items[index].productId = "";
+            items[index].productName = "";
+            items[index].unitPrice = 0;
+            items[index].total = 0;
+            renderItems();
+            return;
+          }
+          items[index].productId = productId;
+          items[index].productName = product.product_name;
+          items[index].unitPrice = price;
+          const qty = parseFloat(items[index].quantity) || 0;
+          items[index].total = qty * items[index].unitPrice;
+        } else {
+          items[index].productId = "";
+          items[index].productName = "";
+          items[index].unitPrice = 0;
+          items[index].total = 0;
+        }
+        renderItems();
+      }
+
+      function updateItem(index, field, value) {
+        items[index][field] = value;
+
+        if (field === "quantity") {
+          const qty = parseFloat(items[index].quantity) || 0;
+          const price = parseFloat(items[index].unitPrice) || 0;
+          items[index].total = qty * price;
+
+          // Update specific subtotal element
+          const subEl = document.getElementById(`subtotal-${index}`);
+          if (subEl)
+            subEl.innerText = items[index].total.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            });
+
+          updateGrandTotal();
+        }
+        updateInput();
+      }
+
+      function updateGrandTotal() {
+        const total = items.reduce((sum, item) => sum + item.total, 0);
+        document.getElementById("grandTotal").innerText = total.toLocaleString(
+          "en-US",
+          { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+        );
+      }
+
+      function updateInput() {
+        document.getElementById("itemsInput").value = JSON.stringify(items);
+      }
+
+      // Initialize
+      addItem();
+
+      // Form Validation
+      document.getElementById('invoiceForm').addEventListener('submit', function(e) {
+        const salesRepId = document.getElementsByName('salesRepId')[0].value;
+        const invoiceDate = document.getElementsByName('invoiceDate')[0].value;
+        
+        if (!salesRepId) {
+            e.preventDefault();
+            iziToast.error({
+                title: 'Error',
+                message: 'Please select a sales rep',
+                position: 'topRight'
+            });
+            return;
+        }
+
+        if (!invoiceDate) {
+            e.preventDefault();
+            iziToast.error({
+                title: 'Error',
+                message: 'Please select an invoice date',
+                position: 'topRight'
+            });
+            return;
+        }
+
+        if (items.length === 0) {
+            e.preventDefault();
+            iziToast.error({
+                title: 'Error',
+                message: 'Please add at least one item to the invoice',
+                position: 'topRight'
+            });
+            return;
+        }
+
+        for (let i = 0; i < items.length; i++) {
+            if (!items[i].productId) {
+                e.preventDefault();
+                iziToast.error({
+                    title: 'Error',
+                    message: `Item #${i + 1}: Please select a product`,
+                    position: 'topRight'
+                });
+                return;
+            }
+            if (items[i].quantity <= 0) {
+                e.preventDefault();
+                iziToast.error({
+                    title: 'Error',
+                    message: `Item #${i + 1} quantity must be greater than 0`,
+                    position: 'topRight'
+                });
+                return;
+            }
+            if (items[i].unitPrice <= 0) {
+                e.preventDefault();
+                iziToast.error({
+                    title: 'Error',
+                    message: `Item #${i + 1} (${items[i].productName}) has no valid price. Please update the product price.`,
+                    position: 'topRight'
+                });
+                return;
+            }
+        }
+      });
+    </script>
+
+    <script src="/js/core/jquery.3.2.1.min.js"></script>
+    <script src="/js/core/popper.min.js"></script>
+    <script src="/js/core/bootstrap.min.js"></script>
+    <script src="/iziToast-master/dist/js/iziToast.min.js"></script>
+    <script src="/js/ready.min.js"></script>
+    <script src="/js/toast.js"></script>
+  </body>
+</html>

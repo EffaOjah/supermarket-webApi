@@ -463,6 +463,248 @@ const deleteSalesRep = async (req, res) => {
   }
 };
 
+// Sales Rep Invoice Management
+const renderSalesRepInvoiceList = async (req, res) => {
+  try {
+    const invoices = await SalesRepModel.getAllSalesRepInvoices();
+    res.render('admin/sales-rep-invoices-list', { invoices });
+  } catch (error) {
+    console.error('Error fetching sales rep invoices:', error);
+    req.flash('error_msg', 'Error loading invoices');
+    res.redirect('/admin/dashboard');
+  }
+};
+
+const renderCreateSalesRepInvoice = async (req, res) => {
+  try {
+    const salesReps = await SalesRepModel.getAllSalesReps();
+    const products = await AdminModel.getProducts();
+    res.render('admin/create-sales-rep-invoice', { salesReps, products });
+  } catch (error) {
+    console.error('Error loading create invoice page:', error);
+    req.flash('error_msg', 'Error loading page');
+    res.redirect('/admin/sales-rep-invoices');
+  }
+};
+
+const createSalesRepInvoice = async (req, res) => {
+  try {
+    const { salesRepId, invoiceDate, dueDate, items } = req.body;
+
+    // Parse items if it comes as a string
+    let parsedItems = typeof items === 'string' ? JSON.parse(items) : items;
+
+    if (!salesRepId || !parsedItems || parsedItems.length === 0) {
+      req.flash('error_msg', 'Invalid invoice data');
+      return res.redirect('/admin/sales-rep-invoices/create');
+    }
+
+    // Validate that all items have a price > 0
+    for (const item of parsedItems) {
+      if (!item.unitPrice || parseFloat(item.unitPrice) <= 0) {
+        req.flash('error_msg', `Product "${item.productName}" does not have a valid price. Please ensure all products have prices before creating the invoice.`);
+        return res.redirect('/admin/sales-rep-invoices/create');
+      }
+    }
+
+    const totalAmount = parsedItems.reduce((sum, item) => sum + parseFloat(item.total), 0);
+    const invoiceNumber = `SREP-INV-${Date.now()}`;
+
+    // 1. Create Invoice in DB
+    const invoiceData = {
+      invoiceNumber,
+      salesRepId,
+      invoiceDate,
+      dueDate,
+      totalAmount,
+      reference: `Invoice for Sales Rep #${salesRepId}`
+    };
+
+    const result = await SalesRepModel.createSalesRepInvoice(invoiceData, parsedItems);
+    const invoiceId = result.invoiceId;
+
+    // 2. Update Sales Rep Debt (Increase)
+    await SalesRepModel.updateDebt(salesRepId, totalAmount);
+
+    // 3. Post to General Ledger
+    // Debit Accounts Receivable, Credit Sales
+    const ledgerEntry = {
+      transactionId: `TXN-SREP-INV-${invoiceId}`,
+      transactionDate: invoiceDate,
+      transactionType: 'INVOICE',
+      referenceNumber: invoiceNumber,
+      description: `Sales Rep Invoice ${invoiceNumber}`,
+      totalAmount: totalAmount,
+      createdBy: 'admin',
+      entries: [
+        {
+          accountCode: '1200', // Accounts Receivable
+          entryType: 'DEBIT',
+          amount: totalAmount,
+          description: `Sales Rep Invoice ${invoiceNumber} - Receivable`
+        },
+        {
+          accountCode: '4000', // Sales Revenue
+          entryType: 'CREDIT',
+          amount: totalAmount,
+          description: `Sales Rep Invoice ${invoiceNumber} - Revenue`
+        }
+      ]
+    };
+
+    await LedgerModel.insertTransaction(ledgerEntry);
+
+    req.flash('success_msg', 'Sales Rep Invoice created and posted to ledger successfully');
+    res.redirect('/admin/sales-rep-invoices');
+
+  } catch (error) {
+    console.error('Error creating sales rep invoice:', error);
+    req.flash('error_msg', 'Failed to create invoice: ' + error.message);
+    res.redirect('/admin/sales-rep-invoices/create');
+  }
+};
+
+const viewSalesRepInvoiceDetails = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const invoice = await SalesRepModel.getSalesRepInvoiceById(id);
+
+    if (!invoice) {
+      req.flash('error_msg', 'Invoice not found');
+      return res.redirect('/admin/sales-rep-invoices');
+    }
+
+    const totalPaid = await SalesRepModel.getInvoiceTotalPaid(id);
+    const balance = parseFloat(invoice.total_amount) - parseFloat(totalPaid);
+    const payments = await SalesRepModel.getInvoicePayments(id);
+
+    res.render('admin/sales-rep-invoice-details', { invoice, totalPaid, balance, payments });
+  } catch (error) {
+    console.error('Error viewing invoice:', error);
+    req.flash('error_msg', 'Error loading invoice details');
+    res.redirect('/admin/sales-rep-invoices');
+  }
+};
+
+const renderSalesRepInvoicePaymentForm = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const invoice = await SalesRepModel.getSalesRepInvoiceById(id);
+
+    if (!invoice) {
+      req.flash('error_msg', 'Invoice not found');
+      return res.redirect('/admin/sales-rep-invoices');
+    }
+
+    if (invoice.status === 'PAID') {
+      req.flash('warning_msg', 'Invoice is already fully paid');
+      return res.redirect(`/admin/sales-rep-invoices/${id}`);
+    }
+
+    // Get total paid so far
+    const totalPaid = await SalesRepModel.getInvoiceTotalPaid(id);
+    const balance = parseFloat(invoice.total_amount) - parseFloat(totalPaid);
+    const payments = await SalesRepModel.getInvoicePayments(id);
+
+    res.render('admin/sales-rep-invoice-payment', { invoice, totalPaid, balance, payments });
+  } catch (error) {
+    console.error('Error loading payment form:', error);
+    req.flash('error_msg', 'Error loading payment form');
+    res.redirect('/admin/sales-rep-invoices');
+  }
+};
+
+const recordSalesRepInvoicePayment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { amount, paymentDate, paymentMethod, reference, notes } = req.body;
+
+    const invoice = await SalesRepModel.getSalesRepInvoiceById(id);
+
+    if (!invoice) {
+      req.flash('error_msg', 'Invoice not found');
+      return res.redirect('/admin/sales-rep-invoices');
+    }
+
+    if (invoice.status === 'PAID') {
+      req.flash('warning_msg', 'Invoice is already fully paid');
+      return res.redirect('/admin/sales-rep-invoices');
+    }
+
+    // Validate payment amount
+    const paymentAmount = parseFloat(amount);
+    if (isNaN(paymentAmount) || paymentAmount <= 0) {
+      req.flash('error_msg', 'Invalid payment amount. Please enter a positive value.');
+      return res.redirect(`/admin/sales-rep-invoices/${id}/payment`);
+    }
+
+    // Get current total paid
+    const totalPaid = await SalesRepModel.getInvoiceTotalPaid(id);
+    const balance = parseFloat(invoice.total_amount) - parseFloat(totalPaid);
+
+    if (paymentAmount > balance) {
+      req.flash('error_msg', `Payment amount (₦${paymentAmount}) exceeds remaining balance (₦${balance})`);
+      return res.redirect(`/admin/sales-rep-invoices/${id}/payment`);
+    }
+
+    // 1. Record Payment
+    await SalesRepModel.recordInvoicePayment({
+      invoiceId: id,
+      amount: paymentAmount,
+      paymentDate,
+      paymentMethod,
+      reference,
+      notes
+    });
+
+    // 2. Update Sales Rep Debt (Decrease)
+    await SalesRepModel.updateDebt(invoice.sales_rep_id, -paymentAmount);
+
+    // 3. Check if invoice is now fully paid
+    const newTotalPaid = parseFloat(totalPaid) + paymentAmount;
+    if (newTotalPaid >= parseFloat(invoice.total_amount)) {
+      await SalesRepModel.updateSalesRepInvoiceStatus(id, 'PAID');
+    } else if (newTotalPaid > 0) {
+      await SalesRepModel.updateSalesRepInvoiceStatus(id, 'PARTIALLY_PAID');
+    }
+
+    // 4. Post to Ledger
+    const ledgerEntry = {
+      transactionId: `TXN-SREP-PAY-${id}-${Date.now()}`,
+      transactionDate: paymentDate,
+      transactionType: 'PAYMENT',
+      referenceNumber: invoice.invoice_number,
+      description: `Payment for Sales Rep Invoice ${invoice.invoice_number}`,
+      totalAmount: paymentAmount,
+      createdBy: 'admin',
+      entries: [
+        {
+          accountCode: '1000', // Cash
+          entryType: 'DEBIT',
+          amount: paymentAmount,
+          description: `Payment for SREP INV ${invoice.invoice_number}`
+        },
+        {
+          accountCode: '1200', // Accounts Receivable
+          entryType: 'CREDIT',
+          amount: paymentAmount,
+          description: `Payment for SREP INV ${invoice.invoice_number}`
+        }
+      ]
+    };
+
+    await LedgerModel.insertTransaction(ledgerEntry);
+
+    req.flash('success_msg', `Payment of ₦${paymentAmount.toLocaleString()} recorded successfully`);
+    res.redirect(`/admin/sales-rep-invoices/${id}`);
+
+  } catch (error) {
+    console.error('Error recording payment:', error);
+    req.flash('error_msg', 'Failed to record payment');
+    res.redirect('/admin/sales-rep-invoices');
+  }
+};
+
 const handleRequestAction = async (req, res) => {
   const { action } = req.body; // 'approve' or 'decline'
   const { id } = req.params;
@@ -509,5 +751,11 @@ module.exports = {
   handleRepPayment,
   getEditSalesRep,
   updateSalesRep,
-  deleteSalesRep
+  deleteSalesRep,
+  renderSalesRepInvoiceList,
+  renderCreateSalesRepInvoice,
+  createSalesRepInvoice,
+  viewSalesRepInvoiceDetails,
+  renderSalesRepInvoicePaymentForm,
+  recordSalesRepInvoicePayment
 };

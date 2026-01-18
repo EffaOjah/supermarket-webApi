@@ -7,7 +7,7 @@ const branchController = require("../controllers/branchController");
 const BranchModel = require("../models/branchModel");
 
 // Require JWT middleware
-const { verifyToken } = require("../middleware/jwt");
+const { verifyToken, requireRole } = require("../middleware/jwt");
 
 /* Custom middleware to update the
 lastInspected column for the branches */
@@ -33,35 +33,38 @@ const updateLastInspected = async (req, res, next) => {
 const { Router } = require("express");
 const router = Router();
 
-// Branch page route (GET)
+// Branch page route (GET) - Admin, PKO, Warehouse, Operations
 router.get(
   "/branch/:branchId",
   verifyToken,
+  requireRole(['admin', 'pko', 'warehouse', 'operations']),
   updateLastInspected,
   branchController.getBranchPage
 );
 
-// Stock branch page
-router.get("/stock-branch/:branchId", verifyToken, updateLastInspected, branchController.getStockBranchPage);
+// Stock branch page - Admin, PKO, Warehouse, Operations
+router.get("/stock-branch/:branchId", verifyToken, requireRole(['admin', 'pko', 'warehouse', 'operations']), updateLastInspected, branchController.getStockBranchPage);
 
-// Stock branch wholesale (POST)
-router.post('/stock-branch-wholesale/:branchId', verifyToken, branchController.stockBranchWholesale);
+// Stock branch wholesale (POST) - Admin, PKO, Warehouse, Operations
+router.post('/stock-branch-wholesale/:branchId', verifyToken, requireRole(['admin', 'pko', 'warehouse', 'operations']), branchController.stockBranchWholesale);
 
-// Stock branch retail (POST)
-router.post('/stock-branch-retail/:branchId', verifyToken, branchController.stockBranchRetail);
+// Stock branch retail (POST) - Admin, PKO, Warehouse, Operations
+router.post('/stock-branch-retail/:branchId', verifyToken, requireRole(['admin', 'pko', 'warehouse', 'operations']), branchController.stockBranchRetail);
 
-// Get branch products (GET)
+// Get branch products (GET) - Admin, PKO, Warehouse, Operations
 router.get(
   "/branch/:branchId/products",
   verifyToken,
+  requireRole(['admin', 'pko', 'warehouse', 'operations']),
   updateLastInspected,
   branchController.getBranchProducts
 );
 
-// Get branch sales (GET)
+// Get branch sales (GET) - Admin, PKO, Warehouse, Operations
 router.get(
   "/branch/:branchId/sales",
   verifyToken,
+  requireRole(['admin', 'pko', 'warehouse', 'operations']),
   updateLastInspected,
   branchController.getBranchSalesPage
 );
@@ -82,13 +85,13 @@ router.get('/get-low-wholesale-stock/:branchId', verifyToken, branchController.c
 // Get products with low retail stock level
 router.get('/get-low-retail-stock/:branchId', verifyToken, branchController.checkRetailStockLevel);
 
-// Get branch notifications page
-router.get('/branch/:branchId/notifications', verifyToken, branchController.getBranchNotificationsPage);
+// Get branch notifications page - Admin, PKO, Warehouse, Operations
+router.get('/branch/:branchId/notifications', verifyToken, requireRole(['admin', 'pko', 'warehouse', 'operations']), branchController.getBranchNotificationsPage);
 
-// Get stock transfer page
-router.get('/branch/:branchId/transfer-stock', verifyToken, branchController.getStockTransferPage);
+// Get stock transfer page - Admin, PKO, Warehouse, Operations
+router.get('/branch/:branchId/transfer-stock', verifyToken, requireRole(['admin', 'pko', 'warehouse', 'operations']), branchController.getStockTransferPage);
 
-// Post route to transfer branch stock
-router.post('/branch/transfer-stock', verifyToken, branchController.transferBranchStock);
+// Post route to transfer branch stock - Admin, PKO, Warehouse, Operations
+router.post('/branch/transfer-stock', verifyToken, requireRole(['admin', 'pko', 'warehouse', 'operations']), branchController.transferBranchStock);
 
 module.exports = router;

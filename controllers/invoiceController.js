@@ -16,20 +16,23 @@ const ACCOUNTS = {
 // Render Invoice List
 const renderInvoiceList = async (req, res) => {
     try {
-        const invoices = await invoiceModel.getAllInvoices();
-        res.render('invoices/list', { invoices });
+        const branchId = req.user.role === 'accountant' ? req.user.branch_id : null;
+        const invoices = await invoiceModel.getAllInvoices(branchId);
+        res.render('invoices/list', { invoices, user: req.user });
     } catch (error) {
         console.error('Error fetching invoices:', error);
         req.flash('error_msg', 'Error loading invoices');
-        res.redirect('/admin/dashboard');
+        const redirectUrl = req.user && req.user.role === 'accountant' ? '/accountant/dashboard' : '/admin/dashboard';
+        res.redirect(redirectUrl);
     }
 };
 
 // Render Create Invoice Page
 const renderCreateInvoice = async (req, res) => {
     try {
-        const customers = await customerModel.getAllCustomers();
-        res.render('invoices/create', { customers });
+        const branchId = req.user.role === 'accountant' ? req.user.branch_id : null;
+        const customers = await customerModel.getAllCustomers(branchId);
+        res.render('invoices/create', { customers, user: req.user });
     } catch (error) {
         console.error('Error loading create invoice page:', error);
         req.flash('error_msg', 'Error loading page');
@@ -62,6 +65,7 @@ const createInvoice = async (req, res) => {
             invoiceDate,
             dueDate,
             totalAmount,
+            branchId: req.user.branch_id,
             reference: `Invoice for Customer #${customerId}`
         };
 
@@ -78,9 +82,8 @@ const createInvoice = async (req, res) => {
             transactionDate: invoiceDate,
             transactionType: 'INVOICE', // Ensure this type exists in transaction_types or use 'SALES'
             referenceNumber: invoiceNumber,
-            description: `Invoice ${invoiceNumber}`,
-            totalAmount: totalAmount,
-            createdBy: 'admin', // TODO: Get from session
+            createdBy: req.user.email, // Use session email
+            branchId: req.user.branch_id,
             entries: [
                 {
                     accountCode: ACCOUNTS.RECEIVABLE,
@@ -138,9 +141,8 @@ const recordPayment = async (req, res) => {
             transactionDate: new Date().toISOString().split('T')[0],
             transactionType: 'PAYMENT',
             referenceNumber: invoice.invoice_number,
-            description: `Payment for Invoice ${invoice.invoice_number}`,
-            totalAmount: invoice.total_amount,
-            createdBy: 'admin',
+            createdBy: req.user.email,
+            branchId: invoice.branch_id, // Payment belongs to validation branch
             entries: [
                 {
                     accountCode: ACCOUNTS.CASH,
@@ -171,17 +173,20 @@ const recordPayment = async (req, res) => {
 
 const renderCustomerList = async (req, res) => {
     try {
-        const customers = await customerModel.getAllCustomers();
-        res.render('customers/list', { customers });
+        const branchId = req.user.role === 'accountant' ? req.user.branch_id : null;
+        const customers = await customerModel.getAllCustomers(branchId);
+        res.render('customers/list', { customers, user: req.user });
     } catch (error) {
         console.error(error);
-        res.redirect('/admin/dashboard');
+        const redirectUrl = req.user && req.user.role === 'accountant' ? '/accountant/dashboard' : '/admin/dashboard';
+        res.redirect(redirectUrl);
     }
 }
 
 const addCustomer = async (req, res) => {
     try {
-        await customerModel.addCustomer(req.body);
+        const customerData = { ...req.body, branchId: req.user.branch_id };
+        await customerModel.addCustomer(customerData);
         req.flash('success_msg', 'Customer added');
         res.redirect('/customers');
     } catch (error) {
@@ -201,7 +206,7 @@ const viewInvoiceDetails = async (req, res) => {
             return res.redirect('/invoices');
         }
 
-        res.render('invoices/details', { invoice });
+        res.render('invoices/details', { invoice, user: req.user });
     } catch (error) {
         console.error('Error viewing invoice:', error);
         req.flash('error_msg', 'Error loading invoice details');

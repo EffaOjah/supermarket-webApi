@@ -1,0 +1,30 @@
+<li
+  class="nav-item <%= currentPath === '/admin/product-requests' ? 'active' : '' %>"
+>
+  <a href="/admin/product-requests">
+    <i class="fa-solid fa-clipboard-list"></i>
+    <p>Product Requests</p>
+  </a>
+</li>
+<li
+  class="nav-item <%= currentPath === '/requests/accountant' ? 'active' : '' %>"
+>
+  <a href="/requests/accountant">
+    <i class="fa-solid fa-file-signature"></i>
+    <p>Accountant Approval</p>
+  </a>
+</li>
+<li class="nav-item <%= currentPath === '/requests/ops' ? 'active' : '' %>">
+  <a href="/requests/ops">
+    <i class="fa-solid fa-user-check"></i>
+    <p>Ops Approval</p>
+  </a>
+</li>
+<li
+  class="nav-item <%= currentPath === '/requests/warehouse' ? 'active' : '' %>"
+>
+  <a href="/requests/warehouse">
+    <i class="fa-solid fa-warehouse"></i>
+    <p>Warehouse Issue</p>
+  </a>
+</li>

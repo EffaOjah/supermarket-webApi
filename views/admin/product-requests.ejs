@@ -72,7 +72,13 @@
       <div class="main-panel">
         <div class="content">
           <div class="container-fluid">
-            <h4 class="page-title">Product Requests</h4>
+            <h4 class="page-title">
+              Product Requests <span class="badge badge-info">Read-Only</span>
+            </h4>
+            <p class="text-muted">
+              Monitor all product requests across workflow stages. Actions are
+              handled by role-specific dashboards.
+            </p>
             <div class="row">
               <div class="col-md-12">
                 <div class="card">
@@ -86,6 +92,7 @@
                             <th>Unique ID</th>
                             <th>Debt</th>
                             <th>Amount</th>
+                            <th>Current Stage</th>
                             <th>Status</th>
                             <th>Action</th>
                           </tr>
@@ -93,7 +100,7 @@
                         <tbody>
                           <% if(requests.length < 1) { %>
                           <tr>
-                            <td colspan="7" class="text-center">
+                            <td colspan="8" class="text-center">
                               No requests found
                             </td>
                           </tr>
@@ -112,6 +119,19 @@
                             </td>
                             <td>₦<%= req.total_amount %></td>
                             <td>
+                              <% let stageBadge = 'secondary'; let stageText =
+                              req.current_stage || 'PENDING'; if (stageText ===
+                              'ACCOUNTANT') stageBadge = 'warning'; else if
+                              (stageText === 'OPS') stageBadge = 'info'; else if
+                              (stageText === 'WAREHOUSE') stageBadge =
+                              'primary'; else if (stageText === 'COMPLETED')
+                              stageBadge = 'success'; else if (stageText ===
+                              'REJECTED') stageBadge = 'danger'; %>
+                              <span class="badge badge-<%= stageBadge %>">
+                                <%= stageText %>
+                              </span>
+                            </td>
+                            <td>
                               <span
                                 class="badge badge-<%= req.status === 'APPROVED' ? 'success' : (req.status === 'DECLINED' ? 'danger' : 'secondary') %>"
                               >
@@ -119,49 +139,10 @@
                               </span>
                             </td>
                             <td>
-                              <% if(req.status === 'PENDING') { %>
-                              <div class="d-flex">
-                                <form
-                                  action="/admin/product-requests/<%= req.id %>/action"
-                                  method="POST"
-                                  class="mr-1"
-                                >
-                                  <input
-                                    type="hidden"
-                                    name="action"
-                                    value="approve"
-                                  />
-                                  <button
-                                    type="submit"
-                                    class="btn btn-sm btn-success"
-                                  >
-                                    Approve
-                                  </button>
-                                </form>
-                                <form
-                                  action="/admin/product-requests/<%= req.id %>/action"
-                                  method="POST"
-                                >
-                                  <input
-                                    type="hidden"
-                                    name="action"
-                                    value="decline"
-                                  />
-                                  <button
-                                    type="submit"
-                                    class="btn btn-sm btn-danger"
-                                  >
-                                    Decline
-                                  </button>
-                                </form>
-                              </div>
-                              <% } else { %>
-                              <span class="text-muted"><%= req.status %></span>
-                              <% } %>
                               <a
                                 href="/admin/product-requests/<%= req.id %>"
-                                class="btn btn-sm btn-info ml-1"
-                                >View</a
+                                class="btn btn-sm btn-info"
+                                >View Details</a
                               >
                             </td>
                           </tr>

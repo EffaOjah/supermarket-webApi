@@ -8,11 +8,12 @@ const renderAddEntryPage = async (req, res) => {
         const accounts = await ledgerModel.getAllAccounts();
         const transactionTypes = await ledgerModel.getAllTransactionTypes();
 
-        res.render("add-ledger-entry", { accounts, transactionTypes });
+        res.render("add-ledger-entry", { accounts, transactionTypes, user: req.user });
     } catch (error) {
         console.error("Error rendering add ledger entry page:", error);
         req.flash("error_msg", "Failed to load ledger entry page");
-        res.redirect("/admin/dashboard");
+        const redirectUrl = req.user && req.user.role === 'accountant' ? '/accountant/dashboard' : '/admin/dashboard';
+        res.redirect(redirectUrl);
     }
 };
 
@@ -54,8 +55,10 @@ const createTransaction = async (req, res) => {
             transactionType,
             referenceNumber: referenceNumber || null,
             description,
+            description,
             totalAmount,
-            createdBy: "admin", // TODO: Get from session
+            createdBy: req.user.email,
+            branchId: req.user.branch_id,
             entries: parsedEntries
         };
 
@@ -82,7 +85,8 @@ const renderLedgerView = async (req, res) => {
             startDate: startDate || null,
             endDate: endDate || null,
             transactionType: transactionType || null,
-            status: status || 'POSTED'
+            status: status || 'POSTED',
+            branchId: req.user.role === 'accountant' ? req.user.branch_id : null
         };
 
         const transactions = await ledgerModel.getAllTransactions(filters);
@@ -91,12 +95,14 @@ const renderLedgerView = async (req, res) => {
         res.render("view-ledger", {
             transactions,
             transactionTypes,
-            filters
+            filters,
+            user: req.user
         });
     } catch (error) {
         console.error("Error fetching ledger:", error);
         req.flash("error_msg", "Failed to load ledger");
-        res.redirect("/admin/dashboard");
+        const redirectUrl = req.user && req.user.role === 'accountant' ? '/accountant/dashboard' : '/admin/dashboard';
+        res.redirect(redirectUrl);
     }
 };
 
@@ -111,7 +117,7 @@ const viewTransactionDetails = async (req, res) => {
             return res.redirect("/ledger/view");
         }
 
-        res.render("transaction-details", { transaction });
+        res.render("transaction-details", { transaction, user: req.user });
     } catch (error) {
         console.error("Error fetching transaction:", error);
         req.flash("error_msg", "Failed to load transaction details");
@@ -135,11 +141,12 @@ const renderChartOfAccounts = async (req, res) => {
             EXPENSE: accounts.filter(a => a.account_type === 'EXPENSE')
         };
 
-        res.render("chart-of-accounts", { accounts, groupedAccounts });
+        res.render("chart-of-accounts", { accounts, groupedAccounts, user: req.user });
     } catch (error) {
         console.error("Error fetching chart of accounts:", error);
         req.flash("error_msg", "Failed to load chart of accounts");
-        res.redirect("/admin/dashboard");
+        const redirectUrl = req.user && req.user.role === 'accountant' ? '/accountant/dashboard' : '/admin/dashboard';
+        res.redirect(redirectUrl);
     }
 };
 
@@ -178,13 +185,15 @@ const addAccount = async (req, res) => {
 const renderTrialBalance = async (req, res) => {
     try {
         const { asOfDate } = req.query;
-        const trialBalance = await ledgerModel.getTrialBalance(asOfDate || null);
+        const branchId = req.user.role === 'accountant' ? req.user.branch_id : null;
+        const trialBalance = await ledgerModel.getTrialBalance(asOfDate || null, branchId);
 
-        res.render("trial-balance", { trialBalance });
+        res.render("trial-balance", { trialBalance, user: req.user });
     } catch (error) {
         console.error("Error generating trial balance:", error);
         req.flash("error_msg", "Failed to generate trial balance");
-        res.redirect("/admin/dashboard");
+        const redirectUrl = req.user && req.user.role === 'accountant' ? '/accountant/dashboard' : '/admin/dashboard';
+        res.redirect(redirectUrl);
     }
 };
 
@@ -202,13 +211,15 @@ const renderAccountStatement = async (req, res) => {
             return res.redirect("/ledger/accounts");
         }
 
-        const balance = await ledgerModel.getAccountBalance(accountCode, endDate || null);
+        const branchId = req.user.role === 'accountant' ? req.user.branch_id : null;
+        const balance = await ledgerModel.getAccountBalance(accountCode, endDate || null, branchId);
 
         res.render("account-statement", {
             account,
             balance,
             startDate,
-            endDate
+            endDate,
+            user: req.user
         });
     } catch (error) {
         console.error("Error generating account statement:", error);
@@ -223,13 +234,15 @@ const renderAccountStatement = async (req, res) => {
 const renderBalanceSheet = async (req, res) => {
     try {
         const { asOfDate } = req.query;
-        const balanceSheet = await ledgerModel.getBalanceSheet(asOfDate || null);
+        const branchId = req.user.role === 'accountant' ? req.user.branch_id : null;
+        const balanceSheet = await ledgerModel.getBalanceSheet(asOfDate || null, branchId);
 
-        res.render("balance-sheet", { balanceSheet });
+        res.render("balance-sheet", { balanceSheet, user: req.user });
     } catch (error) {
         console.error("Error generating balance sheet:", error);
         req.flash("error_msg", "Failed to generate balance sheet");
-        res.redirect("/admin/dashboard");
+        const redirectUrl = req.user && req.user.role === 'accountant' ? '/accountant/dashboard' : '/admin/dashboard';
+        res.redirect(redirectUrl);
     }
 };
 
@@ -250,13 +263,15 @@ const renderProfitLoss = async (req, res) => {
             endDate = endDate || lastDay.toISOString().split('T')[0];
         }
 
-        const report = await ledgerModel.getProfitLoss(startDate, endDate);
+        const branchId = req.user.role === 'accountant' ? req.user.branch_id : null;
+        const report = await ledgerModel.getProfitLoss(startDate, endDate, branchId);
 
-        res.render("profit-loss", { report });
+        res.render("profit-loss", { report, user: req.user });
     } catch (error) {
         console.error("Error generating profit and loss report:", error);
         req.flash("error_msg", "Failed to generate profit and loss report");
-        res.redirect("/admin/dashboard");
+        const redirectUrl = req.user && req.user.role === 'accountant' ? '/accountant/dashboard' : '/admin/dashboard';
+        res.redirect(redirectUrl);
     }
 };
 

@@ -26,7 +26,7 @@ const getBranchPage = async (req, res) => {
     console.log("Branch Overview:", overview);
 
     // Render page
-    res.render("branch-overview", { branch, products, overview });
+    res.render("branch-overview", { branch, products, overview, user: req.user });
   } catch (error) {
     console.error("An error occurred:", error);
     return res.render("error-page");
@@ -46,7 +46,7 @@ const getStockBranchPage = async (req, res) => {
 
     const branchProducts = await BranchModel.getBranchProducts(branchId);
 
-    res.render("stock-branch", { branch, products, branchProducts });
+    res.render("stock-branch", { branch, products, branchProducts, user: req.user });
   } catch (error) {
     console.log("An error occurred: ", error);
     return res.render("error-page");
@@ -66,7 +66,7 @@ const getBranchSalesPage = async (req, res) => {
 
     const branchSales = await BranchModel.getBranchSales(branchId);
 
-    res.render("sales", { branch, branchProducts, branchSales });
+    res.render("sales", { branch, branchProducts, branchSales, user: req.user });
   } catch (error) {
     console.log("An error occurred: ", error);
     return res.render("error-page");
@@ -247,7 +247,7 @@ const getBranchProducts = async (req, res) => {
     const products = await BranchModel.getBranchProducts(branchId);
     console.log(products);
 
-    return res.render("branch-products", { branch, products });
+    return res.render("branch-products", { branch, products, user: req.user });
   } catch (error) {
     console.log("Error fetching branch products:", error);
     return res.status(500).json({ message: "Internal Server Error", error });
@@ -383,7 +383,7 @@ const getBranchNotificationsPage = async (req, res) => {
     // Get the stock received history
     const stockReceivedHistory = await BranchModel.getStockReceivedHistory(branchId);
 
-    res.render("notifications", { branch, products, lowStockWholesaleProducts, lowStockRetailProducts, stockTransferHistory, stockReceivedHistory });
+    res.render("notifications", { branch, products, lowStockWholesaleProducts, lowStockRetailProducts, stockTransferHistory, stockReceivedHistory, user: req.user });
   } catch (error) {
     console.log("An error occurred: ", error);
     return res.render("error-page");
@@ -404,7 +404,7 @@ const getStockTransferPage = async (req, res) => {
     // Get the products
     const products = await BranchModel.getBranchProducts(branchId);
 
-    res.render("stock-transfer", { branch, allBranches, products });
+    res.render("stock-transfer", { branch, allBranches, products, user: req.user });
   } catch (error) {
     console.log("An error occurred: ", error);
     return res.render("error-page");

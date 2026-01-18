@@ -2,7 +2,13 @@ const db = require('../config/dbConfig');
 
 const findUserByEmail = async (email) => {
     return new Promise((resolve, reject) => {
-        db.query('SELECT * FROM users WHERE email = ?', [email], (err, result) => {
+        const query = `
+            SELECT users.*, store_branches.branch_name 
+            FROM users 
+            LEFT JOIN store_branches ON users.branch_id = store_branches.branch_id 
+            WHERE users.email = ?
+        `;
+        db.query(query, [email], (err, result) => {
             if (err) {
                 reject(err);
             }
@@ -11,9 +17,9 @@ const findUserByEmail = async (email) => {
     });
 };
 
-const createUser = async (email, username, password) => {
+const createUser = async (email, username, password, branchId = null) => {
     return new Promise((resolve, reject) => {
-        db.query('INSERT INTO users (email, username, password) VALUES(?, ?, ?)', [email, username, password], (err, result) => {
+        db.query('INSERT INTO users (email, username, password, branch_id) VALUES(?, ?, ?, ?)', [email, username, password, branchId], (err, result) => {
             if (err) {
                 reject(err);
             }
@@ -25,7 +31,7 @@ const createUser = async (email, username, password) => {
 
 const findUserById = async (id) => {
     const [rows] = await db.query(
-        'SELECT id, name, email FROM users WHERE id = ?',
+        'SELECT id, name, email, role, branch_id FROM users WHERE id = ?',
         [id]
     );
     return rows[0];

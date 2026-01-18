@@ -1,9 +1,19 @@
 const db = require('../config/dbConfig');
 
 // Get all customers
-const getAllCustomers = async () => {
+const getAllCustomers = async (branchId = null) => {
     return new Promise((resolve, reject) => {
-        db.query("SELECT * FROM customers ORDER BY name", (err, result) => {
+        let query = "SELECT * FROM customers";
+        const params = [];
+
+        if (branchId) {
+            query += " WHERE branch_id = ?";
+            params.push(branchId);
+        }
+
+        query += " ORDER BY name";
+
+        db.query(query, params, (err, result) => {
             if (err) reject(err);
             resolve(result);
         });
@@ -23,10 +33,10 @@ const getCustomerById = async (customerId) => {
 // Add new customer
 const addCustomer = async (customerData) => {
     return new Promise((resolve, reject) => {
-        const { name, email, phone, address } = customerData;
+        const { name, email, phone, address, branchId } = customerData;
         db.query(
-            "INSERT INTO customers (name, email, phone, address) VALUES (?, ?, ?, ?)",
-            [name, email, phone, address],
+            "INSERT INTO customers (name, email, phone, address, branch_id) VALUES (?, ?, ?, ?, ?)",
+            [name, email, phone, address, branchId],
             (err, result) => {
                 if (err) reject(err);
                 resolve(result);

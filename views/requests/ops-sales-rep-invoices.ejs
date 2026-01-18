@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>MaryBill - Head of Ops - Sales Rep Invoices</title>
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"
+      name="viewport"
+    />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    />
+    <script
+      src="https://kit.fontawesome.com/a207e207d8.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="/css/ready.css" />
+    <link rel="stylesheet" href="/css/demo.css" />
+    <link rel="stylesheet" href="/iziToast-master/dist/css/iziToast.min.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="main-header">
+        <div class="logo-header">
+          <a href="/operations/dashboard" class="logo">MaryBill Conglomerate</a>
+          <button
+            class="navbar-toggler sidenav-toggler ml-auto"
+            type="button"
+            data-toggle="collapse"
+            data-target="collapse"
+            aria-controls="sidebar"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <button class="topbar-toggler more">
+            <i class="la la-ellipsis-v"></i>
+          </button>
+        </div>
+        <nav class="navbar navbar-header navbar-expand-lg">
+          <div class="container-fluid">
+            <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+              <li class="nav-item dropdown">
+                <a
+                  class="dropdown-toggle profile-pic"
+                  data-toggle="dropdown"
+                  href="#"
+                  aria-expanded="false"
+                >
+                  <img
+                    src="/img/profile-icon.png"
+                    alt="user-img"
+                    width="36"
+                    class="img-circle"
+                  /><span>Head of Ops</span>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                  <a class="dropdown-item" href="/logout"
+                    ><i class="fa fa-power-off"></i> Logout</a
+                  >
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div class="sidebar">
+        <div class="sidebar-wrapper">
+          <ul class="nav">
+            <li class="nav-item">
+              <a href="/operations/dashboard">
+                <i class="fa-solid fa-gauge"></i>
+                <p>Dashboard</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/operations/sales-reps">
+                <i class="fa-solid fa-user-tie"></i>
+                <p>Sales Reps</p>
+              </a>
+            </li>
+            <li class="nav-item active">
+              <a href="/operations/sales-rep-invoices">
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+                <p>Sales Rep Invoices</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/logout">
+                <i class="fas fa-sign-out-alt"></i>
+                <p>Logout</p>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="main-panel">
+        <div class="content">
+          <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h4 class="page-title">Sales Rep Invoices</h4>
+              <a
+                href="/operations/sales-rep-invoices/create"
+                class="btn btn-primary"
+                ><i class="fa fa-plus"></i> Create Invoice</a
+              >
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table table-head-bg-primary mt-4">
+                        <thead>
+                          <tr>
+                            <th scope="col">Invoice #</th>
+                            <th scope="col">Sales Rep</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Due Date</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% if(invoices.length < 1) { %>
+                          <tr>
+                            <td colspan="7" class="text-center">
+                              No invoices found
+                            </td>
+                          </tr>
+                          <% } else { %> <% invoices.forEach(invoice => { %>
+                          <tr>
+                            <td>
+                              <span class="badge badge-info"
+                                ><%= invoice.invoice_number %></span
+                              >
+                            </td>
+                            <td><%= invoice.sales_rep_name %></td>
+                            <td>
+                              <%= new
+                              Date(invoice.invoice_date).toLocaleDateString() %>
+                            </td>
+                            <td>
+                              <%= invoice.due_date ? new
+                              Date(invoice.due_date).toLocaleDateString() :
+                              'N/A' %>
+                            </td>
+                            <td>
+                              ₦<%= invoice.total_amount.toLocaleString() %>
+                            </td>
+                            <td>
+                              <% if(invoice.status === 'PAID') { %>
+                              <span class="badge badge-success">PAID</span>
+                              <% } else if(invoice.status === 'UNPAID') { %>
+                              <span class="badge badge-danger">UNPAID</span>
+                              <% } else { %>
+                              <span class="badge badge-warning"
+                                ><%= invoice.status %></span
+                              >
+                              <% } %>
+                            </td>
+                            <td>
+                              <a
+                                href="/operations/sales-rep-invoices/<%= invoice.invoice_id %>"
+                                class="btn btn-sm btn-info"
+                                title="View Details"
+                                ><i class="fa fa-eye"></i
+                              ></a>
+                              <% if(invoice.status !== 'PAID') { %>
+                              <a
+                                href="/operations/sales-rep-invoices/<%= invoice.invoice_id %>/payment"
+                                class="btn btn-sm btn-success"
+                                title="Record Payment"
+                              >
+                                <i class="fa fa-money-bill"></i>
+                              </a>
+                              <% } %>
+                            </td>
+                          </tr>
+
+                          <% }) %> <% } %>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%- include('../partials/responseMessage') %>
+  </body>
+  <script src="/js/core/jquery.3.2.1.min.js"></script>
+  <script src="/js/core/popper.min.js"></script>
+  <script src="/js/core/bootstrap.min.js"></script>
+  <script src="/js/ready.min.js"></script>
+  <script src="/iziToast-master/dist/js/iziToast.min.js"></script>
+  <script src="/js/toast.js"></script>
+</html>

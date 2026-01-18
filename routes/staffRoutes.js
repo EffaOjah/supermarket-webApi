@@ -2,24 +2,24 @@
 const staffController = require('../controllers/staffController');
 
 // Require JWT middleware
-const { verifyToken } = require('../middleware/jwt');
+const { verifyToken, requireRole } = require('../middleware/jwt');
 
 const { Router } = require('express');
 const router = Router();
 
-// Add staff route (GET)
-router.get('/staff/add', verifyToken, staffController.getAddStaffPage);
+// Add staff route (GET) - Admin, Warehouse, Operations
+router.get('/staff/add', verifyToken, requireRole(['admin', 'warehouse', 'operations']), staffController.getAddStaffPage);
 
-// Add staff route (POST)
-router.post('/staff/add', verifyToken, staffController.addStaff);
+// Add staff route (POST) - Admin, Warehouse, Operations
+router.post('/staff/add', verifyToken, requireRole(['admin', 'warehouse', 'operations']), staffController.addStaff);
 
-// Get update staff page (GET)
-router.get('/staff/:payrollId/update', verifyToken, staffController.getUpdateStaffPage);
+// Get update staff page (GET) - Admin, Warehouse, Operations
+router.get('/staff/:payrollId/update', verifyToken, requireRole(['admin', 'warehouse', 'operations']), staffController.getUpdateStaffPage);
 
-// Get all staff route (GET)
-router.get('/staff/all', verifyToken, staffController.getAllStaff);
+// Get all staff route (GET) - Admin, Warehouse, Operations
+router.get('/staff/all', verifyToken, requireRole(['admin', 'warehouse', 'operations']), staffController.getAllStaff);
 
-// Update staff route (POST)
-router.post('/staff/:payrollId/update', verifyToken, staffController.updateStaff);
+// Update staff route (POST) - Admin, Warehouse, Operations
+router.post('/staff/:payrollId/update', verifyToken, requireRole(['admin', 'warehouse', 'operations']), staffController.updateStaff);
 
 module.exports = router;

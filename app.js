@@ -67,6 +67,7 @@ app.use((req, res, next) => {
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
     res.locals.currentPath = req.path;
+    res.locals.user = req.user || null;
     next();
 });
 
@@ -105,6 +106,11 @@ app.use('/leave', leaveRoute);
 const paymentRoute = require('./routes/paymentRoutes');
 app.use('/payments', paymentRoute);
 app.use('/sales-rep', salesRepRoute);
+
+const requestRoute = require('./routes/requestRoutes');
+const pkoRoute = require('./routes/pkoRoutes');
+app.use(requestRoute);
+app.use('/pko', pkoRoute);
 
 
 

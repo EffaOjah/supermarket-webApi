@@ -31,14 +31,14 @@ const register = async (req, res) => {
 }
 
 const login = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;
     console.log(req.body);
 
 
     // Check if all details were provided
-    if (!email || !password) {
+    if (!email || !password || !role) {
         console.log('Incomplete login details');
-        req.flash('error_msg', 'Incomplete login details');
+        req.flash('error_msg', 'Please provide email, password, and select a role');
         return res.redirect('/admin/signin');
     }
 
@@ -54,12 +54,24 @@ const login = async (req, res) => {
         }
 
         let user = checkUser[0];
-        // Check if password is correct 
+        console.log('User found:', { email: user.email, role: user.role });
+        console.log('Selected role:', role);
 
+        // Check if password is correct 
         const isPasswordValid = await bcrypt.compare(password, user.password);
+        console.log('Password valid:', isPasswordValid);
+
         if (!isPasswordValid) {
             console.log('Invalid password');
             req.flash('error_msg', 'Invalid password');
+            return res.redirect('/admin/signin');
+        }
+
+        // Validate that user has permission for selected role
+        console.log('Checking role match - User role:', user.role, 'Selected role:', role);
+        if (user.role !== role) {
+            console.log('Role mismatch - User has role:', user.role, 'but selected:', role);
+            req.flash('error_msg', 'You do not have permission to access this role');
             return res.redirect('/admin/signin');
         }
 
@@ -71,8 +83,23 @@ const login = async (req, res) => {
         res.cookie('mbAuthToken', token);
 
         req.flash('success_msg', 'Login successful');
-        // Redirect to the dashboard
-        res.redirect('/admin/dashboard');
+
+        // Role-based redirect based on selected role
+        switch (role) {
+            case 'admin':
+                return res.redirect('/admin/dashboard');
+            case 'accountant':
+                return res.redirect('/accountant/dashboard');
+            case 'operations':
+                return res.redirect('/operations/dashboard');
+            case 'warehouse':
+                return res.redirect('/warehouse/dashboard');
+            case 'pko':
+                return res.redirect('/pko/dashboard');
+            default:
+                req.flash('error_msg', 'Invalid role selected');
+                return res.redirect('/admin/signin');
+        }
     } catch (error) {
         console.error(error);
         req.flash('error_msg', 'An error occurred');

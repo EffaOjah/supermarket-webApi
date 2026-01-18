@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>MaryBill - Accountant - Record Invoice Payment</title>
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"
+      name="viewport"
+    />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    />
+    <script
+      src="https://kit.fontawesome.com/a207e207d8.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="/css/ready.css" />
+    <link rel="stylesheet" href="/css/demo.css" />
+    <link rel="stylesheet" href="/iziToast-master/dist/css/iziToast.min.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="main-header">
+        <div class="logo-header">
+          <a href="/accountant/dashboard" class="logo">MaryBill Conglomerate</a>
+          <button
+            class="navbar-toggler sidenav-toggler ml-auto"
+            type="button"
+            data-toggle="collapse"
+            data-target="collapse"
+            aria-controls="sidebar"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <button class="topbar-toggler more">
+            <i class="la la-ellipsis-v"></i>
+          </button>
+        </div>
+        <nav class="navbar navbar-header navbar-expand-lg">
+          <div class="container-fluid">
+            <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+              <li class="nav-item dropdown">
+                <a
+                  class="dropdown-toggle profile-pic"
+                  data-toggle="dropdown"
+                  href="#"
+                  aria-expanded="false"
+                >
+                  <img
+                    src="/img/profile-icon.png"
+                    alt="user-img"
+                    width="36"
+                    class="img-circle"
+                  /><span>Accountant</span>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                  <a class="dropdown-item" href="/logout"
+                    ><i class="fa fa-power-off"></i> Logout</a
+                  >
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <%- include('../partials/accountant-sidebar') %>
+      <div class="main-panel">
+        <div class="content">
+          <div class="container-fluid">
+            <h4 class="page-title">
+              Record Payment - <%= invoice.invoice_number %>
+            </h4>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-header">
+                    <div class="card-title">Payment Details</div>
+                  </div>
+                  <div class="card-body">
+                    <div class="alert alert-info">
+                      <div class="row">
+                        <div class="col-6"><strong>Invoice Total:</strong></div>
+                        <div class="col-6 text-right">
+                          ₦<%= parseFloat(invoice.total_amount).toLocaleString()
+                          %>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-6"><strong>Total Paid:</strong></div>
+                        <div class="col-6 text-right">
+                          ₦<%= parseFloat(totalPaid).toLocaleString() %>
+                        </div>
+                      </div>
+                      <hr />
+                      <div class="row">
+                        <div class="col-6 text-primary">
+                          <strong>Balance Due:</strong>
+                        </div>
+                        <div class="col-6 text-right text-primary">
+                          <strong
+                            >₦<%= parseFloat(balance).toLocaleString()
+                            %></strong
+                          >
+                        </div>
+                      </div>
+                    </div>
+
+                    <form
+                      action="/accountant/sales-rep-invoices/<%= invoice.invoice_id %>/payment"
+                      method="POST"
+                    >
+                      <div class="form-group">
+                        <label for="amount"
+                          >Payment Amount (₦)
+                          <span class="text-danger">*</span></label
+                        >
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="amount"
+                          name="amount"
+                          step="0.01"
+                          max="<%= balance %>"
+                          min="0.01"
+                          value="<%= balance %>"
+                          required
+                        />
+                        <small class="form-text text-muted"
+                          >Amount cannot exceed remaining balance: ₦<%=
+                          parseFloat(balance).toLocaleString() %></small
+                        >
+                      </div>
+                      <div class="form-group">
+                        <label for="paymentDate"
+                          >Payment Date
+                          <span class="text-danger">*</span></label
+                        >
+                        <input
+                          type="date"
+                          class="form-control"
+                          id="paymentDate"
+                          name="paymentDate"
+                          value="<%= new Date().toISOString().split('T')[0] %>"
+                          required
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label for="paymentMethod">Payment Method</label>
+                        <select
+                          class="form-control"
+                          id="paymentMethod"
+                          name="paymentMethod"
+                        >
+                          <option value="CASH">Cash</option>
+                          <option value="BANK_TRANSFER">Bank Transfer</option>
+                          <option value="POS">POS</option>
+                          <option value="CHEQUE">Cheque</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label for="reference"
+                          >Reference / Receipt Number</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="reference"
+                          name="reference"
+                          placeholder="e.g. Bank Ref, Receipt #"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label for="notes">Notes</label>
+                        <textarea
+                          class="form-control"
+                          id="notes"
+                          name="notes"
+                          rows="3"
+                        ></textarea>
+                      </div>
+                      <div class="card-action">
+                        <button type="submit" class="btn btn-success">
+                          Record Payment
+                        </button>
+                        <a
+                          href="/accountant/sales-rep-invoices/<%= invoice.invoice_id %>"
+                          class="btn btn-danger"
+                          >Cancel</a
+                        >
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-header">
+                    <div class="card-title">Payment History</div>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table
+                        class="table table-bordered table-head-bg-primary mt-4"
+                      >
+                        <thead>
+                          <tr>
+                            <th>Date</th>
+                            <th>Method</th>
+                            <th>Ref</th>
+                            <th>Amount</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% if(payments && payments.length > 0) { %> <%
+                          payments.forEach(function(p) { %>
+                          <tr>
+                            <td>
+                              <%= new Date(p.payment_date).toLocaleDateString()
+                              %>
+                            </td>
+                            <td><%= p.payment_method %></td>
+                            <td><%= p.reference || 'N/A' %></td>
+                            <td>
+                              ₦<%= parseFloat(p.amount).toLocaleString() %>
+                            </td>
+                          </tr>
+                          <% }) %> <% } else { %>
+                          <tr>
+                            <td colspan="4" class="text-center">
+                              No previous payments recorded
+                            </td>
+                          </tr>
+                          <% } %>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%- include('../partials/responseMessage') %>
+  </body>
+  <script src="/js/core/jquery.3.2.1.min.js"></script>
+  <script src="/js/core/popper.min.js"></script>
+  <script src="/js/core/bootstrap.min.js"></script>
+  <script src="/js/ready.min.js"></script>
+  <script src="/iziToast-master/dist/js/iziToast.min.js"></script>
+  <script src="/js/toast.js"></script>
+</html>

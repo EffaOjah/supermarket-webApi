@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>MaryBill - Warehouse Manager - Manage Sales Reps</title>
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"
+      name="viewport"
+    />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    />
+    <script
+      src="https://kit.fontawesome.com/a207e207d8.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="/css/ready.css" />
+    <link rel="stylesheet" href="/css/demo.css" />
+    <link rel="stylesheet" href="/iziToast-master/dist/css/iziToast.min.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="main-header">
+        <div class="logo-header">
+          <a href="/warehouse/dashboard" class="logo">MaryBill Conglomerate</a>
+          <button
+            class="navbar-toggler sidenav-toggler ml-auto"
+            type="button"
+            data-toggle="collapse"
+            data-target="collapse"
+            aria-controls="sidebar"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <button class="topbar-toggler more">
+            <i class="la la-ellipsis-v"></i>
+          </button>
+        </div>
+        <nav class="navbar navbar-header navbar-expand-lg">
+          <div class="container-fluid">
+            <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+              <li class="nav-item dropdown">
+                <a
+                  class="dropdown-toggle profile-pic"
+                  data-toggle="dropdown"
+                  href="#"
+                  aria-expanded="false"
+                >
+                  <img
+                    src="/img/profile-icon.png"
+                    alt="user-img"
+                    width="36"
+                    class="img-circle"
+                  /><span>Warehouse Manager</span>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                  <a class="dropdown-item" href="/logout"
+                    ><i class="fa fa-power-off"></i> Logout</a
+                  >
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div class="sidebar">
+        <div class="sidebar-wrapper">
+          <ul class="nav">
+            <li class="nav-item">
+              <a href="/warehouse/dashboard">
+                <i class="fa-solid fa-gauge"></i>
+                <p>Dashboard</p>
+              </a>
+            </li>
+            <li class="nav-item active">
+              <a href="/warehouse/sales-reps">
+                <i class="fa-solid fa-user-tie"></i>
+                <p>Sales Reps</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/warehouse/sales-rep-invoices">
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+                <p>Sales Rep Invoices</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/logout">
+                <i class="fas fa-sign-out-alt"></i>
+                <p>Logout</p>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="main-panel">
+        <div class="content">
+          <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h4 class="page-title">Sales Representatives</h4>
+              <a href="/warehouse/sales-reps/add" class="btn btn-primary"
+                >Add New Rep</a
+              >
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table table-head-bg-primary mt-4">
+                        <thead>
+                          <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Unique ID</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Current Debt</th>
+                            <th scope="col">Joined</th>
+                            <th scope="col">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% if(salesReps.length < 1) { %>
+                          <tr>
+                            <td colspan="7" class="text-center">
+                              No sales reps found
+                            </td>
+                          </tr>
+                          <% } else { %> <% salesReps.forEach(rep => { %>
+                          <tr>
+                            <td><%= rep.name %></td>
+                            <td>
+                              <span class="badge badge-info"
+                                ><%= rep.unique_id %></span
+                              >
+                            </td>
+                            <td><%= rep.email || 'N/A' %></td>
+                            <td><%= rep.phone %></td>
+                            <td
+                              class="<%= rep.debt > 0 ? 'text-danger' : 'text-success' %>"
+                            >
+                              ₦<%= rep.debt.toLocaleString() %>
+                            </td>
+                            <td>
+                              <%= new Date(rep.created_at).toLocaleDateString()
+                              %>
+                            </td>
+                            <td>
+                              <a
+                                href="/warehouse/sales-reps/<%= rep.id %>/edit"
+                                class="btn btn-sm btn-primary"
+                                title="Edit"
+                                ><i class="fa fa-edit"></i
+                              ></a>
+                              <form
+                                action="/warehouse/sales-reps/<%= rep.id %>/delete"
+                                method="POST"
+                                style="display: inline"
+                                onsubmit="return confirm('Are you sure you want to delete this sales representative?')"
+                              >
+                                <button
+                                  type="submit"
+                                  class="btn btn-sm btn-danger"
+                                  title="Delete"
+                                >
+                                  <i class="fa fa-trash"></i>
+                                </button>
+                              </form>
+                              <a
+                                href="/warehouse/sales-reps/<%= rep.id %>/payment"
+                                class="btn btn-sm btn-success"
+                                title="Record Payment"
+                                ><i class="fa fa-money-bill"></i
+                              ></a>
+                            </td>
+                          </tr>
+
+                          <% }) %> <% } %>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%- include('../partials/responseMessage') %>
+  </body>
+  <script src="/js/core/jquery.3.2.1.min.js"></script>
+  <script src="/js/core/popper.min.js"></script>
+  <script src="/js/core/bootstrap.min.js"></script>
+  <script src="/js/ready.min.js"></script>
+  <script src="/iziToast-master/dist/js/iziToast.min.js"></script>
+  <script src="/js/toast.js"></script>
+</html>

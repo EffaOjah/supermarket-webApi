@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<title>MaryBill Conglomerate Ltd. - All Products</title>
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+		name='viewport' />
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<link rel="stylesheet"
+		href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+	<script src="https://kit.fontawesome.com/a207e207d8.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="/css/ready.css">
+	<link rel="stylesheet" href="/css/demo.css">
+	<link rel="icon" type="image/x-icon" href="/img/app_icon.ico">
+
+	<link rel="stylesheet" href="/iziToast-master/dist/css/iziToast.min.css">
+</head>
+
+<body>
+	<div class="wrapper">
+		<div class="main-header">
+			<div class="logo-header">
+				<a href="/warehouse/dashboard" class="logo">
+					MaryBill Conglomerate
+				</a>
+				<button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse"
+					data-target="collapse" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<button class="topbar-toggler more"><i class="la la-ellipsis-v"></i></button>
+			</div>
+			<nav class="navbar navbar-header navbar-expand-lg">
+				<div class="container-fluid">
+
+					<form class="navbar-left navbar-form nav-search mr-md-3" action="">
+						<div class="input-group">
+							<input type="text" placeholder="Search ..." class="form-control">
+							<div class="input-group-append">
+								<span class="input-group-text">
+									<i class="la la-search search-icon"></i>
+								</span>
+							</div>
+						</div>
+					</form>
+					<ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+						<li class="nav-item dropdown">
+							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img
+									src="/img/profile-icon.png" alt="user-img" width="36" class="img-circle"><span>Warehouse</span></span>
+							</a>
+							<ul class="dropdown-menu dropdown-user">
+								<li>
+									<div class="user-box">
+										<div class="u-img"><img src="/img/profile-icon.png" alt="user"></div>
+										<div class="u-text">
+											<h4>Warehouse</h4>
+											<p class="text-muted"><%= user && user.email ? user.email : 'warehouse@marybill.com' %></p>
+										</div>
+									</div>
+								</li>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="/logout"><i class="fa fa-power-off"></i> Logout</a>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+		<!-- Sidebar -->
+		<%- include('../partials/warehouse-sidebar') %>
+		<!-- End Sidebar -->
+		<div class="main-panel">
+			<div class="content">
+				<div class="container-fluid">
+					<div class="row m-5">
+						<h4 class="col-md-8 page-title"><span class="text-primary">All Products</span></h4>
+
+						<input type="text" id="productSearch" placeholder="Search by name, category, or supplier"
+							class="col-md-4 form-control mb-3">
+					</div>
+
+
+
+
+					<div class="row justify-content-center">
+						<div class="card">
+							<div class="card-header">
+								<div class="card-title">Products Details</div>
+							</div>
+							<div class="card-body">
+								<div class="table-responsive">
+									<table class="table table-bordered">
+										<thead>
+											<tr>
+												<th>#</th>
+												<th>Name</th>
+												<th>Wholesale Cost Price</th>
+												<th>Wholesale Selling Price</th>
+												<th>Retail Cost Price</th>
+												<th>Retail Selling Price</th>
+												<th>Supplier</th>
+												<th>Category</th>
+											</tr>
+										</thead>
+										<tbody>
+											<% products.forEach((product, index)=> { %>
+												<tr>
+													<th scope="row">
+														<%= index + 1 %>
+													</th>
+													<td>
+														<%= product.product_name %>
+													</td>
+													<td>
+														<%= product.wholesale_cost_price ? `₦${product.wholesale_cost_price}` : 'N/A' %>
+													<td>
+														<%= product.wholesale_selling_price ? `₦${product.wholesale_selling_price}` : 'N/A' %>
+													</td>
+													<td>
+														<%= product.retail_cost_price ? `₦${product.retail_cost_price}` : 'N/A' %>
+													<td>
+														<%= product.retail_selling_price ? `₦${product.retail_selling_price}` : 'N/A' %>
+													</td>
+													<td>
+														<%= product.name %>
+													</td>
+													<td>
+														<%= product.category %>
+													</td>
+												</tr>
+												<% }) %>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+
+	<%- include('../partials/responseMessage') %>
+		<script>
+			document.getElementById("productSearch").addEventListener("input", function () {
+				const searchValue = this.value.toLowerCase();
+				const table = document.querySelector(".table");
+				const tbody = table.querySelector("tbody");
+				const rows = tbody.querySelectorAll("tr");
+
+				let anyVisible = false;
+
+				rows.forEach(row => {
+					const name = row.cells[1].textContent.toLowerCase();
+					const supplier = row.cells[6].textContent.toLowerCase();
+					const category = row.cells[7].textContent.toLowerCase();
+
+					const match = name.includes(searchValue) ||
+						supplier.includes(searchValue) ||
+						category.includes(searchValue);
+
+					if (match) {
+						row.style.display = "";
+						anyVisible = true;
+					} else {
+						row.style.display = "none";
+					}
+				});
+
+				// Hide the table if no match is found
+				table.parentElement.parentElement.style.display = anyVisible ? "" : "none";
+			});
+		</script>
+
+</body>
+<script src="/js/core/jquery.3.2.1.min.js"></script>
+<script src="/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+<script src="/js/core/popper.min.js"></script>
+<script src="/js/core/bootstrap.min.js"></script>
+<script src="/js/plugin/chartist/chartist.min.js"></script>
+<script src="/js/plugin/chartist/plugin/chartist-plugin-tooltip.min.js"></script>
+<!-- <script src="/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script> -->
+<script src="/iziToast-master/dist/js/iziToast.min.js"></script>
+<script src="/js/plugin/bootstrap-toggle/bootstrap-toggle.min.js"></script>
+<script src="/js/plugin/jquery-mapael/jquery.mapael.min.js"></script>
+<script src="/js/plugin/jquery-mapael/maps/world_countries.min.js"></script>
+<script src="/js/plugin/chart-circle/circles.min.js"></script>
+<script src="/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+<script src="/js/ready.min.js"></script>
+<script src="/js/demo.js"></script>
+
+<script src="/js/toast.js"></script>
+
+</html>

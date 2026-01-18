@@ -5,6 +5,10 @@ const jwt = require('jsonwebtoken');
 const createToken = (user) => {
     const payload = {
         userId: user.user_id,
+        email: user.email,
+        role: user.role,  // CRITICAL: Include role in token for authorization
+        branch_id: user.branch_id,
+        branch_name: user.branch_name
     };
 
     return new Promise((resolve, reject) => {
@@ -33,11 +37,25 @@ const verifyToken = (req, res, next) => {
             return res.redirect('/admin/signin');
         }
         req.user = decoded;
+        res.locals.user = decoded; // Make user available in all templates
         next();
     });
+}
+
+// Check Role Middleware
+const requireRole = (roles) => {
+    return (req, res, next) => {
+        if (!req.user || !roles.includes(req.user.role)) {
+            console.log(`Access denied. User role: ${req.user ? req.user.role : 'none'}, Required: ${roles}`);
+            req.flash('error_msg', 'Access denied. You do not have permission to view this page.');
+            return res.redirect('/admin/dashboard'); // Redirect to a safe default or back
+        }
+        next();
+    }
 }
 
 module.exports = {
     createToken,
     verifyToken,
+    requireRole
 };

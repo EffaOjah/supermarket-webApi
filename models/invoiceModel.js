@@ -1,18 +1,29 @@
 const db = require('../config/dbConfig');
 
 // Get all invoices
-const getAllInvoices = async () => {
+const getAllInvoices = async (branchId = null) => {
     return new Promise((resolve, reject) => {
-        const query = `
+        let query = `
             SELECT i.*, c.name as customer_name, 
             COALESCE(SUM(p.amount), 0) as amount_paid
             FROM invoices i 
             JOIN customers c ON i.customer_id = c.customer_id 
             LEFT JOIN payments p ON i.invoice_id = p.invoice_id
+            WHERE 1=1
+        `;
+        const params = [];
+
+        if (branchId) {
+            query += " AND i.branch_id = ?";
+            params.push(branchId);
+        }
+
+        query += `
             GROUP BY i.invoice_id
             ORDER BY i.invoice_date DESC
         `;
-        db.query(query, (err, result) => {
+
+        db.query(query, params, (err, result) => {
             if (err) reject(err);
             resolve(result);
         });
@@ -51,12 +62,12 @@ const createInvoice = async (invoiceData, items) => {
         db.beginTransaction((err) => {
             if (err) return reject(err);
 
-            const { invoiceNumber, customerId, invoiceDate, dueDate, totalAmount, reference } = invoiceData;
+            const { invoiceNumber, customerId, invoiceDate, dueDate, totalAmount, reference, branchId } = invoiceData;
 
             // Insert Invoice Header
             db.query(
-                "INSERT INTO invoices (invoice_number, customer_id, invoice_date, due_date, total_amount, reference) VALUES (?, ?, ?, ?, ?, ?)",
-                [invoiceNumber, customerId, invoiceDate, dueDate, totalAmount, reference],
+                "INSERT INTO invoices (invoice_number, customer_id, invoice_date, due_date, total_amount, reference, branch_id) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                [invoiceNumber, customerId, invoiceDate, dueDate, totalAmount, reference, branchId],
                 (err, result) => {
                     if (err) {
                         return db.rollback(() => reject(err));

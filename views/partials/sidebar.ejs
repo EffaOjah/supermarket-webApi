@@ -12,8 +12,11 @@
           aria-expanded="true"
         >
           <span>
-            Steven
-            <span class="user-level">Administrator</span>
+            <%= user && user.branch_name ? user.branch_name : (user ?
+            user.role.charAt(0).toUpperCase() + user.role.slice(1) : 'User') %>
+            <span class="user-level"
+              ><%= user ? user.role.toUpperCase() : '' %></span
+            >
             <span class="caret"></span>
           </span>
         </a>
@@ -41,6 +44,7 @@
       </div>
     </div>
     <ul class="nav">
+      <% if (user && user.role === 'admin') { %>
       <li
         class="nav-item <%= currentPath === '/admin/dashboard' ? 'active' : '' %>"
       >
@@ -49,6 +53,60 @@
           <p>Dashboard</p>
         </a>
       </li>
+      <% } else if (user && user.role === 'warehouse') { %>
+      <li
+        class="nav-item <%= currentPath === '/warehouse/dashboard' ? 'active' : '' %>"
+      >
+        <a href="/warehouse/dashboard">
+          <i class="fa-solid fa-gauge"></i>
+          <p>Warehouse Dash</p>
+        </a>
+      </li>
+      <li
+        class="nav-item <%= currentPath === '/admin/dashboard' ? 'active' : '' %>"
+      >
+        <a href="/admin/dashboard">
+          <i class="fa-solid fa-building"></i>
+          <p>All Branches</p>
+        </a>
+      </li>
+      <% } else if (user && user.role === 'operations') { %>
+      <li
+        class="nav-item <%= currentPath === '/operations/dashboard' ? 'active' : '' %>"
+      >
+        <a href="/operations/dashboard">
+          <i class="fa-solid fa-gauge"></i>
+          <p>Ops Dashboard</p>
+        </a>
+      </li>
+      <li
+        class="nav-item <%= currentPath === '/admin/dashboard' ? 'active' : '' %>"
+      >
+        <a href="/admin/dashboard">
+          <i class="fa-solid fa-building"></i>
+          <p>All Branches</p>
+        </a>
+      </li>
+      <% } else if (user && user.role === 'accountant') { %>
+      <li
+        class="nav-item <%= currentPath === '/accountant/dashboard' ? 'active' : '' %>"
+      >
+        <a href="/accountant/dashboard">
+          <i class="fa-solid fa-gauge"></i>
+          <p>Accountant Dash</p>
+        </a>
+      </li>
+      <% } else if (user && user.role === 'pko') { %>
+      <li
+        class="nav-item <%= currentPath === '/pko/dashboard' ? 'active' : '' %>"
+      >
+        <a href="/pko/dashboard">
+          <i class="fa-solid fa-gauge"></i>
+          <p>PKO Dashboard</p>
+        </a>
+      </li>
+      <% } %> <% if (user && ['admin', 'warehouse', 'operations',
+      'pko'].includes(user.role)) { %>
       <li
         class="nav-item <%= currentPath === '/admin/product-upload' ? 'active' : '' %>"
       >
@@ -65,6 +123,8 @@
           <p>All Products</p>
         </a>
       </li>
+      <% } %> <% if (user && ['admin', 'warehouse',
+      'operations'].includes(user.role)) { %>
       <li
         class="nav-item <%= currentPath.startsWith('/staff/add') ? 'active' : '' %>"
       >
@@ -127,6 +187,19 @@
           <p>Add Asset</p>
         </a>
       </li>
+      <li class="nav-item <%= currentPath === '/assets/all' ? 'active' : '' %>">
+        <a href="/assets/all">
+          <i class="fa-solid fa-boxes-stacked"></i>
+          <p>All Assets</p>
+        </a>
+      </li>
+      <% } %> <% if (user && ['admin', 'accountant'].includes(user.role)) { %>
+      <li class="nav-section">
+        <span class="sidebar-mini-icon">
+          <i class="fa fa-ellipsis-h"></i>
+        </span>
+        <h4 class="text-section">Accounting</h4>
+      </li>
       <li
         class="nav-item <%= currentPath.startsWith('/customers') ? 'active' : '' %>"
       >
@@ -155,12 +228,6 @@
         <a href="/payments">
           <i class="fa-solid fa-history"></i>
           <p>Payment History</p>
-        </a>
-      </li>
-      <li class="nav-item <%= currentPath === '/assets/all' ? 'active' : '' %>">
-        <a href="/assets/all">
-          <i class="fa-solid fa-boxes-stacked"></i>
-          <p>All Assets</p>
         </a>
       </li>
       <li class="nav-item <%= currentPath === '/ledger/add' ? 'active' : '' %>">
@@ -209,16 +276,23 @@
           <p>Profit & Loss</p>
         </a>
       </li>
+      <% } %> <% if (user && ['admin', 'warehouse', 'operations',
+      'accountant'].includes(user.role)) { %>
       <li
-        class="nav-item <%= currentPath.startsWith('/admin/sales-reps') ? 'active' : '' %>"
+        class="nav-item <%= currentPath.includes('/sales-reps') ? 'active' : '' %>"
       >
-        <a href="/admin/sales-reps">
+        <% let salesRepLink = '/admin/sales-reps'; if (user && user.role ===
+        'warehouse') salesRepLink = '/warehouse/sales-reps'; if (user &&
+        user.role === 'operations') salesRepLink = '/operations/sales-reps'; if
+        (user && user.role === 'accountant') salesRepLink =
+        '/accountant/sales-reps'; %>
+        <a href="<%= salesRepLink %>">
           <i class="fa-solid fa-user-tie"></i>
           <p>Sales Reps</p>
         </a>
       </li>
       <li
-        class="nav-item <%= currentPath.startsWith('/admin/product-requests') ? 'active' : '' %>"
+        class="nav-item <%= currentPath === '/admin/product-requests' ? 'active' : '' %>"
       >
         <a href="/admin/product-requests">
           <i class="fa-solid fa-clipboard-list"></i>
@@ -226,13 +300,20 @@
         </a>
       </li>
       <li
-        class="nav-item <%= currentPath.startsWith('/admin/sales-rep-invoices') ? 'active' : '' %>"
+        class="nav-item <%= currentPath.includes('/sales-rep-invoices') ? 'active' : '' %>"
       >
-        <a href="/admin/sales-rep-invoices">
+        <% let invoiceLink = '/admin/sales-rep-invoices'; if (user && user.role
+        === 'warehouse') invoiceLink = '/warehouse/sales-rep-invoices'; if (user
+        && user.role === 'operations') invoiceLink =
+        '/operations/sales-rep-invoices'; if (user && user.role ===
+        'accountant') invoiceLink = '/accountant/sales-rep-invoices'; %>
+        <a href="<%= invoiceLink %>">
           <i class="fa-solid fa-file-invoice-dollar"></i>
           <p>Sales Rep Invoices</p>
         </a>
       </li>
+      <% } %>
+
       <li class="nav-item">
         <a href="/logout">
           <i class="fas fa-sign-out-alt"></i>

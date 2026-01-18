@@ -88,6 +88,7 @@ const insertTransaction = async (transactionData) => {
             description,
             totalAmount,
             createdBy,
+            branchId,
             entries // Array of {accountCode, entryType, amount, description}
         } = transactionData;
 
@@ -111,9 +112,9 @@ const insertTransaction = async (transactionData) => {
             // Insert transaction header
             db.query(
                 `INSERT INTO ledger_transactions 
-         (transaction_id, transaction_date, transaction_type, reference_number, description, total_amount, created_by, posted_at) 
-         VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)`,
-                [transactionId, transactionDate, transactionType, referenceNumber, description, totalAmount, createdBy],
+         (transaction_id, transaction_date, transaction_type, reference_number, description, total_amount, created_by, branch_id, posted_at) 
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)`,
+                [transactionId, transactionDate, transactionType, referenceNumber, description, totalAmount, createdBy, branchId],
                 (err) => {
                     if (err) {
                         db.query("ROLLBACK");
@@ -166,6 +167,11 @@ const getAllTransactions = async (filters = {}) => {
         if (filters.startDate) {
             query += " AND t.transaction_date >= ?";
             params.push(filters.startDate);
+        }
+
+        if (filters.branchId) {
+            query += " AND t.branch_id = ?";
+            params.push(filters.branchId);
         }
 
         if (filters.endDate) {
@@ -227,21 +233,30 @@ const getTransactionById = async (transactionId) => {
 };
 
 // Get account balance
-const getAccountBalance = async (accountCode, asOfDate = null) => {
+const getAccountBalance = async (accountCode, asOfDate = null, branchId = null) => {
     return new Promise((resolve, reject) => {
         let query = `
       SELECT 
-        SUM(CASE WHEN entry_type = 'DEBIT' THEN amount ELSE 0 END) as total_debits,
-        SUM(CASE WHEN entry_type = 'CREDIT' THEN amount ELSE 0 END) as total_credits
-      FROM ledger_entries
-      WHERE account_code = ?
+        SUM(CASE WHEN e.entry_type = 'DEBIT' THEN e.amount ELSE 0 END) as total_debits,
+        SUM(CASE WHEN e.entry_type = 'CREDIT' THEN e.amount ELSE 0 END) as total_credits
+      FROM ledger_entries e
+      JOIN ledger_transactions t ON e.transaction_id = t.transaction_id
+      WHERE e.account_code = ?
     `;
         const params = [accountCode];
 
         if (asOfDate) {
-            query += " AND entry_date <= ?";
+            query += " AND e.entry_date <= ?";
             params.push(asOfDate);
         }
+
+        if (branchId) {
+            query += " AND t.branch_id = ?";
+            params.push(branchId);
+        }
+
+
+
 
         db.query(query, params, async (err, result) => {
             if (err) return reject(err);
@@ -274,11 +289,11 @@ const getAccountBalance = async (accountCode, asOfDate = null) => {
 };
 
 // Get trial balance
-const getTrialBalance = async (asOfDate = null) => {
+const getTrialBalance = async (asOfDate = null, branchId = null) => {
     return new Promise((resolve, reject) => {
         getAllAccounts().then(accounts => {
             const balancePromises = accounts.map(account =>
-                getAccountBalance(account.account_code, asOfDate)
+                getAccountBalance(account.account_code, asOfDate, branchId)
             );
 
             Promise.all(balancePromises).then(balances => {
@@ -303,7 +318,7 @@ const getTrialBalance = async (asOfDate = null) => {
 };
 
 // Get balance sheet
-const getBalanceSheet = async (asOfDate = null) => {
+const getBalanceSheet = async (asOfDate = null, branchId = null) => {
     return new Promise((resolve, reject) => {
         getAllAccounts().then(accounts => {
             // Group accounts by type
@@ -313,13 +328,13 @@ const getBalanceSheet = async (asOfDate = null) => {
 
             // Get balances for all accounts
             const assetBalancePromises = assetAccounts.map(account =>
-                getAccountBalance(account.account_code, asOfDate)
+                getAccountBalance(account.account_code, asOfDate, branchId)
             );
             const liabilityBalancePromises = liabilityAccounts.map(account =>
-                getAccountBalance(account.account_code, asOfDate)
+                getAccountBalance(account.account_code, asOfDate, branchId)
             );
             const equityBalancePromises = equityAccounts.map(account =>
-                getAccountBalance(account.account_code, asOfDate)
+                getAccountBalance(account.account_code, asOfDate, branchId)
             );
 
             Promise.all([
@@ -377,7 +392,7 @@ const voidTransaction = async (transactionId) => {
 };
 
 // Get Profit and Loss
-const getProfitLoss = async (startDate, endDate) => {
+const getProfitLoss = async (startDate, endDate, branchId = null) => {
     return new Promise((resolve, reject) => {
         getAllAccounts().then(accounts => {
             // Group accounts
@@ -387,14 +402,22 @@ const getProfitLoss = async (startDate, endDate) => {
             // Helper to get balance for a period (Movement only)
             const getPeriodBalance = (accountCode) => {
                 return new Promise((resolveBalance, rejectBalance) => {
-                    const query = `
-                        SELECT 
-                            SUM(CASE WHEN entry_type = 'DEBIT' THEN amount ELSE 0 END) as total_debits,
-                            SUM(CASE WHEN entry_type = 'CREDIT' THEN amount ELSE 0 END) as total_credits
-                        FROM ledger_entries
-                        WHERE account_code = ? AND entry_date >= ? AND entry_date <= ?
-                    `;
-                    db.query(query, [accountCode, startDate, endDate], (err, result) => {
+                    let query = `
+        SELECT
+        SUM(CASE WHEN e.entry_type = 'DEBIT' THEN e.amount ELSE 0 END) as total_debits,
+            SUM(CASE WHEN e.entry_type = 'CREDIT' THEN e.amount ELSE 0 END) as total_credits
+                        FROM ledger_entries e
+                        JOIN ledger_transactions t ON e.transaction_id = t.transaction_id
+                        WHERE e.account_code = ? AND e.entry_date >= ? AND e.entry_date <= ?
+            `;
+                    const params = [accountCode, startDate, endDate];
+
+                    if (branchId) {
+                        query += " AND t.branch_id = ?";
+                        params.push(branchId);
+                    }
+
+                    db.query(query, params, (err, result) => {
                         if (err) return rejectBalance(err);
                         const debits = result[0]?.total_debits || 0;
                         const credits = result[0]?.total_credits || 0;

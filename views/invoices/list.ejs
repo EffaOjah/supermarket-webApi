@@ -148,7 +148,11 @@
 			</nav>
 		</div>
 		<!-- Sidebar -->
-		<%- include('../partials/sidebar') %>
+        <% if (user && user.role === 'accountant') { %>
+            <%- include('../partials/accountant-sidebar') %>
+        <% } else { %>
+            <%- include('../partials/sidebar') %>
+        <% } %>
 		<!-- End Sidebar -->
 
       <div class="main-panel">

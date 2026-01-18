@@ -88,7 +88,13 @@
         <!-- Sidebar -->
 		 
 		<!-- Sidebar -->
-		<%- include('partials/sidebar') %>
+        <!-- Sidebar -->
+        <% if (user && user.role === 'accountant') { %>
+            <%- include('partials/accountant-sidebar') %>
+        <% } else { %>
+            <%- include('partials/sidebar') %>
+        <% } %>
+        <!-- End Sidebar -->
 		<!-- End Sidebar -->
 		
 		<div class="main-panel">

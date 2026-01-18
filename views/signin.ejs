@@ -86,6 +86,21 @@
       .form-floating .form-control {
         border-left: 1px solid #dee2e6;
       }
+
+      .form-select {
+        border-color: #dee2e6;
+      }
+
+      .form-select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
+      }
+
+      .form-floating > .form-select:focus ~ label,
+      .form-floating > .form-select:not([value=""]) ~ label {
+        color: #667eea;
+        transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+      }
     </style>
   </head>
 
@@ -129,6 +144,30 @@
                       />
                       <label for="password" class="form-label"
                         ><i class="fas fa-lock me-2"></i>Password</label
+                      >
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="form-floating mb-3">
+                      <select
+                        class="form-select"
+                        name="role"
+                        id="role"
+                        required
+                      >
+                        <option value="" selected disabled>
+                          Select your role
+                        </option>
+                        <option value="admin">Admin</option>
+                        <option value="accountant">Accountant</option>
+                        <option value="pko">
+                          PKO (Product Knowledge Officer)
+                        </option>
+                        <option value="operations">Head of Operations</option>
+                        <option value="warehouse">Warehouse</option>
+                      </select>
+                      <label for="role" class="form-label"
+                        ><i class="fas fa-user-tag me-2"></i>Role</label
                       >
                     </div>
                   </div>

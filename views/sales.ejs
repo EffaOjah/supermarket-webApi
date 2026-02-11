@@ -168,7 +168,7 @@
                                                         <%= sale.payment_method %>
                                                     </td>
                                                     <td>
-                                                        <%= sale.sale_date %>
+                                                        <%= new Date(sale.sale_date).toLocaleString('en-NG', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true }) %>
                                                     </td>
                                                     <td><button id="<%= sale.sale_id %>"
                                                             class="btn-sm btn-primary  view-sale-details-btn"
@@ -309,7 +309,7 @@
 					'<%= sale.customer_phoneNo ? sale.customer_phoneNo : "N/A" %>',
 					'NGN <%= sale.total_amount %>',
 					'<%= sale.payment_method %>',
-					'<%= sale.sale_date %>'
+					'<%= new Date(sale.sale_date).toLocaleString("en-NG", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", hour12: true }) %>'
 				]);
 			<% }); %>
 

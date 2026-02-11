@@ -26,7 +26,7 @@ async function viewSaleInvoice(saleId) {
 
   document.getElementById('customer').innerHTML = saleDetails[0].customer_name;
   document.getElementById('paymentMethod').innerHTML = saleDetails[0].payment_method;
-  document.getElementById('saleDate').innerHTML = saleDetails[0].sale_date;
+  document.getElementById('saleDate').innerHTML = new Date(saleDetails[0].sale_date).toLocaleString('en-NG', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });
 
   const newDiv = document.createElement("div");
   newDiv.innerHTML = `

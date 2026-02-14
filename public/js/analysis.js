@@ -3,7 +3,10 @@ var branchId = document.getElementById('branchId').innerHTML;
 document.addEventListener('DOMContentLoaded', async () => {
     // Get today's date
     const date = new Date();
-    let timeStamp = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const timeStamp = `${year}-${month}-${day}`;
     console.log('Date: ', timeStamp);
 
     // Get the analysis for today(Wholesale and Retail)
